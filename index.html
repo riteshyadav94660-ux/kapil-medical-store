@@ -14,4 +14,51 @@ const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"applic
 const j=await r.json();
 if(r.ok&&j.id){msg("Order placed successfully! Order ID: "+j.id);cart=[]}
 else msg(j.error||"Order failed")
+}async function order(){
+if(!cart.length)return msg("Add an item first.");
+const customer_name=document.getElementById("name").value.trim();
+const phone=document.getElementById("phone").value.trim();
+const address=document.getElementById("address").value.trim();
+const pincode=document.getElementById("pin").value.trim();
+const payment_method=document.getElementById("pay").value;
+const total=cart.reduce((a,x)=>a+Number(x.price),0);
+if(!customer_name||!phone||!address||!pincode||!payment_method)return msg("Please fill all fields");
+if(payment_method==="Cash on Delivery"){
+const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({customer_name,phone,address,pincode,payment_method,total})});
+const j=await r.json();
+if(r.ok&&j.id){msg("Order placed successfully! Order ID: "+j.id);cart=[]}
+else msg(j.error||"Order failed");
+return;
+}
+try{
+const ro=await fetch("/api/razorpay/order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:total})});
+const jo=await ro.json();
+if(!ro.ok)return msg(jo.error||"Unable to start payment");
+const options={const options={
+key:jo.key_id,
+amount:jo.amount,
+currency:"INR",
+name:"Kapil Medical",
+description:"Medicine & Cosmetics",
+order_id:jo.id,
+handler:async function(response){
+const vr=await fetch("/api/razorpay/verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(response)});
+const vj=await vr.json();
+if(!vr.ok||!vj.ok)return msg(vj.error||"Payment verification failed");
+
+const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({customer_name,phone,address,pincode,payment_method,total})});
+const j=await r.json();
+
+if(r.ok&&j.id){
+msg("Payment successful! Order ID: "+j.id);
+cart=[];
+}else{
+msg(j.error||"Order failed");
+}
+}
+};
+
+const rzp=new Razorpay(options);
+rzp.open();
+}catch(e){msg("Payment could not be started");}
 }function msg(x){document.getElementById("msg").textContent=x}load();</script></body></html>
