@@ -77,7 +77,8 @@ app.post("/api/razorpay/order",async(req,res)=>{
     res.json({
       id:order.id,
       amount:order.amount,
-      currency:order.currency
+      currency:order.currency,
+key_id:process.env.RAZORPAY_KEY_ID
     });
   }catch(e){
     console.error("Razorpay order error:",e);
