@@ -60,6 +60,7 @@ app.post("/api/orders",(req,res)=>{
  if(!customer_name||!phone||!address||!pincode||!payment_method||!Number.isFinite(total)) return res.status(400).json({error:"Incomplete order"});
  const r=db.prepare("INSERT INTO orders(customer_name,phone,address,pincode,payment_method,total) VALUES(?,?,?,?,?,?)").run(customer_name,phone,address,pincode,payment_method,total);
  res.status(201).json({id:r.lastInsertRowid,status:"Pending"});
+});
 app.post("/api/razorpay/order",async(req,res)=>{
   try{
     const amount=Number(req.body.amount);
