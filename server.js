@@ -83,7 +83,31 @@ app.post("/api/razorpay/order",async(req,res)=>{
     res.status(500).json({error:"Unable to create payment order"});
   }
 });
-app.get("/api/admin/orders",requireAdmin,(req,res)=>res.json(db.prepare("SELECT * FROM orders ORDER BY id DESC").all()));
+app.post("/api/razorpay/verify",(req,res)=>{
+  try{
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature
+    }=req.body;
+
+    if(!razorpay_order_id||!razorpay_payment_id||!razorpay_signature)
+      return res.status(400).json({error:"Missing payment details"});
+
+    const generated_signature=crypto
+      .createHmac("sha256",process.env.RAZORPAY_KEY_SECRET)
+      .update(razorpay_order_id+"|"+razorpay_payment_id)
+      .digest("hex");
+
+    if(generated_signature!==razorpay_signature)
+      return res.status(400).json({error:"Payment verification failed"});
+
+    res.json({ok:true,message:"Payment verified"});
+  }catch(e){
+    console.error("Razorpay verification error:",e);
+    res.status(500).json({error:"Payment verification failed"});
+  }
+});app.get("/api/admin/orders",requireAdmin,(req,res)=>res.json(db.prepare("SELECT * FROM orders ORDER BY id DESC").all()));
 app.patch("/api/admin/orders/:id",requireAdmin,(req,res)=>{
  const ok=["Pending","Confirmed","Shipped","Delivered","Cancelled"]; if(!ok.includes(req.body.status))return res.status(400).json({error:"Invalid status"});
  db.prepare("UPDATE orders SET status=? WHERE id=?").run(req.body.status,req.params.id);res.json({ok:true});
