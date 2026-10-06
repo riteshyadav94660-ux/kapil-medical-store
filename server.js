@@ -4,10 +4,16 @@ import rateLimit from "express-rate-limit";
 import session from "express-session";
 import bcrypt from "bcryptjs";
 import Database from "better-sqlite3";
+import Razorpay from "razorpay";
+import crypto from "crypto";
 import path from "path";
 import {fileURLToPath} from "url";
 const __dirname=path.dirname(fileURLToPath(import.meta.url));
 const app=express();
+const razorpay=new Razorpay({
+  key_id:process.env.RAZORPAY_KEY_ID,
+  key_secret:process.env.RAZORPAY_KEY_SECRET
+});
 app.set("trust proxy",1);
 const db=new Database(path.join(__dirname,"kapil-medical.db"));
 app.use(helmet({contentSecurityPolicy:false}));
