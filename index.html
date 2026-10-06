@@ -34,7 +34,7 @@ try{
 const ro=await fetch("/api/razorpay/order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:total})});
 const jo=await ro.json();
 if(!ro.ok)return msg(jo.error||"Unable to start payment");
-const options={const options={
+const options={
 key:jo.key_id,
 amount:jo.amount,
 currency:"INR",
