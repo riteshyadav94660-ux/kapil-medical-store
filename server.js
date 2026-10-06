@@ -21,11 +21,19 @@ app.use(session({
 db.exec(`CREATE TABLE IF NOT EXISTS admins(id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT UNIQUE NOT NULL,password_hash TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS products(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,category TEXT NOT NULL,price INTEGER NOT NULL,stock INTEGER NOT NULL DEFAULT 0,prescription_required INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE IF NOT EXISTS orders(id INTEGER PRIMARY KEY AUTOINCREMENT,customer_name TEXT NOT NULL,phone TEXT NOT NULL,address TEXT NOT NULL,pincode TEXT NOT NULL,payment_method TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'Pending',total INTEGER NOT NULL,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);`);
-if(!db.prepare("SELECT 1 FROM admins LIMIT 1").get()){
- const username=process.env.ADMIN_USERNAME||"admin";
- const password=process.env.ADMIN_PASSWORD||"CHANGE_ME_NOW";
- db.prepare("INSERT INTO admins(username,password_hash) VALUES(?,?)").run(username,bcrypt.hashSync(password,12));
- console.log("Admin initialized. Set ADMIN_USERNAME, ADMIN_PASSWORD and SESSION_SECRET before deployment.");
+const username=process.env.ADMIN_USERNAME||"admin";
+const password=process.env.ADMIN_PASSWORD||"CHANGE_ME_NOW";
+const existingAdmin=db.prepare("SELECT id FROM admins LIMIT 1").get();
+
+if(existingAdmin){
+  if(process.env.RESET_ADMIN==="true"){
+    db.prepare("UPDATE admins SET username=?, password_hash=? WHERE id=?")
+      .run(username,bcrypt.hashSync(password,12),existingAdmin.id);
+  }
+}else{
+  db.prepare("INSERT INTO admins(username,password_hash) VALUES(?,?)")
+    .run(username,bcrypt.hashSync(password,12));
+}
 }
 if(!db.prepare("SELECT 1 FROM products LIMIT 1").get()){
  const i=db.prepare("INSERT INTO products(name,category,price,stock,prescription_required) VALUES(?,?,?,?,?)");
