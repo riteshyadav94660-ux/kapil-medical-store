@@ -4,5 +4,5 @@
   "private":true,
   "type":"module",
   "scripts":{"start":"node server.js"},
-  "dependencies":{"express":"^5.1.0","better-sqlite3":"^12.4.1","helmet":"^8.1.0","express-rate-limit":"^8.2.1","express-session":"^1.18.2","bcryptjs":"^3.0.2"}
+  "dependencies":{"express":"^5.1.0","better-sqlite3":"^12.4.1","helmet":"^8.1.0","express-rate-limit":"^8.2.1","express-session":"^1.18.2","razorpay":"^2.9.8","bcryptjs":"^3.0.2"}
 }
