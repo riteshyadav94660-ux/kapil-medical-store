@@ -60,6 +60,28 @@ app.post("/api/orders",(req,res)=>{
  if(!customer_name||!phone||!address||!pincode||!payment_method||!Number.isFinite(total)) return res.status(400).json({error:"Incomplete order"});
  const r=db.prepare("INSERT INTO orders(customer_name,phone,address,pincode,payment_method,total) VALUES(?,?,?,?,?,?)").run(customer_name,phone,address,pincode,payment_method,total);
  res.status(201).json({id:r.lastInsertRowid,status:"Pending"});
+app.post("/api/razorpay/order",async(req,res)=>{
+  try{
+    const amount=Number(req.body.amount);
+    if(!Number.isFinite(amount)||amount<=0)
+      return res.status(400).json({error:"Invalid amount"});
+
+    const order=await razorpay.orders.create({
+      amount:Math.round(amount*100),
+      currency:"INR",
+      receipt:"km_"+Date.now(),
+      payment_capture:1
+    });
+
+    res.json({
+      id:order.id,
+      amount:order.amount,
+      currency:order.currency
+    });
+  }catch(e){
+    console.error("Razorpay order error:",e);
+    res.status(500).json({error:"Unable to create payment order"});
+  }
 });
 app.get("/api/admin/orders",requireAdmin,(req,res)=>res.json(db.prepare("SELECT * FROM orders ORDER BY id DESC").all()));
 app.patch("/api/admin/orders/:id",requireAdmin,(req,res)=>{
