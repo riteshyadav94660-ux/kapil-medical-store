@@ -61,5 +61,5 @@ app.patch("/api/admin/products/:id",requireAdmin,(req,res)=>{
 });
 app.delete("/api/admin/products/:id",requireAdmin,(req,res)=>{db.prepare("DELETE FROM products WHERE id=?").run(req.params.id);res.json({ok:true})});
 app.get("/admin",(req,res)=>res.sendFile(path.join(__dirname,"../admin.html")));
-app.get("*",(req,res)=>res.sendFile(path.join(__dirname,"../index.html")));
+app.use((req,res)=>res.sendFile(path.join(__dirname,"index.html")));
 app.listen(process.env.PORT||3000,()=>console.log("Kapil Medical running on port "+(process.env.PORT||3000)));
