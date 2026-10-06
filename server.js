@@ -7,7 +7,7 @@ import Database from "better-sqlite3";
 import path from "path";
 import {fileURLToPath} from "url";
 const __dirname=path.dirname(fileURLToPath(import.meta.url));
-const app=express(), db=new Database(path.join(__dirname,"kapil-medical.db"));
+const app=express();app.set("trust proxy", 1); db=new Database(path.join(__dirname,"kapil-medical.db"));
 app.use(helmet({contentSecurityPolicy:false}));
 app.use(express.json({limit:"1mb"}));
 app.use(express.static(path.join(__dirname,"..")));
