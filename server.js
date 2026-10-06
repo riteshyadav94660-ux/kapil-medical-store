@@ -34,7 +34,7 @@ if(existingAdmin){
   db.prepare("INSERT INTO admins(username,password_hash) VALUES(?,?)")
     .run(username,bcrypt.hashSync(password,12));
 }
-}
+
 if(!db.prepare("SELECT 1 FROM products LIMIT 1").get()){
  const i=db.prepare("INSERT INTO products(name,category,price,stock,prescription_required) VALUES(?,?,?,?,?)");
  [["Paracetamol 500mg","Medicine",25,50,1],["Vitamin C Tablets","Medicine",120,30,0],["Antiseptic Cream","Medicine",85,25,0],["Face Wash","Cosmetics",199,20,0],["Moisturizing Cream","Cosmetics",249,18,0],["Sunscreen SPF 50","Cosmetics",349,15,0]].forEach(x=>i.run(...x));
