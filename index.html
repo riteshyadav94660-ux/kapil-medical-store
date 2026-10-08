@@ -21,9 +21,12 @@
     document.getElementById("products").innerHTML="<p>Unable to load products.</p>";
   }
 function renderCart(){
-const box=document.getElementById("cartItems");
-if(!box)return;
-
+let box=document.getElementById("cartItems");
+if(!box){
+box=document.createElement("div");
+box.id="cartItems";
+document.getElementById("name").before(box);
+}
 const grouped={};
 cart.forEach(x=>{
 if(!grouped[x.id])grouped[x.id]={...x,qty:0};
