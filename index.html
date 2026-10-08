@@ -20,35 +20,56 @@
     console.error(e);
     document.getElementById("products").innerHTML="<p>Unable to load products.</p>";
   }
+window.add=function(id){function renderCart(){
+const box=document.getElementById("cartItems");
+if(!box)return;
+
+const grouped={};
+cart.forEach(x=>{
+if(!grouped[x.id])grouped[x.id]={...x,qty:0};
+grouped[x.id].qty++;
+});
+
+box.innerHTML=Object.values(grouped).map(x=>`
+<div style="padding:8px 0;border-bottom:1px solid #ddd">
+<b>${x.name}</b> - ₹${x.price}
+<br>
+<button type="button" onclick="changeQty(${x.id},-1)">−</button>
+<span style="margin:0 10px">${x.qty}</span>
+<button type="button" onclick="changeQty(${x.id},1)">+</button>
+<button type="button" onclick="removeItem(${x.id})">🗑️</button>
+</div>
+`).join("");
+
+document.querySelector(".cart").textContent="Cart ("+cart.length+")";
+document.getElementById("total").textContent=cart.reduce((a,x)=>a+Number(x.price),0);
+}
+
 window.add=function(id){
 const p=ps.find(x=>x.id===id);
 if(!p)return;
 cart.push(p);
+renderCart();
+};
 
-document.querySelector(".cart").textContent="Cart ("+cart.length+")";
-document.getElementById("total").textContent=cart.reduce((a,x)=>a+Number(x.price),0);
+window.changeQty=function(id,change){
+const index=cart.findIndex(x=>x.id===id);
 
-let box=document.getElementById("cartItems");
-if(!box){
-box=document.createElement("div");
-box.id="cartItems";
-document.getElementById("name").before(box);
+if(change===1){
+const p=ps.find(x=>x.id===id);
+if(p)cart.push(p);
+}else if(change===-1 && index!==-1){
+cart.splice(index,1);
 }
 
-box.innerHTML=cart.map(x=>`<div>${x.name} - ₹${x.price}</div>`).join("");
-};if(!cart.length)return msg("Add an item first.");
-const customer_name=document.getElementById("name").value.trim();
-const phone=document.getElementById("phone").value.trim();
-const address=document.getElementById("address").value.trim();
-const pincode=document.getElementById("pin").value.trim();
-const payment_method=document.getElementById("pay").value;
-const total=cart.reduce((a,x)=>a+Number(x.price),0);
-if(!customer_name||!phone||!address||!pincode||!payment_method)return msg("Please fill all fields");
-const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({customer_name,phone,address,pincode,payment_method,total})});
-const j=await r.json();
-if(r.ok&&j.id){msg("Order placed successfully! Order ID: "+j.id);cart=[];document.getElementById("total").textContent=0}
-else msg(j.error||"Order failed")
-}async function order(){
+renderCart();
+};
+
+window.removeItem=function(id){
+cart=cart.filter(x=>x.id!==id);
+renderCart();
+};
+async function order(){
 if(!cart.length)return msg("Add an item first.");
 const customer_name=document.getElementById("name").value.trim();
 const phone=document.getElementById("phone").value.trim();
