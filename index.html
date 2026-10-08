@@ -18,7 +18,7 @@
     `).join("");
   }catch(e){
     console.error(e);
-    document.getElementById("products").innerHTML="<p>Unable to load products.</p>";
+   document.getElementById("products").innerHTML="<p style='color:red'>ERROR: "+e.message+"</p>";
   }
 function renderCart(){
 let box=document.getElementById("cartItems");
