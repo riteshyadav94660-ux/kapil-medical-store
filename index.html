@@ -134,13 +134,21 @@ document.getElementById("products").innerHTML=data.map(p=>`
 <h3>${p.name}</h3>
 <p>₹${p.price} • Stock ${p.stock}</p>
 <p class="muted">${p.prescription_required?"Prescription verification required":""}</p>
-<button type="button" onclick="add(${p.id})">Add to cart</button>
+<button type="button" onclick="window.add(${p.id})">Add to cart</button>
 </div>
 `).join("");
 })
 .catch(e=>{
 document.getElementById("products").innerHTML="<p style='color:red'>Products error: "+e.message+"</p>";
 });
+<script>
+window.add = function(id){
+  const p = ps.find(x => x.id === id);
+  if(!p) return;
+
+  cart.push(p);
+  renderCart();
+};
 </script>
 
 </body>
