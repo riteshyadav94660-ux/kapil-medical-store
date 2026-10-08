@@ -3,23 +3,26 @@
 <body><header>💚 Kapil Medical <button class="cart" onclick="document.getElementById('checkout').scrollIntoView()">Cart: <span id="n">0</span></button></header>
 <main class="wrap"><h1>Medicines & Cosmetics</h1><p>Pan-India delivery • Alamgirpur, Rewari, Haryana</p><div id="products" class="grid"></div><section id="checkout"><h2>Checkout</h2><div id="cart"></div><input id="name" placeholder="Full name"><input id="phone" placeholder="Mobile number"><textarea id="address" placeholder="Complete address"></textarea><input id="pin" placeholder="PIN code"><select id="pay"><option>Cash on Delivery</option><option>Online payment — Razorpay</option></select><p><b>Order Total: ₹<span id="total">0</span></b></p><button onclick="order()">Place order</button><p id="msg" class="muted"></p></section></main>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script><script>let ps=[],cart=[];async function load(){
-  try{
-    const res=await fetch("/api/products");
-    const data=await res.json();
-    ps=data;
-    document.getElementById("products").innerHTML=data.map(p=>`
-      <div class="card">
-        <div class="pic">${p.category==="Medicine"?"💊":"🧴"}</div>
-        <h3>${p.name}</h3>
-        <p>₹${p.price} • Stock ${p.stock}</p>
-        <p class="muted">${p.prescription_required?"Prescription verification required":""}</p>
-        <button onclick="add(${p.id})">Add to cart</button>
-      </div>
-    `).join("");
-  }catch(e){
-    console.error(e);
-   document.getElementById("products").innerHTML="<p style='color:red'>ERROR: "+e.message+"</p>";
-  }
+try{
+const res=await fetch("/api/products");
+const data=await res.json();
+ps=data;
+
+const box=document.getElementById("products");
+
+box.innerHTML=data.map(p=>`
+<div class="card">
+<div class="pic">${p.category==="Medicine"?"💊":"🧴"}</div>
+<h3>${p.name}</h3>
+<p>₹${p.price} • Stock ${p.stock}</p>
+<p class="muted">${p.prescription_required?"Prescription verification required":""}</p>
+<button type="button" onclick="add(${p.id})">Add to cart</button>
+</div>
+`).join("");
+}catch(e){
+console.error(e);
+document.getElementById("products").innerHTML="<p>Products could not be loaded.</p>";
+}
 function renderCart(){
 let box=document.getElementById("cartItems");
 if(!box){
