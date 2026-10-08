@@ -134,7 +134,7 @@ document.getElementById("products").innerHTML=data.map(p=>`
 <h3>${p.name}</h3>
 <p>₹${p.price} • Stock ${p.stock}</p>
 <p class="muted">${p.prescription_required?"Prescription verification required":""}</p>
-<button type="button" onclick="cart.push(ps.find(x=>x.id==${p.id}));renderCart()">Add to cart</button>
+<button type="button" onclick="window.add(${p.id}); return false;">Add to cart</button>
 </div>
 `).join("");
 })
