@@ -138,7 +138,25 @@ document.getElementById("products").innerHTML=data.map(p=>`
 </div>
 `).join("");
 })
-.catch(e=>{
+window.add=function(id){
+const p=ps.find(x=>Number(x.id)===Number(id));
+if(!p)return;
+
+cart.push(p);
+
+const box=document.getElementById("cartItems");
+if(box){
+box.innerHTML=cart.map(x=>`
+<div style="padding:8px;border-bottom:1px solid #ddd">
+<b>${x.name}</b> - ₹${x.price}
+</div>
+`).join("");
+}
+
+document.querySelector(".cart").textContent="Cart ("+cart.length+")";
+document.getElementById("total").textContent=
+cart.reduce((a,x)=>a+Number(x.price),0);
+};.catch(e=>{
 document.getElementById("products").innerHTML="<p style='color:red'>Products error: "+e.message+"</p>";
 });
 </script>
