@@ -123,11 +123,12 @@ const rzp=new Razorpay(options);
 rzp.open();
 }catch(e){msg("Payment could not be started");}
 }function msg(x){document.getElementById("msg").textContent=x}load();</script>
-
 <script>
 fetch("/api/products")
 .then(r=>r.json())
-.then(data=>{ps=data;
+.then(data=>{
+ps=data;
+
 document.getElementById("products").innerHTML=data.map(p=>`
 <div class="card">
 <div class="pic">${p.category==="Medicine"?"💊":"🧴"}</div>
@@ -137,28 +138,35 @@ document.getElementById("products").innerHTML=data.map(p=>`
 <button type="button" onclick="window.add(${p.id}); return false;">Add to cart</button>
 </div>
 `).join("");
-});.catch(e=>{
+})
+.catch(e=>{
 document.getElementById("products").innerHTML="<p style='color:red'>Products error: "+e.message+"</p>";
 });
+
 window.add=function(id){
 const p=ps.find(x=>Number(x.id)===Number(id));
 if(!p)return;
 
 cart.push(p);
 
-const box=document.getElementById("cartItems");
-if(box){
+let box=document.getElementById("cartItems");
+if(!box){
+box=document.createElement("div");
+box.id="cartItems";
+document.getElementById("name").before(box);
+}
+
 box.innerHTML=cart.map(x=>`
-<div style="padding:8px;border-bottom:1px solid #ddd">
+<div style="padding:8px 0;border-bottom:1px solid #ddd">
 <b>${x.name}</b> - ₹${x.price}
 </div>
 `).join("");
-}
 
 document.querySelector(".cart").textContent="Cart ("+cart.length+")";
-document.getElementById("total").textContent=
-cart.reduce((a,x)=>a+Number(x.price),0);
-}
+document.getElementById("total").textContent=cart.reduce((a,x)=>a+Number(x.price),0);
+};
+</script>
+
   
 </script>
 
