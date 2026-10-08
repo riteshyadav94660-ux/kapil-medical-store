@@ -21,7 +21,7 @@ box.innerHTML=data.map(p=>`
 `).join("");
 }catch(e){
 console.error(e);
-document.getElementById("products").innerHTML="<p>Products could not be loaded.</p>";
+document.getElementById("products").innerHTML="<p style='color:red'>ERROR: "+e.message+"</p>";
 }
 function renderCart(){
 let box=document.getElementById("cartItems");
