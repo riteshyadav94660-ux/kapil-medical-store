@@ -20,7 +20,13 @@
     console.error(e);
     document.getElementById("products").innerHTML="<p>Unable to load products.</p>";
   }
-}async function order(){if(!cart.length)return msg("Add an item first.");
+function add(id){
+const p=ps.find(x=>x.id===id);
+if(!p)return;
+cart.push(p);
+document.querySelector(".cart").textContent="Cart ("+cart.length+")";
+document.getElementById("total").textContent=cart.reduce((a,x)=>a+Number(x.price),0);
+}}async function order(){if(!cart.length)return msg("Add an item first.");
 const customer_name=document.getElementById("name").value.trim();
 const phone=document.getElementById("phone").value.trim();
 const address=document.getElementById("address").value.trim();
