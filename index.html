@@ -30,7 +30,7 @@ const total=cart.reduce((a,x)=>a+Number(x.price),0);
 if(!customer_name||!phone||!address||!pincode||!payment_method)return msg("Please fill all fields");
 const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({customer_name,phone,address,pincode,payment_method,total})});
 const j=await r.json();
-if(r.ok&&j.id){msg("Order placed successfully! Order ID: "+j.id);cart=[]document.getElementById("total").textContent=0}
+if(r.ok&&j.id){msg("Order placed successfully! Order ID: "+j.id);cart=[];document.getElementById("total").textContent=0}
 else msg(j.error||"Order failed")
 }async function order(){
 if(!cart.length)return msg("Add an item first.");
