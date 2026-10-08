@@ -20,7 +20,7 @@
     console.error(e);
     document.getElementById("products").innerHTML="<p>Unable to load products.</p>";
   }
-}}async function order(){if(!cart.length)return msg("Add an item first.");
+}async function order(){if(!cart.length)return msg("Add an item first.");
 const customer_name=document.getElementById("name").value.trim();
 const phone=document.getElementById("phone").value.trim();
 const address=document.getElementById("address").value.trim();
