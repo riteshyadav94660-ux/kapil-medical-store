@@ -127,7 +127,7 @@ rzp.open();
 <script>
 fetch("/api/products")
 .then(r=>r.json())
-.then(data=>{
+.then(data=>{ps=data;
 document.getElementById("products").innerHTML=data.map(p=>`
 <div class="card">
 <div class="pic">${p.category==="Medicine"?"💊":"🧴"}</div>
