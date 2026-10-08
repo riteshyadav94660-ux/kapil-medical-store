@@ -122,4 +122,26 @@ msg(j.error||"Order failed");
 const rzp=new Razorpay(options);
 rzp.open();
 }catch(e){msg("Payment could not be started");}
-}function msg(x){document.getElementById("msg").textContent=x}load();</script></body></html>
+}function msg(x){document.getElementById("msg").textContent=x}load();</script>
+
+<script>
+fetch("/api/products")
+.then(r=>r.json())
+.then(data=>{
+document.getElementById("products").innerHTML=data.map(p=>`
+<div class="card">
+<div class="pic">${p.category==="Medicine"?"💊":"🧴"}</div>
+<h3>${p.name}</h3>
+<p>₹${p.price} • Stock ${p.stock}</p>
+<p class="muted">${p.prescription_required?"Prescription verification required":""}</p>
+<button type="button" onclick="add(${p.id})">Add to cart</button>
+</div>
+`).join("");
+})
+.catch(e=>{
+document.getElementById("products").innerHTML="<p style='color:red'>Products error: "+e.message+"</p>";
+});
+</script>
+
+</body>
+</html>
