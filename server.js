@@ -35,69 +35,62 @@ app.use(session({
   }
 }));
 
-// Keep your existing database. Never delete it to update the website.
 const db = new Database(path.join(__dirname, "kapil-medical.db"));
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
 
 db.exec(`
-CREATE TABLE IF NOT EXISTS admins (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT UNIQUE NOT NULL,
-  password_hash TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS admins(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ username TEXT UNIQUE NOT NULL,
+ password_hash TEXT NOT NULL
 );
-
-CREATE TABLE IF NOT EXISTS customers (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  phone TEXT UNIQUE NOT NULL,
-  password_hash TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS customers(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ name TEXT NOT NULL,
+ phone TEXT UNIQUE NOT NULL,
+ password_hash TEXT NOT NULL,
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE TABLE IF NOT EXISTS products (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  category TEXT NOT NULL,
-  price INTEGER NOT NULL,
-  stock INTEGER NOT NULL DEFAULT 0,
-  prescription_required INTEGER NOT NULL DEFAULT 0,
-  image_url TEXT NOT NULL DEFAULT ''
+CREATE TABLE IF NOT EXISTS products(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ name TEXT NOT NULL,
+ category TEXT NOT NULL,
+ price INTEGER NOT NULL,
+ stock INTEGER NOT NULL DEFAULT 0,
+ prescription_required INTEGER NOT NULL DEFAULT 0,
+ image_url TEXT NOT NULL DEFAULT ''
 );
-
-CREATE TABLE IF NOT EXISTS orders (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  customer_name TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  address TEXT NOT NULL,
-  pincode TEXT NOT NULL DEFAULT '',
-  payment_method TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'Pending',
-  total INTEGER NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  customer_id INTEGER
+CREATE TABLE IF NOT EXISTS orders(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ customer_name TEXT NOT NULL,
+ phone TEXT NOT NULL,
+ address TEXT NOT NULL,
+ pincode TEXT NOT NULL DEFAULT '',
+ payment_method TEXT NOT NULL,
+ status TEXT NOT NULL DEFAULT 'Pending',
+ total INTEGER NOT NULL,
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ customer_id INTEGER
 );
-
-CREATE TABLE IF NOT EXISTS order_items (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  order_id INTEGER NOT NULL,
-  product_id INTEGER NOT NULL,
-  product_name TEXT NOT NULL,
-  unit_price INTEGER NOT NULL,
-  quantity INTEGER NOT NULL,
-  FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS order_items(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ order_id INTEGER NOT NULL,
+ product_id INTEGER NOT NULL,
+ product_name TEXT NOT NULL,
+ unit_price INTEGER NOT NULL,
+ quantity INTEGER NOT NULL,
+ FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE
 );
-
-CREATE TABLE IF NOT EXISTS payments (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  razorpay_payment_id TEXT UNIQUE NOT NULL,
-  razorpay_order_id TEXT NOT NULL,
-  order_id INTEGER NOT NULL,
-  FOREIGN KEY(order_id) REFERENCES orders(id)
+CREATE TABLE IF NOT EXISTS payments(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ razorpay_payment_id TEXT UNIQUE NOT NULL,
+ razorpay_order_id TEXT NOT NULL,
+ order_id INTEGER NOT NULL,
+ FOREIGN KEY(order_id) REFERENCES orders(id)
 );
 `);
 
-// Additive migrations preserve existing orders and products.
 const orderColumns = db.prepare("PRAGMA table_info(orders)").all();
 
 if (!orderColumns.some(c => c.name === "pincode"))
@@ -125,10 +118,8 @@ const razorpay =
       })
     : null;
 
-// Set ADMIN_USERNAME and ADMIN_PASSWORD in Render.
 const username = process.env.ADMIN_USERNAME || "admin";
 const password = process.env.ADMIN_PASSWORD || "CHANGE_ME_NOW";
-
 const existingAdmin = db.prepare("SELECT id FROM admins LIMIT 1").get();
 
 if (!existingAdmin) {
@@ -141,12 +132,10 @@ if (!existingAdmin) {
   ).run(username, bcrypt.hashSync(password, 12), existingAdmin.id);
 }
 
-// Seed products only when the product table is empty.
 if (!db.prepare("SELECT 1 FROM products LIMIT 1").get()) {
-  const insert = db.prepare(
+  const ins = db.prepare(
     "INSERT INTO products(name,category,price,stock,prescription_required) VALUES(?,?,?,?,?)"
   );
-
   [
     ["Paracetamol 500mg", "Medicine", 25, 50, 1],
     ["Vitamin C Tablets", "Medicine", 20, 30, 0],
@@ -154,7 +143,7 @@ if (!db.prepare("SELECT 1 FROM products LIMIT 1").get()) {
     ["Face Wash", "Cosmetics", 199, 20, 0],
     ["Moisturizing Cream", "Cosmetics", 249, 18, 0],
     ["Sunscreen SPF 50", "Cosmetics", 349, 15, 0]
-  ].forEach(row => insert.run(...row));
+  ].forEach(row => ins.run(...row));
 }
 
 app.use("/api", rateLimit({
@@ -167,52 +156,36 @@ const requireAdmin = (req, res, next) =>
     ? next()
     : res.status(401).json({ error: "Authentication required" });
 
-const text = (value, max = 500) =>
-  typeof value === "string" ? value.trim().slice(0, max) : "";
+const text = (v, max = 500) =>
+  typeof v === "string" ? v.trim().slice(0, max) : "";
 
-// ----------------------------------------------------
-// ADMIN LOGIN
-// ----------------------------------------------------
+app.post("/api/login", rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10
+}), async (req, res) => {
+  const a = db.prepare(
+    "SELECT * FROM admins WHERE username=?"
+  ).get(text(req.body?.username, 100));
 
-app.post(
-  "/api/login",
-  rateLimit({ windowMs: 15 * 60 * 1000, max: 10 }),
-  async (req, res) => {
-    const admin = db.prepare(
-      "SELECT * FROM admins WHERE username=?"
-    ).get(text(req.body?.username, 100));
+  if (!a || !(await bcrypt.compare(req.body?.password || "", a.password_hash))) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
 
-    if (
-      !admin ||
-      !(await bcrypt.compare(req.body?.password || "", admin.password_hash))
-    ) {
-      return res.status(401).json({ error: "Invalid credentials" });
+  req.session.regenerate(err => {
+    if (err) {
+      return res.status(500).json({
+        error: "Unable to start admin session"
+      });
     }
 
-    req.session.regenerate(err => {
-      if (err) {
-        return res.status(500).json({
-          error: "Unable to start admin session"
-        });
-      }
+    req.session.admin = { id: a.id, username: a.username };
 
-      req.session.admin = {
-        id: admin.id,
-        username: admin.username
-      };
-
-      req.session.save(error => {
-        if (error) {
-          return res.status(500).json({
-            error: "Unable to save admin session"
-          });
-        }
-
-        res.json({ ok: true, username: admin.username });
-      });
-    });
-  }
-);
+    req.session.save(e => e
+      ? res.status(500).json({ error: "Unable to save admin session" })
+      : res.json({ ok: true, username: a.username })
+    );
+  });
+});
 
 app.post("/api/logout", (req, res) => {
   req.session.destroy(() => {
@@ -228,33 +201,22 @@ app.get("/api/me", (req, res) => {
   });
 });
 
-// ----------------------------------------------------
-// PUBLIC PRODUCT LIST
-// Includes image_url so customer page can display images.
-// ----------------------------------------------------
-
 app.get("/api/products", (req, res) => {
   res.set("Cache-Control", "no-store");
-
   res.json(db.prepare(`
     SELECT id,name,category,price,stock,prescription_required,image_url
-    FROM products
-    ORDER BY id DESC
+    FROM products ORDER BY id DESC
   `).all());
 });
 
-// ----------------------------------------------------
-// ORDER HELPERS
-// ----------------------------------------------------
-
 function parseCustomerAndItems(body) {
-  const customer = body.customer || body;
+  const c = body.customer || body;
 
   const data = {
-    name: text(customer.name ?? customer.customer_name, 100),
-    phone: text(customer.phone, 20),
-    address: text(customer.address, 500),
-    pincode: text(customer.pincode, 10),
+    name: text(c.name ?? c.customer_name, 100),
+    phone: text(c.phone, 20),
+    address: text(c.address, 500),
+    pincode: text(c.pincode, 10),
     items: body.items
   };
 
@@ -264,9 +226,7 @@ function parseCustomerAndItems(body) {
     !data.address ||
     !/^\d{6}$/.test(data.pincode)
   ) {
-    throw Error(
-      "Valid name, 10-digit mobile, address and 6-digit pincode are required"
-    );
+    throw Error("Valid name, 10-digit mobile, address and 6-digit pincode are required");
   }
 
   if (!Array.isArray(data.items) || !data.items.length) {
@@ -281,43 +241,35 @@ function calculateItems(items) {
 
   for (const item of items) {
     const id = Number(item.productId ?? item.product_id ?? item.id);
-    const quantity = Number(item.quantity ?? 1);
+    const qty = Number(item.quantity ?? 1);
 
     if (
       !Number.isSafeInteger(id) || id < 1 ||
-      !Number.isSafeInteger(quantity) ||
-      quantity < 1 || quantity > 99
+      !Number.isSafeInteger(qty) || qty < 1 || qty > 99
     ) {
       throw Error("Invalid product or quantity");
     }
 
-    quantities.set(id, (quantities.get(id) || 0) + quantity);
+    quantities.set(id, (quantities.get(id) || 0) + qty);
   }
 
   let total = 0;
   const lines = [];
 
-  for (const [id, quantity] of quantities) {
-    if (quantity > 99) throw Error("Maximum quantity exceeded");
+  for (const [id, qty] of quantities) {
+    if (qty > 99) throw Error("Maximum quantity exceeded");
 
-    const product = db.prepare(
-      "SELECT * FROM products WHERE id=?"
-    ).get(id);
+    const p = db.prepare("SELECT * FROM products WHERE id=?").get(id);
 
-    if (!product) throw Error("A product in your cart no longer exists");
+    if (!p) throw Error("A product in your cart no longer exists");
+    if (p.stock < qty) throw Error(`Insufficient stock for ${p.name}`);
 
-    if (product.stock < quantity) {
-      throw Error(`Insufficient stock for ${product.name}`);
+    if (p.prescription_required) {
+      throw Error(`${p.name} requires prescription verification before dispensing`);
     }
 
-    if (product.prescription_required) {
-      throw Error(
-        `${product.name} requires prescription verification before dispensing`
-      );
-    }
-
-    total += product.price * quantity;
-    lines.push({ product, quantity });
+    total += p.price * qty;
+    lines.push({ p, qty });
   }
 
   if (!Number.isSafeInteger(total) || total <= 0) {
@@ -327,77 +279,49 @@ function calculateItems(items) {
   return { total, lines };
 }
 
-const createOrder = db.transaction(
-  (data, paymentId = null, razorpayOrderId = null) => {
-    const { total, lines } = calculateItems(data.items);
+const createOrder = db.transaction((data, paymentId = null, razorpayOrderId = null) => {
+  const { total, lines } = calculateItems(data.items);
 
-    const trackingToken = crypto.randomBytes(32).toString("hex");
-    const trackingHash = crypto
-      .createHash("sha256")
-      .update(trackingToken)
-      .digest("hex");
+  const trackingToken = crypto.randomBytes(32).toString("hex");
+  const trackingHash = crypto.createHash("sha256")
+    .update(trackingToken).digest("hex");
 
-    const result = db.prepare(`
-      INSERT INTO orders
-      (customer_name,phone,address,pincode,payment_method,status,total,
-       tracking_token_hash,stock_restored,customer_id)
-      VALUES(?,?,?,?,?,?,?,?,0,?)
-    `).run(
-      data.name,
-      data.phone,
-      data.address,
-      data.pincode,
-      data.paymentMethod,
-      "Pending",
-      total,
-      trackingHash,
-      data.customerId || null
-    );
+  const result = db.prepare(`
+    INSERT INTO orders
+    (customer_name,phone,address,pincode,payment_method,status,total,
+     tracking_token_hash,stock_restored,customer_id)
+    VALUES(?,?,?,?,?,?,?,?,0,?)
+  `).run(
+    data.name, data.phone, data.address, data.pincode,
+    data.paymentMethod, "Pending", total, trackingHash,
+    data.customerId || null
+  );
 
-    const orderId = Number(result.lastInsertRowid);
+  const orderId = Number(result.lastInsertRowid);
+  const stock = db.prepare(
+    "UPDATE products SET stock=stock-? WHERE id=? AND stock>=?"
+  );
+  const insertItem = db.prepare(`
+    INSERT INTO order_items(order_id,product_id,product_name,unit_price,quantity)
+    VALUES(?,?,?,?,?)
+  `);
 
-    const updateStock = db.prepare(
-      "UPDATE products SET stock=stock-? WHERE id=? AND stock>=?"
-    );
-
-    const insertItem = db.prepare(`
-      INSERT INTO order_items
-      (order_id,product_id,product_name,unit_price,quantity)
-      VALUES(?,?,?,?,?)
-    `);
-
-    for (const { product, quantity } of lines) {
-      if (
-        updateStock.run(quantity, product.id, quantity).changes !== 1
-      ) {
-        throw Error(`Stock changed for ${product.name}; please retry`);
-      }
-
-      insertItem.run(
-        orderId,
-        product.id,
-        product.name,
-        product.price,
-        quantity
-      );
+  for (const { p, qty } of lines) {
+    if (stock.run(qty, p.id, qty).changes !== 1) {
+      throw Error(`Stock changed for ${p.name}; please retry`);
     }
-
-    if (paymentId) {
-      db.prepare(`
-        INSERT INTO payments(razorpay_payment_id,razorpay_order_id,order_id)
-        VALUES(?,?,?)
-      `).run(paymentId, razorpayOrderId, orderId);
-    }
-
-    return { orderId, total, trackingToken };
+    insertItem.run(orderId, p.id, p.name, p.price, qty);
   }
-);
 
-// ----------------------------------------------------
-// CASH ON DELIVERY CHECKOUT
-// ----------------------------------------------------
+  if (paymentId) {
+    db.prepare(`
+      INSERT INTO payments(razorpay_payment_id,razorpay_order_id,order_id)
+      VALUES(?,?,?)
+    `).run(paymentId, razorpayOrderId, orderId);
+  }
 
-app.post("/api/orders", (req, res) => {
+  return { orderId, total, trackingToken };
+});app.post("/api/orders", (req, res) => {
   try {
     if (String(req.body?.payment_method || "").toUpperCase() !== "COD") {
       return res.status(400).json({
@@ -409,7 +333,7 @@ app.post("/api/orders", (req, res) => {
 
     if (req.session.customer) {
       const account = db.prepare(
-        "SELECT id,phone FROM customers WHERE id=?"
+        "SELECT id,phone,name FROM customers WHERE id=?"
       ).get(req.session.customer.id);
 
       if (!account || account.phone !== data.phone) {
@@ -421,10 +345,7 @@ app.post("/api/orders", (req, res) => {
       data.customerId = account.id;
     }
 
-    const saved = createOrder({
-      ...data,
-      paymentMethod: "COD"
-    });
+    const saved = createOrder({ ...data, paymentMethod: "COD" });
 
     res.status(201).json({
       ok: true,
@@ -435,17 +356,13 @@ app.post("/api/orders", (req, res) => {
       trackingToken: saved.trackingToken,
       message: "COD order placed successfully"
     });
-  } catch (error) {
-    console.error("COD order error:", error);
+  } catch (e) {
+    console.error("COD order error:", e);
     res.status(400).json({
-      error: error.message || "Could not place COD order"
+      error: e.message || "Could not place COD order"
     });
   }
 });
-
-// ----------------------------------------------------
-// RAZORPAY ORDER CREATION
-// ----------------------------------------------------
 
 app.post("/api/razorpay/order", async (req, res) => {
   try {
@@ -479,17 +396,13 @@ app.post("/api/razorpay/order", async (req, res) => {
       currency: order.currency,
       key_id: process.env.RAZORPAY_KEY_ID
     });
-  } catch (error) {
-    console.error("Razorpay create order error:", error);
+  } catch (e) {
+    console.error("Razorpay create order error:", e);
     res.status(500).json({
       error: "Unable to create payment order"
     });
   }
 });
-
-// ----------------------------------------------------
-// RAZORPAY PAYMENT VERIFICATION
-// ----------------------------------------------------
 
 app.post("/api/razorpay/verify", async (req, res) => {
   try {
@@ -511,12 +424,17 @@ app.post("/api/razorpay/verify", async (req, res) => {
       });
     }
 
-    const expected = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-      .update(razorpay_order_id + "|" + razorpay_payment_id)
-      .digest();
+    const expected = crypto.createHmac(
+      "sha256",
+      process.env.RAZORPAY_KEY_SECRET
+    ).update(razorpay_order_id + "|" + razorpay_payment_id).digest();
 
-    const supplied = Buffer.from(String(razorpay_signature), "hex");
+    let supplied;
+    try {
+      supplied = Buffer.from(String(razorpay_signature), "hex");
+    } catch {
+      supplied = Buffer.alloc(0);
+    }
 
     if (
       supplied.length !== expected.length ||
@@ -539,7 +457,7 @@ app.post("/api/razorpay/verify", async (req, res) => {
     }
 
     const existing = db.prepare(`
-      SELECT o.id,o.total
+      SELECT o.id,o.total,o.tracking_token_hash
       FROM payments p
       JOIN orders o ON o.id=p.order_id
       WHERE p.razorpay_payment_id=?
@@ -552,7 +470,7 @@ app.post("/api/razorpay/verify", async (req, res) => {
         orderId: existing.id,
         total: existing.total,
         trackingToken: null,
-        message: "Payment already recorded."
+        message: "Payment already recorded. Use the original tracking link if available."
       });
     }
 
@@ -561,7 +479,7 @@ app.post("/api/razorpay/verify", async (req, res) => {
 
     if (payment.amount !== calculated.total * 100) {
       return res.status(400).json({
-        error: "Paid amount does not match the current cart total."
+        error: "Paid amount does not match the current cart total. Contact the store before retrying."
       });
     }
 
@@ -593,18 +511,15 @@ app.post("/api/razorpay/verify", async (req, res) => {
       trackingToken: saved.trackingToken,
       message: "Payment verified and order saved"
     });
-  } catch (error) {
-    console.error("Razorpay verification error:", error);
+  } catch (e) {
+    console.error("Razorpay verification error:", e);
     res.status(400).json({
-      error: error.message || "Payment verification or order saving failed"
+      error: e.message || "Payment verification or order saving failed"
     });
   }
 });
 
-// ----------------------------------------------------
-// PRIVATE ORDER TRACKING
-// ----------------------------------------------------
-
+// Private order tracking.
 app.get("/api/track/:id", (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -651,18 +566,15 @@ app.get("/api/track/:id", (req, res) => {
       paymentMethod: order.payment_method,
       items
     });
-  } catch (error) {
-    console.error("Tracking error:", error);
+  } catch (e) {
+    console.error("Tracking error:", e);
     res.status(500).json({
       error: "Unable to retrieve order status"
     });
   }
 });
 
-// ----------------------------------------------------
-// CUSTOMER ACCOUNT HELPERS
-// ----------------------------------------------------
-
+// Customer accounts.
 const customerLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 8
@@ -672,20 +584,20 @@ function validCustomerPhone(phone) {
   return /^[6-9]\d{9}$/.test(phone);
 }
 
-function customerSafe(customer) {
+function customerSafe(c) {
   return {
-    id: customer.id,
-    name: customer.name,
-    phone: customer.phone,
-    createdAt: customer.created_at
+    id: c.id,
+    name: c.name,
+    phone: c.phone,
+    createdAt: c.created_at
   };
 }
 
 function setCustomerSession(req, res, customer) {
   const admin = req.session.admin || null;
 
-  req.session.regenerate(error => {
-    if (error) {
+  req.session.regenerate(err => {
+    if (err) {
       return res.status(500).json({
         error: "Unable to start customer session"
       });
@@ -699,22 +611,13 @@ function setCustomerSession(req, res, customer) {
       phone: customer.phone
     };
 
-    req.session.save(err => {
-      if (err) {
-        return res.status(500).json({
-          error: "Unable to save customer session"
-        });
-      }
-
-      res.json({
-        ok: true,
-        customer: customerSafe(customer)
-      });
-    });
+    req.session.save(e => e
+      ? res.status(500).json({ error: "Unable to save customer session" })
+      : res.json({ ok: true, customer: customerSafe(customer) })
+    );
   });
 }
 
-// Password registration retained for compatibility.
 app.post("/api/customer/register", customerLimiter, async (req, res) => {
   try {
     const name = text(req.body?.name, 100);
@@ -729,30 +632,30 @@ app.post("/api/customer/register", customerLimiter, async (req, res) => {
       password.length > 128
     ) {
       return res.status(400).json({
-        error: "Enter your name, valid mobile number and password of 8–128 characters."
+        error: "Enter your name, valid 10-digit mobile number and a password of 8–128 characters."
       });
     }
 
     const hash = await bcrypt.hash(password, 12);
-
-    const result = db.prepare(`
+    const saved = db.prepare(`
       INSERT INTO customers(name,phone,password_hash)
       VALUES(?,?,?)
     `).run(name, phone, hash);
 
     const customer = db.prepare(`
-      SELECT id,name,phone,created_at FROM customers WHERE id=?
-    `).get(Number(result.lastInsertRowid));
+      SELECT id,name,phone,created_at
+      FROM customers WHERE id=?
+    `).get(Number(saved.lastInsertRowid));
 
     setCustomerSession(req, res, customer);
-  } catch (error) {
-    if (String(error.message).includes("UNIQUE")) {
+  } catch (e) {
+    if (String(e.message).includes("UNIQUE")) {
       return res.status(409).json({
         error: "An account with this mobile number already exists. Please sign in."
       });
     }
 
-    console.error("Customer registration error:", error);
+    console.error("Customer registration error:", e);
     res.status(400).json({ error: "Could not create account." });
   }
 });
@@ -766,10 +669,7 @@ app.post("/api/customer/login", customerLimiter, async (req, res) => {
     "SELECT * FROM customers WHERE phone=?"
   ).get(phone);
 
-  if (
-    !customer ||
-    !(await bcrypt.compare(password, customer.password_hash))
-  ) {
+  if (!customer || !(await bcrypt.compare(password, customer.password_hash))) {
     return res.status(401).json({
       error: "Invalid mobile number or password."
     });
@@ -783,32 +683,27 @@ app.get("/api/customer/me", (req, res) => {
     return res.json({ authenticated: false, customer: null });
   }
 
-  const customer = db.prepare(`
-    SELECT id,name,phone,created_at FROM customers WHERE id=?
+  const c = db.prepare(`
+    SELECT id,name,phone,created_at
+    FROM customers WHERE id=?
   `).get(req.session.customer.id);
 
-  if (!customer) {
+  if (!c) {
     delete req.session.customer;
     return res.json({ authenticated: false, customer: null });
   }
 
   res.set("Cache-Control", "no-store");
-  res.json({
-    authenticated: true,
-    customer: customerSafe(customer)
-  });
+  res.json({ authenticated: true, customer: customerSafe(c) });
 });
 
 app.post("/api/customer/logout", (req, res) => {
   delete req.session.customer;
 
-  req.session.save(error => {
-    if (error) {
-      return res.status(500).json({ error: "Unable to sign out" });
-    }
-
-    res.json({ ok: true });
-  });
+  req.session.save(err => err
+    ? res.status(500).json({ error: "Unable to sign out" })
+    : res.json({ ok: true })
+  );
 });
 
 app.get("/api/customer/orders", (req, res) => {
@@ -820,27 +715,20 @@ app.get("/api/customer/orders", (req, res) => {
 
   const orders = db.prepare(`
     SELECT id,status,created_at,total,payment_method
-    FROM orders
-    WHERE customer_id=?
+    FROM orders WHERE customer_id=?
     ORDER BY id DESC
   `).all(req.session.customer.id);
 
-  const getItems = db.prepare(`
+  const items = db.prepare(`
     SELECT product_id,product_name,unit_price,quantity
     FROM order_items WHERE order_id=?
   `);
 
   res.set("Cache-Control", "no-store");
-  res.json(orders.map(order => ({
-    ...order,
-    items: getItems.all(order.id)
-  })));
+  res.json(orders.map(o => ({ ...o, items: items.all(o.id) })));
 });
 
-// ----------------------------------------------------
-// MSG91 OTP CONFIGURATION AND TOKEN VERIFICATION
-// ----------------------------------------------------
-
+// MSG91 widget configuration.
 app.get("/api/msg91/config", (req, res) => {
   if (!process.env.MSG91_WIDGET_TOKEN_AUTH) {
     return res.status(503).json({
@@ -848,9 +736,7 @@ app.get("/api/msg91/config", (req, res) => {
     });
   }
 
-  res.set("Cache-Control", "no-store");
-
-  res.json({
+  res.set("Cache-Control", "no-store").json({
     widgetId: "366a6968376e383936323435",
     tokenAuth: process.env.MSG91_WIDGET_TOKEN_AUTH
   });
@@ -873,7 +759,7 @@ app.post("/api/customer/otp-login", customerLimiter, async (req, res) => {
       });
     }
 
-    const response = await fetch(
+    const vr = await fetch(
       "https://control.msg91.com/api/v5/widget/verifyAccessToken",
       {
         method: "POST",
@@ -889,24 +775,23 @@ app.post("/api/customer/otp-login", customerLimiter, async (req, res) => {
       }
     );
 
-    const verification = await response.json().catch(() => ({}));
+    const vd = await vr.json().catch(() => ({}));
 
-    if (!response.ok) {
-      console.error("MSG91 token verification rejected:", response.status);
+    if (!vr.ok) {
+      console.error("MSG91 token verification rejected", vr.status);
       return res.status(401).json({
         error: "OTP verification failed. Please try again."
       });
     }
 
-    // Never trust a phone number claimed only by the browser.
-    // Confirm these response fields match your actual MSG91 response.
+    // Accept a phone number returned by MSG91, not one claimed by the browser.
     const rawPhone =
-      verification?.data?.mobile ||
-      verification?.data?.phone ||
-      verification?.mobile ||
-      verification?.phone ||
-      verification?.identifier ||
-      verification?.data?.identifier ||
+      vd?.data?.mobile ||
+      vd?.data?.phone ||
+      vd?.mobile ||
+      vd?.phone ||
+      vd?.identifier ||
+      vd?.data?.identifier ||
       "";
 
     const phone = String(rawPhone)
@@ -916,16 +801,16 @@ app.post("/api/customer/otp-login", customerLimiter, async (req, res) => {
 
     if (!validCustomerPhone(phone)) {
       console.error(
-        "MSG91 response did not contain a supported verified phone field"
+        "MSG91 verification response did not contain a valid phone field"
       );
-
       return res.status(401).json({
-        error: "MSG91 token response needs verification before OTP login can be enabled."
+        error: "MSG91 verified the token but did not return a usable mobile number. Check the widget verification response format before enabling OTP login."
       });
     }
 
     let customer = db.prepare(`
-      SELECT id,name,phone,created_at FROM customers WHERE phone=?
+      SELECT id,name,phone,created_at
+      FROM customers WHERE phone=?
     `).get(phone);
 
     if (!customer) {
@@ -935,129 +820,97 @@ app.post("/api/customer/otp-login", customerLimiter, async (req, res) => {
         });
       }
 
-      const randomPasswordHash = await bcrypt.hash(
+      const randomHash = await bcrypt.hash(
         crypto.randomBytes(32).toString("hex"),
         12
       );
 
       try {
-        const result = db.prepare(`
+        const r = db.prepare(`
           INSERT INTO customers(name,phone,password_hash)
           VALUES(?,?,?)
-        `).run(suppliedName, phone, randomPasswordHash);
+        `).run(suppliedName, phone, randomHash);
 
         customer = db.prepare(`
-          SELECT id,name,phone,created_at FROM customers WHERE id=?
-        `).get(Number(result.lastInsertRowid));
-      } catch (error) {
-        if (!String(error.message).includes("UNIQUE")) throw error;
+          SELECT id,name,phone,created_at
+          FROM customers WHERE id=?
+        `).get(Number(r.lastInsertRowid));
+      } catch (e) {
+        if (!String(e.message).includes("UNIQUE")) throw e;
 
         customer = db.prepare(`
-          SELECT id,name,phone,created_at FROM customers WHERE phone=?
+          SELECT id,name,phone,created_at
+          FROM customers WHERE phone=?
         `).get(phone);
       }
     }
 
-    if (!customer) {
-      return res.status(500).json({
-        error: "Unable to load customer account."
-      });
-    }
-
     setCustomerSession(req, res, customer);
-  } catch (error) {
-    console.error("MSG91 OTP login error:", error.message);
-
+  } catch (e) {
+    console.error("MSG91 OTP login error:", e.message);
     res.status(502).json({
       error: "Could not verify OTP right now. Please try again."
     });
   }
 });
 
-// ----------------------------------------------------
-// ADMIN CUSTOMER LIST
-// ----------------------------------------------------
-
+// Admin customer directory.
 app.get("/api/admin/customers", requireAdmin, (req, res) => {
   res.set("Cache-Control", "no-store");
 
-  const customers = db.prepare(`
-    SELECT
-      c.id,
-      c.name,
-      c.phone,
-      c.created_at,
-      COUNT(o.id) AS order_count,
-      COALESCE(
-        SUM(CASE WHEN o.status='Delivered' THEN o.total ELSE 0 END),
-        0
-      ) AS delivered_total
+  res.json(db.prepare(`
+    SELECT c.id,c.name,c.phone,c.created_at,
+           COUNT(o.id) AS order_count,
+           COALESCE(
+             SUM(CASE WHEN o.status='Delivered' THEN o.total ELSE 0 END),
+             0
+           ) AS delivered_total
     FROM customers c
     LEFT JOIN orders o ON o.customer_id=c.id
     GROUP BY c.id
     ORDER BY c.id DESC
-  `).all();
-
-  res.json(customers);
+  `).all());
 });
 
-// ----------------------------------------------------
-// ADMIN ORDER LIST AND STATUS UPDATES
-// ----------------------------------------------------
-
+// Admin order list and status updates.
 app.get("/api/admin/orders", requireAdmin, (req, res) => {
   const orders = db.prepare(`
     SELECT id,customer_name,phone,address,pincode,payment_method,
            status,total,created_at
-    FROM orders
-    ORDER BY id DESC
+    FROM orders ORDER BY id DESC
   `).all();
 
   const getItems = db.prepare(
     "SELECT * FROM order_items WHERE order_id=?"
   );
 
-  res.set("Cache-Control", "no-store");
-
-  res.json(orders.map(order => ({
-    ...order,
-    items: getItems.all(order.id)
+  res.json(orders.map(o => ({
+    ...o,
+    items: getItems.all(o.id)
   })));
 });
 
 app.patch("/api/admin/orders/:id", requireAdmin, (req, res) => {
   const id = Number(req.params.id);
   const status = req.body?.status;
-
   const allowed = [
-    "Pending",
-    "Confirmed",
-    "Shipped",
-    "Delivered",
-    "Cancelled"
+    "Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"
   ];
 
-  if (
-    !Number.isSafeInteger(id) ||
-    id < 1 ||
-    !allowed.includes(status)
-  ) {
-    return res.status(400).json({
-      error: "Invalid order or status"
-    });
+  if (!Number.isSafeInteger(id) || id < 1 || !allowed.includes(status)) {
+    return res.status(400).json({ error: "Invalid order or status" });
   }
 
   try {
     const update = db.transaction(() => {
       const order = db.prepare(`
-        SELECT id,status,stock_restored
-        FROM orders WHERE id=?
+        SELECT id,status,stock_restored FROM orders WHERE id=?
       `).get(id);
 
       if (!order) throw Error("Order not found");
 
       if (order.status === "Cancelled" && status !== "Cancelled") {
-        throw Error("Cancelled orders cannot be reopened.");
+        throw Error("Cancelled orders cannot be reopened. Create a new order instead.");
       }
 
       if (order.status === "Delivered" && status === "Cancelled") {
@@ -1070,8 +923,7 @@ app.patch("/api/admin/orders/:id", requireAdmin, (req, res) => {
         order.stock_restored !== 1
       ) {
         const items = db.prepare(`
-          SELECT product_id,quantity
-          FROM order_items WHERE order_id=?
+          SELECT product_id,quantity FROM order_items WHERE order_id=?
         `).all(id);
 
         const restore = db.prepare(
@@ -1089,130 +941,103 @@ app.patch("/api/admin/orders/:id", requireAdmin, (req, res) => {
         ).run(id);
       }
 
-      db.prepare(
-        "UPDATE orders SET status=? WHERE id=?"
-      ).run(status, id);
-
+      db.prepare("UPDATE orders SET status=? WHERE id=?").run(status, id);
       return { ok: true, id, status };
     });
 
     res.json(update());
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
   }
 });
 
-// ----------------------------------------------------
-// ADMIN PRODUCTS AND IMAGE URL MANAGEMENT
-// ----------------------------------------------------
-
+// Admin products and image URLs.
 app.get("/api/admin/products", requireAdmin, (req, res) => {
-  res.json(
-    db.prepare("SELECT * FROM products ORDER BY id DESC").all()
-  );
+  res.json(db.prepare("SELECT * FROM products ORDER BY id DESC").all());
 });
 
 function validImageUrl(value) {
   const raw = text(value, 1500);
-
   if (!raw) return "";
 
   try {
-    const url = new URL(raw);
-    return url.protocol === "https:" ? url.href : "";
+    const u = new URL(raw);
+    return u.protocol === "https:" ? u.href : "";
   } catch {
     return "";
   }
 }
 
 app.post("/api/admin/products", requireAdmin, (req, res) => {
-  const body = req.body || {};
-
-  const name = text(body.name, 150);
-  const category = text(body.category, 80);
-  const price = Number(body.price);
-  const stock = Number(body.stock);
-  const imageUrl = validImageUrl(body.image_url);
+  const b = req.body || {};
+  const name = text(b.name, 150);
+  const category = text(b.category, 80);
+  const price = Number(b.price);
+  const stock = Number(b.stock);
+  const imageUrl = validImageUrl(b.image_url);
 
   if (
-    !name ||
-    !category ||
+    !name || !category ||
     !Number.isSafeInteger(price) || price < 0 ||
     !Number.isSafeInteger(stock) || stock < 0
   ) {
-    return res.status(400).json({
-      error: "Enter valid product details"
-    });
+    return res.status(400).json({ error: "Enter valid product details" });
   }
 
-  if (body.image_url && !imageUrl) {
+  if (b.image_url && !imageUrl) {
     return res.status(400).json({
       error: "Product image must be a valid HTTPS image URL."
     });
   }
 
-  const result = db.prepare(`
+  const r = db.prepare(`
     INSERT INTO products
     (name,category,price,stock,prescription_required,image_url)
     VALUES(?,?,?,?,?,?)
   `).run(
-    name,
-    category,
-    price,
-    stock,
-    body.prescription_required ? 1 : 0,
+    name, category, price, stock,
+    b.prescription_required ? 1 : 0,
     imageUrl
   );
 
-  res.status(201).json({
-    ok: true,
-    id: Number(result.lastInsertRowid)
-  });
+  res.status(201).json({ ok: true, id: Number(r.lastInsertRowid) });
 });
 
 app.patch("/api/admin/products/:id", requireAdmin, (req, res) => {
-  const body = req.body || {};
-
-  const name = text(body.name, 150);
-  const category = text(body.category, 80);
-  const price = Number(body.price);
-  const stock = Number(body.stock);
+  const b = req.body || {};
+  const name = text(b.name, 150);
+  const category = text(b.category, 80);
+  const price = Number(b.price);
+  const stock = Number(b.stock);
   const id = Number(req.params.id);
-  const imageUrl = validImageUrl(body.image_url);
+  const imageUrl = validImageUrl(b.image_url);
 
   if (
     !Number.isSafeInteger(id) || id < 1 ||
-    !name ||
-    !category ||
+    !name || !category ||
     !Number.isSafeInteger(price) || price < 0 ||
     !Number.isSafeInteger(stock) || stock < 0
   ) {
-    return res.status(400).json({
-      error: "Enter valid product details"
-    });
+    return res.status(400).json({ error: "Enter valid product details" });
   }
 
-  if (body.image_url && !imageUrl) {
+  if (b.image_url && !imageUrl) {
     return res.status(400).json({
       error: "Product image must be a valid HTTPS image URL."
     });
   }
 
-  const result = db.prepare(`
+  const r = db.prepare(`
     UPDATE products
     SET name=?,category=?,price=?,stock=?,prescription_required=?,image_url=?
     WHERE id=?
   `).run(
-    name,
-    category,
-    price,
-    stock,
-    body.prescription_required ? 1 : 0,
-    imageUrl,
-    id
+    name, category, price, stock,
+    b.prescription_required ? 1 : 0,
+    imageUrl, id
   );
 
-  if (!result.changes) {
+  if (!r.changes) {
     return res.status(404).json({ error: "Product not found" });
   }
 
@@ -1226,7 +1051,6 @@ app.delete("/api/admin/products/:id", requireAdmin, (req, res) => {
     return res.status(400).json({ error: "Invalid product ID" });
   }
 
-  // Preserve historical order items.
   const used = db.prepare(
     "SELECT 1 FROM order_items WHERE product_id=? LIMIT 1"
   ).get(id);
@@ -1237,29 +1061,22 @@ app.delete("/api/admin/products/:id", requireAdmin, (req, res) => {
     });
   }
 
-  const result = db.prepare(
-    "DELETE FROM products WHERE id=?"
-  ).run(id);
+  const r = db.prepare("DELETE FROM products WHERE id=?").run(id);
 
-  if (!result.changes) {
+  if (!r.changes) {
     return res.status(404).json({ error: "Product not found" });
   }
 
   res.json({ ok: true });
 });
 
-// ----------------------------------------------------
-// PAGES
-// ----------------------------------------------------
-
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
-// Secure order tracking page.
+// Private order tracking page.
 app.get("/track", (req, res) => {
-  res.type("html").send(`<!DOCTYPE html>
-<html lang="en">
+  res.type("html").send(`<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -1281,8 +1098,7 @@ button{background:#087f5b;color:white;border:0;cursor:pointer}
 </style>
 </head>
 <body>
-<main>
-<div class="card">
+<main><div class="card">
 <h1>💚 Kapil Medical</h1>
 <p class="muted">Secure order tracking</p>
 <form id="lookup">
@@ -1300,15 +1116,12 @@ pattern="[a-fA-F0-9]{64}" autocomplete="off">
 <h2 id="heading"></h2>
 <p>Order status: <span id="status" class="status"></span></p>
 <p id="details" class="muted"></p>
-<table>
-<thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead>
-<tbody id="items"></tbody>
-</table>
+<table><thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead>
+<tbody id="items"></tbody></table>
 <p id="total" class="total"></p>
 <p class="muted">Keep your private tracking link confidential.</p>
 </section>
-</div>
-</main>
+</div></main>
 <script>
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
@@ -1321,62 +1134,49 @@ $("lookup").addEventListener("submit",async e=>{
   $("message").textContent="Checking order…";
 
   try{
-    const response=await fetch(
+    const r=await fetch(
       "/api/track/"+encodeURIComponent($("orderId").value)+
       "?token="+encodeURIComponent($("token").value.trim()),
       {headers:{Accept:"application/json"},cache:"no-store"}
     );
-    const data=await response.json();
+    const d=await r.json();
+    if(!r.ok)throw Error(d.error||"Order not found");
 
-    if(!response.ok)throw Error(data.error||"Order not found");
-
-    $("heading").textContent="Order #"+data.orderId;
-    $("status").textContent=data.status;
-    $("details").textContent="Placed: "+data.createdAt+
-      " · Payment: "+data.paymentMethod;
+    $("heading").textContent="Order #"+d.orderId;
+    $("status").textContent=d.status;
+    $("details").textContent="Placed: "+d.createdAt+" · Payment: "+d.paymentMethod;
     $("items").replaceChildren();
 
-    (data.items||[]).forEach(item=>{
-      const row=document.createElement("tr");
-
-      [
-        item.product_name,
-        item.quantity,
-        "₹"+Number(item.unit_price).toLocaleString("en-IN")
-      ].forEach(value=>{
-        const cell=document.createElement("td");
-        cell.textContent=value;
-        row.appendChild(cell);
-      });
-
-      $("items").appendChild(row);
+    (d.items||[]).forEach(i=>{
+      const tr=document.createElement("tr");
+      for(const val of [i.product_name,i.quantity,"₹"+Number(i.unit_price).toLocaleString("en-IN")]){
+        const td=document.createElement("td");
+        td.textContent=val;
+        tr.appendChild(td);
+      }
+      $("items").appendChild(tr);
     });
 
-    $("total").textContent="Total: ₹"+
-      Number(data.total).toLocaleString("en-IN");
+    $("total").textContent="Total: ₹"+Number(d.total).toLocaleString("en-IN");
     $("result").hidden=false;
     $("message").textContent="";
-  }catch(error){
-    $("message").textContent=error.message;
+  }catch(err){
+    $("message").textContent=err.message;
     $("message").className="error";
   }
 });
 </script>
-</body>
-</html>`);
+</body></html>`);
 });
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.use((req, res) => {
-  if (req.path.startsWith("/api/")) {
-    return res.status(404).json({ error: "API endpoint not found" });
-  }
-
-  res.status(404).send("Page not found");
-});
+app.use((req, res) => req.path.startsWith("/api/")
+  ? res.status(404).json({ error: "API endpoint not found" })
+  : res.status(404).send("Page not found")
+);
 
 app.listen(PORT, () => {
   console.log("Kapil Medical running on port " + PORT);
