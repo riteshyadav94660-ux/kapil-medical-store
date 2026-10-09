@@ -1,116 +1,817 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#087f5b">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#087f5b">
 <title>Kapil Medical | Online Pharmacy</title>
 <style>
-:root{--g:#087f5b;--d:#07523e;--l:#f3faf6;--b:#dce8e0;--t:#20312a;--m:#64746b}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7faf8;color:var(--t)}header{background:var(--g);color:white;padding:18px 16px}.wrap,main,footer{max-width:1100px;margin:auto}.wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{margin:0;font-size:25px}.tag{margin:6px 0 0;font-size:14px}.badge{background:white;color:var(--d);border-radius:25px;padding:10px 14px;font-weight:bold}main{padding:20px 14px 35px}.hero{background:#e3f5e9;border-radius:16px;padding:22px;margin-bottom:22px}.hero h2{margin:0 0 8px;font-size:24px}.hero p{margin:0;line-height:1.5}h2.st{font-size:21px;margin:22px 0 14px}#products{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:15px}.card{background:white;border:1px solid var(--b);border-radius:14px;padding:16px;display:flex;flex-direction:column;min-width:0;box-shadow:0 3px 12px #163c2010}.pic{height:76px;display:grid;place-items:center;background:var(--l);border-radius:10px;font-size:38px;margin-bottom:12px}.card h3{margin:0 0 8px;font-size:17px}.price{font-size:20px;color:var(--g);font-weight:bold}.muted{color:var(--m);font-size:13px;line-height:1.45}button{cursor:pointer;border:0;border-radius:8px;padding:11px 13px;font-size:15px;font-weight:bold}button:disabled{opacity:.5;cursor:not-allowed}.primary{background:var(--g);color:white}.primary:hover{background:var(--d)}.secondary{background:#e7f2eb;color:var(--d)}.card button{width:100%;margin-top:auto}.panel{margin-top:24px;padding:18px;background:white;border:1px solid var(--b);border-radius:14px}.rowcart{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px 0;border-bottom:1px solid var(--b)}.qty{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.qty button{padding:7px 11px}.total{display:flex;justify-content:space-between;gap:10px;font-size:19px;font-weight:bold;margin:18px 0}form{display:grid;gap:13px}label{font-size:14px;font-weight:bold}input,textarea,select{display:block;width:100%;padding:12px;margin-top:6px;border:1px solid #cbd8cf;border-radius:8px;font:inherit;background:white}textarea{min-height:85px;resize:vertical}.status{margin:12px 0;line-height:1.5;overflow-wrap:anywhere}.error{color:#b42318}.success{color:var(--d)}.notice{padding:12px;border-radius:9px;background:#fff7df;color:#694d00;font-size:13px;line-height:1.5}footer{padding:22px 14px;color:var(--m);font-size:13px;line-height:1.6}[hidden]{display:none!important}@media(max-width:480px){h1{font-size:22px}.hero h2{font-size:21px}.rowcart{grid-template-columns:1fr}}
+:root{--g:#087f5b;--d:#07523e;--l:#f3faf6;--b:#dce8e0;--t:#20312a;--m:#64746b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7faf8;color:var(--t)}
+header{background:var(--g);color:white;padding:18px 16px}
+.wrap,main,footer{max-width:1100px;margin:auto}
+.wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:25px}
+.tag{margin:6px 0 0;font-size:14px}
+.badge{background:white;color:var(--d);border-radius:25px;padding:10px 14px;font-weight:bold}
+main{padding:20px 14px 35px}
+.hero{background:#e3f5e9;border-radius:16px;padding:22px;margin-bottom:22px}
+.hero h2{margin:0 0 8px;font-size:24px}
+.hero p{margin:0;line-height:1.5}
+h2.st{font-size:21px;margin:22px 0 14px}
+#products{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:15px}
+.card{background:white;border:1px solid var(--b);border-radius:14px;padding:16px;display:flex;flex-direction:column;min-width:0;box-shadow:0 3px 12px #163c2010}
+.pic{height:150px;display:grid;place-items:center;background:var(--l);border-radius:10px;font-size:38px;margin-bottom:12px;overflow:hidden}
+.pic img{width:100%;height:100%;object-fit:contain;background:white}
+.card h3{margin:0 0 8px;font-size:17px}
+.price{font-size:20px;color:var(--g);font-weight:bold}
+.muted{color:var(--m);font-size:13px;line-height:1.45}
+button{cursor:pointer;border:0;border-radius:8px;padding:11px 13px;font-size:15px;font-weight:bold}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--g);color:white}
+.primary:hover{background:var(--d)}
+.secondary{background:#e7f2eb;color:var(--d)}
+.card button{width:100%;margin-top:auto}
+.panel{margin-top:24px;padding:18px;background:white;border:1px solid var(--b);border-radius:14px}
+.rowcart{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px 0;border-bottom:1px solid var(--b)}
+.qty{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qty button{padding:7px 11px}
+.total{display:flex;justify-content:space-between;gap:10px;font-size:19px;font-weight:bold;margin:18px 0}
+form{display:grid;gap:13px}
+label{font-size:14px;font-weight:bold}
+input,textarea,select{display:block;width:100%;padding:12px;margin-top:6px;border:1px solid #cbd8cf;border-radius:8px;font:inherit;background:white}
+textarea{min-height:85px;resize:vertical}
+.status{margin:12px 0;line-height:1.5;overflow-wrap:anywhere}
+.error{color:#b42318}
+.success{color:var(--d)}
+.notice{padding:12px;border-radius:9px;background:#fff7df;color:#694d00;font-size:13px;line-height:1.5}
+footer{padding:22px 14px;color:var(--m);font-size:13px;line-height:1.6}
+[hidden]{display:none!important}
+@media(max-width:480px){h1{font-size:22px}.hero h2{font-size:21px}.rowcart{grid-template-columns:1fr}}
+.account-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.account-box{border:1px solid var(--b);border-radius:12px;padding:16px;min-width:0}
+.account-box h3{margin:0 0 8px}
+.account-box form{margin-top:12px}
+.account-actions{display:flex;gap:8px;flex-wrap:wrap}
+.history-card{border:1px solid var(--b);border-radius:10px;padding:14px;margin:10px 0}
+.history-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.history-items{font-size:13px;color:var(--m);line-height:1.6;margin:10px 0}
+.account-msg{font-size:13px;line-height:1.5;margin:10px 0}
+.account-msg.error{color:#b42318}
+.account-msg.success{color:var(--d)}
+@media(max-width:600px){.account-grid{grid-template-columns:1fr}.account-box{padding:13px}.history-head{display:block}.history-head button{margin-top:8px}}
 </style>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-</head><body>
-<header><div class="wrap"><div><h1>💚 Kapil Medical</h1><p class="tag">Your health, our priority · Home delivery</p></div><div class="badge" id="cartCount">Cart (0)</div></div></header>
-<main><section class="hero"><h2>Welcome to Kapil Medical</h2><p>Shop healthcare essentials online. Prescription-required products need pharmacy verification before dispensing.</p></section>
-<h2 class="st">Our Products</h2><p id="loading" class="muted" role="status">Loading products…</p><div id="products" aria-live="polite"></div><button id="retry" class="secondary" type="button" hidden>Try loading again</button>
-<section class="panel"><h2 class="st" style="margin-top:0">Your Cart</h2><div id="cartItems"><p class="muted">Your cart is empty.</p></div><div class="total"><span>Total</span><span>₹<span id="total">0.00</span></span></div>
-<h2 class="st">Delivery Details</h2><form id="checkoutForm"><label>Full name<input id="name" name="name" autocomplete="name" required maxlength="100"></label><label>Mobile number<input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit mobile number" required></label><label>Delivery address<textarea id="address" name="address" autocomplete="street-address" maxlength="500" required></textarea></label><label>Pincode<input id="pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit pincode" required></label><label>Payment method<select id="payment" name="payment" required><option value="COD">Cash on Delivery</option><option value="Razorpay">Pay Online via Razorpay (Test Mode)</option></select></label><p class="notice">Online checkout uses Razorpay. Your tracking link is private—do not share it publicly. Prescription-required medicines are not available through this automatic checkout.</p><button id="placeOrder" class="primary" type="submit">Place COD Order</button></form><p id="msg" class="status" role="status" aria-live="polite"></p><p id="trackingLink" hidden><a id="trackAnchor" target="_blank" rel="noopener noreferrer">Track your order securely</a></p></section></main>
-<footer><strong>Kapil Medical</strong><br>Alamgirpur, Rewari, Haryana 122414<br>Prescription-required medicines are dispensed only after appropriate verification.</footer>
-<script>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div>
+      <h1>💚 Kapil Medical</h1>
+      <p class="tag">Your health, our priority · Home delivery</p>
+    </div>
+    <div class="badge" id="cartCount">Cart (0)</div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <h2>Welcome to Kapil Medical</h2>
+  <p>Shop healthcare essentials online. Prescription-required products need pharmacy verification before dispensing.</p>
+</section>
+
+<section class="panel" id="accountPanel">
+  <h2 class="st" style="margin-top:0">Your Account</h2>
+  <p class="muted">Create an account to see your future orders and reorder eligible products on your phone.</p>
+
+  <div id="accountSignedOut" class="account-grid">
+    <div class="account-box">
+      <h3>Sign in with OTP</h3>
+      <p class="muted">Verify your mobile number using the secure MSG91 OTP widget.</p>
+      <form id="customerOtpForm">
+        <label>Your name (for new accounts)
+          <input id="otpName" maxlength="100" autocomplete="name" placeholder="Your name">
+        </label>
+        <button class="primary" type="submit">Continue with mobile OTP</button>
+        <p id="loginMsg" class="account-msg" role="status"></p>
+      </form>
+      <p class="muted">If you already have an account, the verified mobile number will sign you in.</p>
+    </div>
+
+    <div class="account-box">
+      <h3>Account help</h3>
+      <p class="muted">Use the same verified mobile number each time. Your account shows orders placed while signed in. Guest orders are not automatically linked.</p>
+    </div>
+  </div>
+
+  <div id="accountSignedIn" hidden>
+    <div class="account-box">
+      <div class="history-head">
+        <div>
+          <h3 id="accountWelcome">Welcome</h3>
+          <p id="accountPhone" class="muted"></p>
+        </div>
+        <button id="customerLogout" class="secondary" type="button">Sign out</button>
+      </div>
+      <p class="muted">Order history includes orders placed while signed in. Previous guest orders are not automatically linked to your account.</p>
+      <div id="orderHistory"><p class="muted">Loading your orders…</p></div>
+      <p id="historyMsg" class="account-msg" role="status"></p>
+    </div>
+  </div>
+</section>
+
+<h2 class="st">Our Products</h2>
+<p id="loading" class="muted" role="status">Loading products…</p>
+<div id="products" aria-live="polite"></div>
+<button id="retry" class="secondary" type="button" hidden>Try loading again</button>
+
+<section class="panel">
+  <h2 class="st" style="margin-top:0">Your Cart</h2>
+  <div id="cartItems"><p class="muted">Your cart is empty.</p></div>
+  <div class="total"><span>Total</span><span>₹<span id="total">0.00</span></span></div>
+
+  <h2 class="st">Delivery Details</h2>
+  <form id="checkoutForm">
+    <label>Full name
+      <input id="name" name="
+       <script>
 "use strict";
-const API="";
-let productsList=[],cart=[];
-const $=id=>document.getElementById(id);
-const money=v=>(Number(v)||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
-function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function message(s,bad=false){$("msg").textContent=s;$("msg").className="status "+(bad?"error":"success");}
-function price(p){return Number(p.price)||0;}
-async function loadProducts(){
- $("loading").hidden=false;$("loading").textContent="Loading products…";$("products").innerHTML="";$("retry").hidden=true;
- try{
-  const r=await fetch(API+"/api/products",{headers:{Accept:"application/json"}});
-  if(!r.ok)throw Error("Product server returned HTTP "+r.status);
-  const d=await r.json();if(!Array.isArray(d))throw Error("Product API did not return a list");
-  productsList=d;renderProducts();renderCart();
- }catch(e){console.error(e);$("loading").textContent="Products could not be loaded: "+e.message;$("loading").className="status error";$("retry").hidden=false;}
-}
-function renderProducts(){
- $("loading").hidden=true;$("retry").hidden=true;
- if(!productsList.length){$("products").innerHTML="<p>No products are currently available.</p>";return;}
- $("products").innerHTML=productsList.map(p=>{
-  const stock=Number(p.stock)||0;
-  const rx=Number(p.prescription_required)?'<p class="muted">Prescription verification required</p>':"";
-  return `<article class="card"><div class="pic" aria-hidden="true">${String(p.category||"").toLowerCase().includes("medicine")?"💊":"🧴"}</div><h3>${esc(p.name)}</h3><p class="price">₹${money(price(p))}</p><p class="muted">${stock>0?"In stock: "+stock:"Out of stock"}</p>${rx}<button class="primary" type="button" data-add="${Number(p.id)}" ${stock<=0?"disabled":""}>${stock>0?"Add to Cart":"Out of Stock"}</button></article>`;
- }).join("");
-}
-function add(id){
- const p=productsList.find(x=>Number(x.id)===Number(id));if(!p)return;
- if(Number(p.prescription_required)){message("This product requires prescription verification. Please contact the pharmacy.",true);return;}
- const qty=cart.filter(x=>Number(x.id)===Number(id)).length;
- if(qty>=Number(p.stock)){message("You cannot add more than the available stock.",true);return;}
- cart.push(p);renderCart();message(p.name+" added to your cart.");
-}
-function changeQty(id,delta){if(delta>0){add(id);return;}const i=cart.findIndex(x=>Number(x.id)===Number(id));if(i!==-1)cart.splice(i,1);renderCart();}
-function removeItem(id){cart=cart.filter(x=>Number(x.id)!==Number(id));renderCart();}
-function renderCart(){
- const groups=new Map();
- for(const p of cart){const id=Number(p.id);if(!groups.has(id))groups.set(id,{p,qty:0});groups.get(id).qty++;}
- $("cartCount").textContent="Cart ("+cart.length+")";
- $("total").textContent=money(cart.reduce((s,p)=>s+price(p),0));
- if(!cart.length){$("cartItems").innerHTML='<p class="muted">Your cart is empty.</p>';return;}
- $("cartItems").innerHTML=Array.from(groups.values()).map(({p,qty})=>`<div class="rowcart"><div><strong>${esc(p.name)}</strong><div class="muted">₹${money(price(p))} each</div></div><div class="qty"><button class="secondary" type="button" data-change="${Number(p.id)}" data-delta="-1">−</button><span>${qty}</span><button class="secondary" type="button" data-change="${Number(p.id)}" data-delta="1">+</button><button class="secondary" type="button" data-remove="${Number(p.id)}">Remove</button></div></div>`).join("");
-}
-$("products").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(b)add(Number(b.dataset.add));});
-$("cartItems").addEventListener("click",e=>{const c=e.target.closest("[data-change]"),r=e.target.closest("[data-remove]");if(c)changeQty(Number(c.dataset.change),Number(c.dataset.delta));if(r)removeItem(Number(r.dataset.remove));});
-$("retry").addEventListener("click",loadProducts);
-function orderItemsPayload(){const grouped=new Map();for(const p of cart){const id=Number(p.id),row=grouped.get(id)||{productId:id,quantity:0};row.quantity++;grouped.set(id,row);}return Array.from(grouped.values());}
-async function startRazorpayPayment(details,items){
- if(typeof window.Razorpay!=="function")throw Error("Razorpay checkout did not load. Try again or choose COD.");
- const totalRupees=cart.reduce((s,p)=>s+price(p),0);
- if(!Number.isSafeInteger(totalRupees)||totalRupees<=0)throw Error("Invalid cart total");
- const cr=await fetch(API+"/api/razorpay/order",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({amount:totalRupees})});
- const od=await cr.json().catch(()=>({}));
- if(!cr.ok||!od.id||!od.key_id)throw Error(od.error||"Could not create Razorpay order");
- return new Promise((resolve,reject)=>{
-  let finished=false;
-  const checkout=new Razorpay({key:od.key_id,amount:od.amount,currency:od.currency||"INR",name:"Kapil Medical",description:"Kapil Medical order",order_id:od.id,prefill:{name:details.name,contact:details.phone},notes:{pincode:details.pincode},theme:{color:"#087f5b"},
-   handler:async payment=>{
-    try{
-     const vr=await fetch(API+"/api/razorpay/verify",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({razorpay_order_id:payment.razorpay_order_id,razorpay_payment_id:payment.razorpay_payment_id,razorpay_signature:payment.razorpay_signature,customer:details,items})});
-     const v=await vr.json().catch(()=>({}));
-     if(!vr.ok||!v.ok||!v.orderId)throw Error(v.error||"Payment/order verification failed. Contact the store before retrying.");
-     finished=true;resolve(v);
-    }catch(err){finished=true;reject(err);}
-   },
-   modal:{ondismiss:()=>{if(!finished){finished=true;reject(Error("Payment window closed. No order was confirmed."));}}}
-  });
-  checkout.on("payment.failed",ev=>{if(!finished){finished=true;reject(Error(ev.error?.description||"Razorpay payment failed"));}});
-  checkout.open();
- });
-}
-function showTracking(result){
- if(result.trackingToken&&result.orderId){
-  const url=new URL("/track",location.origin);
-  url.searchParams.set("order",result.orderId);url.searchParams.set("token",result.trackingToken);
-  $("trackAnchor").href=url.toString();$("trackingLink").hidden=false;
- }else{$("trackingLink").hidden=true;}
-}
-$("checkoutForm").addEventListener("submit",async e=>{
- e.preventDefault();
- if(!cart.length){message("Please add at least one product to your cart.",true);return;}
- const details={name:$("name").value.trim(),phone:$("phone").value.trim(),address:$("address").value.trim(),pincode:$("pincode").value.trim()};
- if(!details.name||!/^[6-9][0-9]{9}$/.test(details.phone)||!details.address||!/^\d{6}$/.test(details.pincode)){message("Enter a valid name, 10-digit mobile number, address and 6-digit pincode.",true);return;}
- const items=orderItemsPayload(),button=$("placeOrder"),paymentMethod=$("payment").value;
- button.disabled=true;button.textContent=paymentMethod==="COD"?"Placing COD order…":"Opening Razorpay…";message("");$("trackingLink").hidden=true;
- try{
-  let result;
-  if(paymentMethod==="COD"){
-   const r=await fetch(API+"/api/orders",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({...details,payment_method:"COD",items})});
-   result=await r.json().catch(()=>({}));if(!r.ok)throw Error(result.error||"COD order failed");
-  }else{result=await startRazorpayPayment(details,items);}
-  cart=[];renderCart();$("checkoutForm").reset();$("payment").value="COD";showTracking(result);
-  message((paymentMethod==="COD"?"COD order placed. ":"Razorpay payment verified; order saved. ")+"Order ID: "+result.orderId+". Total: ₹"+money(result.total)+". Please keep your tracking link private.");
- }catch(err){console.error("Checkout error",err);message(err.message||"Could not complete your order",true);}
- finally{button.disabled=false;button.textContent=$("payment").value==="COD"?"Place COD Order":"Pay Securely with Razorpay";}
+
+const API = "";
+let productsList = [];
+let cart = [];
+const $ = id => document.getElementById(id);
+const money = v => (Number(v) || 0).toLocaleString("en-IN", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
 });
-$("payment").addEventListener("change",()=>{$("placeOrder").textContent=$("payment").value==="COD"?"Place COD Order":"Pay Securely with Razorpay";});
+
+function esc(v) {
+  return String(v ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+function message(s, bad = false) {
+  $("msg").textContent = s;
+  $("msg").className = "status " + (bad ? "error" : "success");
+}
+
+function price(p) {
+  return Number(p.price) || 0;
+}
+
+// CUSTOMER ACCOUNT
+let customerAccount = null;
+let customerOrders = [];
+
+async function accountRequest(url, options = {}) {
+  const r = await fetch(url, {
+    credentials: "same-origin",
+    ...options,
+    headers: {
+      Accept: "application/json",
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(options.headers || {})
+    }
+  });
+
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw Error(d.error || "Account request failed");
+  return d;
+}
+
+function accountMessage(id, text, bad = false) {
+  const el = $(id);
+  el.textContent = text;
+  el.className = "account-msg " + (bad ? "error" : "success");
+}
+
+function renderAccount() {
+  const signed = !!customerAccount;
+  $("accountSignedOut").hidden = signed;
+  $("accountSignedIn").hidden = !signed;
+
+  if (!signed) return;
+
+  $("accountWelcome").textContent = "Hello, " + customerAccount.name;
+  $("accountPhone").textContent = customerAccount.phone;
+  $("name").value = customerAccount.name;
+  $("phone").value = customerAccount.phone;
+  renderOrderHistory();
+}
+
+async function loadAccount() {
+  try {
+    const d = await accountRequest("/api/customer/me");
+    customerAccount = d.authenticated ? d.customer : null;
+    renderAccount();
+
+    if (customerAccount) await refreshCustomerOrders();
+  } catch (e) {
+    console.warn("Customer account check failed", e);
+  }
+}
+
+async function refreshCustomerOrders() {
+  if (!customerAccount) return;
+
+  $("orderHistory").innerHTML =
+    '<p class="muted">Loading your orders…</p>';
+
+  try {
+    customerOrders = await accountRequest("/api/customer/orders");
+    renderOrderHistory();
+  } catch (e) {
+    $("orderHistory").innerHTML =
+      '<p class="muted">Could not load order history.</p>';
+    accountMessage("historyMsg", e.message, true);
+  }
+}
+
+function renderOrderHistory() {
+  if (!customerAccount) return;
+
+  if (!customerOrders.length) {
+    $("orderHistory").innerHTML =
+      '<div class="history-card"><p class="muted">No account orders yet. Orders placed while signed in will appear here.</p></div>';
+    return;
+  }
+
+  $("orderHistory").innerHTML = customerOrders.map(order => {
+    const items = (order.items || []).map(item =>
+      `${esc(item.product_name)} × ${Number(item.quantity)}`
+    ).join("<br>");
+
+    return `
+      <div class="history-card">
+        <div class="history-head">
+          <strong>Order #${Number(order.id)}</strong>
+          <strong>₹${money(order.total)}</strong>
+        </div>
+        <p class="muted">
+          ${esc(order.created_at)} · ${esc(order.payment_method)}
+        </p>
+        <p>Status: <strong>${esc(order.status)}</strong></p>
+        <div class="history-items">${items}</div>
+        <button class="secondary" type="button"
+          data-reorder="${Number(order.id)}">Reorder available items</button>
+      </div>`;
+  }).join("");
+}
+
+// MSG91 OTP WIDGET
+let otpWidgetStarted = false;
+
+function ensureMsg91Script() {
+  return new Promise((resolve, reject) => {
+    if (typeof window.initSendOTP === "function") return resolve();
+
+    const existing = document.querySelector(
+      'script[data-msg91-widget="true"]'
+    );
+
+    if (existing) {
+      existing.addEventListener("load", resolve, { once: true });
+      existing.addEventListener("error", () =>
+        reject(Error("Could not load MSG91 widget"))
+      , { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://verify.msg91.com/otp-provider.js";
+    script.async = true;
+    script.dataset.msg91Widget = "true";
+    script.onload = resolve;
+    script.onerror = () =>
+      reject(Error("Could not load MSG91 widget"));
+    document.head.appendChild(script);
+  });
+}
+
+$("customerOtpForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const button = e.currentTarget.querySelector('button[type="submit"]');
+  button.disabled = true;
+
+  try {
+    const cfg = await accountRequest("/api/msg91/config");
+
+    await ensureMsg91Script();
+
+    if (typeof window.initSendOTP !== "function") {
+      throw Error("MSG91 widget did not initialize. Check its integration settings.");
+    }
+
+    if (otpWidgetStarted) {
+      throw Error("If the OTP widget is already open, finish or close that flow before trying again.");
+    }
+
+    otpWidgetStarted = true;
+
+    window.initSendOTP({
+      widgetId: cfg.widgetId,
+      tokenAuth: cfg.tokenAuth,
+      identifier: "",
+      exposeMethods: true,
+
+      success: async data => {
+        try {
+          const token =
+            data?.message ||
+            data?.access_token ||
+            data?.accessToken ||
+            data?.token ||
+            data?.data?.access_token ||
+            data?.data?.accessToken;
+
+          if (!token) {
+            throw Error("MSG91 did not return an access token. Check the widget callback format.");
+          }
+
+          const out = await accountRequest(
+            "/api/customer/otp-login",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                accessToken: token,
+                name: $("otpName").value.trim()
+              })
+            }
+          );
+
+          customerAccount = out.customer;
+          customerOrders = [];
+          renderAccount();
+          await refreshCustomerOrders();
+          accountMessage("loginMsg", "OTP verified. You are signed in.");
+        } catch (err) {
+          accountMessage("loginMsg", err.message, true);
+        } finally {
+          otpWidgetStarted = false;
+          button.disabled = false;
+        }
+      },
+
+      failure: error => {
+        accountMessage(
+          "loginMsg",
+          error?.message || "OTP verification failed. Please try again.",
+          true
+        );
+        otpWidgetStarted = false;
+        button.disabled = false;
+      }
+    });
+  } catch (err) {
+    accountMessage("loginMsg", err.message, true);
+    otpWidgetStarted = false;
+    button.disabled = false;
+  }
+});
+
+$("customerLogout").addEventListener("click", async () => {
+  try {
+    await accountRequest("/api/customer/logout", { method: "POST" });
+    customerAccount = null;
+    customerOrders = [];
+    renderAccount();
+    accountMessage("loginMsg", "You have signed out.");
+  } catch (e) {
+    accountMessage("historyMsg", e.message, true);
+  }
+});
+
+// REORDER
+$("orderHistory").addEventListener("click", e => {
+  const b = e.target.closest("[data-reorder]");
+  if (!b) return;
+
+  const order = customerOrders.find(
+    o => Number(o.id) === Number(b.dataset.reorder)
+  );
+  if (!order) return;
+
+  let added = 0;
+  const skipped = [];
+
+  for (const item of order.items || []) {
+    const p = productsList.find(
+      x => Number(x.id) === Number(item.product_id)
+    );
+
+    if (!p || Number(p.prescription_required)) {
+      skipped.push(item.product_name);
+      continue;
+    }
+
+    for (let n = 0; n < Number(item.quantity || 0); n++) {
+      const inCart = cart.filter(
+        x => Number(x.id) === Number(p.id)
+      ).length;
+
+      if (inCart >= Number(p.stock)) {
+        skipped.push(p.name);
+        break;
+      }
+
+      cart.push(p);
+      added++;
+    }
+  }
+
+  renderCart();
+
+  accountMessage(
+    "historyMsg",
+    added
+      ? `Added ${added} item(s) to your cart.`
+      : "No items from this order are currently available to reorder.",
+    !added
+  );
+
+  if (skipped.length) {
+    accountMessage(
+      "historyMsg",
+      (added ? `Added ${added} item(s). ` : "") +
+      `Skipped unavailable or prescription-required items: ${[...new Set(skipped)].join(", ")}.`,
+      !added
+    );
+  }
+
+  $("cartItems").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+// PRODUCTS
+async function loadProducts() {
+  $("loading").hidden = false;
+  $("loading").textContent = "Loading products…";
+  $("products").innerHTML = "";
+  $("retry").hidden = true;
+
+  try {
+    const r = await fetch(API + "/api/products", {
+      headers: { Accept: "application/json" }
+    });
+
+    if (!r.ok) throw Error("Product server returned HTTP " + r.status);
+
+    const d = await r.json();
+    if (!Array.isArray(d)) throw Error("Product API did not return a list");
+
+    productsList = d;
+    renderProducts();
+    renderCart();
+  } catch (e) {
+    console.error(e);
+    $("loading").textContent = "Products could not be loaded: " + e.message;
+    $("loading").className = "status error";
+    $("retry").hidden = false;
+  }
+}
+
+function renderProducts() {
+  $("loading").hidden = true;
+  $("retry").hidden = true;
+
+  if (!productsList.length) {
+    $("products").innerHTML = "<p>No products are currently available.</p>";
+    return;
+  }
+
+  $("products").innerHTML = productsList.map(p => {
+    const stock = Number(p.stock) || 0;
+    const rx = Number(p.prescription_required)
+      ? '<p class="muted">Prescription verification required</p>'
+      : "";
+
+    const image = p.image_url
+      ? `<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.display='none'">`
+      : (String(p.category || "").toLowerCase().includes("medicine")
+        ? "💊" : "🧴");
+
+    return `
+      <article class="card">
+        <div class="pic">${image}</div>
+        <h3>${esc(p.name)}</h3>
+        <p class="price">₹${money(price(p))}</p>
+        <p class="muted">${stock > 0 ? "In stock: " + stock : "Out of stock"}</p>
+        ${rx}
+        <button class="primary" type="button" data-add="${Number(p.id)}"
+          ${stock <= 0 ? "disabled" : ""}>
+          ${stock > 0 ? "Add to Cart" : "Out of Stock"}
+        </button>
+      </article>`;
+  }).join("");
+}
+
+function add(id) {
+  const p = productsList.find(x => Number(x.id) === Number(id));
+  if (!p) return;
+
+  if (Number(p.prescription_required)) {
+    message("This product requires prescription verification. Please contact the pharmacy.", true);
+    return;
+  }
+
+  const qty = cart.filter(x => Number(x.id) === Number(id)).length;
+  if (qty >= Number(p.stock)) {
+    message("You cannot add more than the available stock.", true);
+    return;
+  }
+
+  cart.push(p);
+  renderCart();
+  message(p.name + " added to your cart.");
+}
+
+function changeQty(id, delta) {
+  if (delta > 0) {
+    add(id);
+    return;
+  }
+
+  const i = cart.findIndex(x => Number(x.id) === Number(id));
+  if (i !== -1) cart.splice(i, 1);
+  renderCart();
+}
+
+function removeItem(id) {
+  cart = cart.filter(x => Number(x.id) !== Number(id));
+  renderCart();
+}
+
+function renderCart() {
+  const groups = new Map();
+
+  for (const p of cart) {
+    const id = Number(p.id);
+    if (!groups.has(id)) groups.set(id, { p, qty: 0 });
+    groups.get(id).qty++;
+  }
+
+  $("cartCount").textContent = "Cart (" + cart.length + ")";
+  $("total").textContent = money(
+    cart.reduce((s, p) => s + price(p), 0)
+  );
+
+  if (!cart.length) {
+    $("cartItems").innerHTML = '<p class="muted">Your cart is empty.</p>';
+    return;
+  }
+
+  $("cartItems").innerHTML = Array.from(groups.values()).map(({ p, qty }) => `
+    <div class="rowcart">
+      <div>
+        <strong>${esc(p.name)}</strong>
+        <div class="muted">₹${money(price(p))} each</div>
+      </div>
+      <div class="qty">
+        <button class="secondary" type="button"
+          data-change="${Number(p.id)}" data-delta="-1">−</button>
+        <span>${qty}</span>
+        <button class="secondary" type="button"
+          data-change="${Number(p.id)}" data-delta="1">+</button>
+        <button class="secondary" type="button"
+          data-remove="${Number(p.id)}">Remove</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+$("products").addEventListener("click", e => {
+  const b = e.target.closest("[data-add]");
+  if (b) add(Number(b.dataset.add));
+});
+
+$("cartItems").addEventListener("click", e => {
+  const c = e.target.closest("[data-change]");
+  const r = e.target.closest("[data-remove]");
+
+  if (c) changeQty(Number(c.dataset.change), Number(c.dataset.delta));
+  if (r) removeItem(Number(r.dataset.remove));
+});
+
+$("retry").addEventListener("click", loadProducts);
+
+function orderItemsPayload() {
+  const grouped = new Map();
+
+  for (const p of cart) {
+    const id = Number(p.id);
+    const row = grouped.get(id) || { productId: id, quantity: 0 };
+    row.quantity++;
+    grouped.set(id, row);
+  }
+
+  return Array.from(grouped.values());
+}
+
+// RAZORPAY CHECKOUT
+async function startRazorpayPayment(details, items) {
+  if (typeof window.Razorpay !== "function") {
+    throw Error("Razorpay checkout did not load. Try again or choose COD.");
+  }
+
+  const totalRupees = cart.reduce((s, p) => s + price(p), 0);
+  if (!Number.isSafeInteger(totalRupees) || totalRupees <= 0) {
+    throw Error("Invalid cart total");
+  }
+
+  const cr = await fetch(API + "/api/razorpay/order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({ amount: totalRupees })
+  });
+
+  const od = await cr.json().catch(() => ({}));
+  if (!cr.ok || !od.id || !od.key_id) {
+    throw Error(od.error || "Could not create Razorpay order");
+  }
+
+  return new Promise((resolve, reject) => {
+    let finished = false;
+
+    const checkout = new Razorpay({
+      key: od.key_id,
+      amount: od.amount,
+      currency: od.currency || "INR",
+      name: "Kapil Medical",
+      description: "Kapil Medical order",
+      order_id: od.id,
+      prefill: { name: details.name, contact: details.phone },
+      notes: { pincode: details.pincode },
+      theme: { color: "#087f5b" },
+
+      handler: async payment => {
+        try {
+          const vr = await fetch(API + "/api/razorpay/verify", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify({
+              razorpay_order_id: payment.razorpay_order_id,
+              razorpay_payment_id: payment.razorpay_payment_id,
+              razorpay_signature: payment.razorpay_signature,
+              customer: details,
+              items
+            })
+          });
+
+          const v = await vr.json().catch(() => ({}));
+          if (!vr.ok || !v.ok || !v.orderId) {
+            throw Error(v.error || "Payment/order verification failed. Contact the store before retrying.");
+          }
+
+          finished = true;
+          resolve(v);
+        } catch (err) {
+          finished = true;
+          reject(err);
+        }
+      },
+
+      modal: {
+        ondismiss: () => {
+          if (!finished) {
+            finished = true;
+            reject(Error("Payment window closed. No order was confirmed."));
+          }
+        }
+      }
+    });
+
+    checkout.on("payment.failed", ev => {
+      if (!finished) {
+        finished = true;
+        reject(Error(ev.error?.description || "Razorpay payment failed"));
+      }
+    });
+
+    checkout.open();
+  });
+}
+
+function showTracking(result) {
+  if (result.trackingToken && result.orderId) {
+    const url = new URL("/track", location.origin);
+    url.searchParams.set("order", result.orderId);
+    url.searchParams.set("token", result.trackingToken);
+    $("trackAnchor").href = url.toString();
+    $("trackingLink").hidden = false;
+  } else {
+    $("trackingLink").hidden = true;
+  }
+}
+
+// CHECKOUT SUBMISSION
+$("checkoutForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  if (!cart.length) {
+    message("Please add at least one product to your cart.", true);
+    return;
+  }
+
+  const details = {
+    name: $("name").value.trim(),
+    phone: $("phone").value.trim(),
+    address: $("address").value.trim(),
+    pincode: $("pincode").value.trim()
+  };
+
+  if (
+    !details.name ||
+    !/^[6-9][0-9]{9}$/.test(details.phone) ||
+    !details.address ||
+    !/^\d{6}$/.test(details.pincode)
+  ) {
+    message("Enter a valid name, 10-digit mobile number, address and 6-digit pincode.", true);
+    return;
+  }
+
+  const items = orderItemsPayload();
+  const button = $("placeOrder");
+  const paymentMethod = $("payment").value;
+
+  button.disabled = true;
+  button.textContent = paymentMethod === "COD"
+    ? "Placing COD order…"
+    : "Opening Razorpay…";
+
+  message("");
+  $("trackingLink").hidden = true;
+
+  try {
+    let result;
+
+    if (paymentMethod === "COD") {
+      const r = await fetch(API + "/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          ...details,
+          payment_method: "COD",
+          items
+        })
+      });
+
+      result = await r.json().catch(() => ({}));
+      if (!r.ok) throw Error(result.error || "COD order failed");
+    } else {
+      result = await startRazorpayPayment(details, items);
+    }
+
+    cart = [];
+    renderCart();
+    $("checkoutForm").reset();
+    $("payment").value = "COD";
+    showTracking(result);
+
+    message(
+      (paymentMethod === "COD"
+        ? "COD order placed. "
+        : "Razorpay payment verified; order saved. ") +
+      "Order ID: " + result.orderId +
+      ". Total: ₹" + money(result.total) +
+      ". Please keep your tracking link private."
+    );
+
+    if (customerAccount) await refreshCustomerOrders();
+  } catch (err) {
+    console.error("Checkout error", err);
+    message(err.message || "Could not complete your order", true);
+  } finally {
+    button.disabled = false;
+    button.textContent = $("payment").value === "COD"
+      ? "Place COD Order"
+      : "Pay Securely with Razorpay";
+  }
+});
+
+$("payment").addEventListener("change", () => {
+  $("placeOrder").textContent = $("payment").value === "COD"
+    ? "Place COD Order"
+    : "Pay Securely with Razorpay";
+});
+
 loadProducts();
-</script></body></html>
+loadAccount();
+</script>
+</body>
+</html>
