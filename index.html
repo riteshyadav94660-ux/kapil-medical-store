@@ -1,520 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#087f5b">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#087f5b">
 <title>Kapil Medical | Online Pharmacy</title>
 <style>
-:root{--g:#087f5b;--d:#07523e;--l:#f3faf6;--b:#dce8e0;--t:#20312a;--m:#64746b}
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7faf8;color:var(--t)}
-header{background:var(--g);color:white;padding:18px 16px}
-.wrap,main,footer{max-width:1100px;margin:auto}
-.wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-h1{margin:0;font-size:25px}
-.tag{margin:6px 0 0;font-size:14px}
-.badge{background:white;color:var(--d);border-radius:25px;padding:10px 14px;font-weight:bold}
-main{padding:20px 14px 35px}
-.hero{background:#e3f5e9;border-radius:16px;padding:22px;margin-bottom:22px}
-.hero h2{margin:0 0 8px;font-size:24px}
-.hero p{margin:0;line-height:1.5}
-h2.st{font-size:21px;margin:22px 0 14px}
-#products{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:15px}
-.card{background:white;border:1px solid var(--b);border-radius:14px;padding:16px;display:flex;flex-direction:column;min-width:0;box-shadow:0 3px 12px #163c2010}
-.pic{height:76px;display:grid;place-items:center;background:var(--l);border-radius:10px;font-size:38px;margin-bottom:12px}
-.card h3{margin:0 0 8px;font-size:17px}
-.price{font-size:20px;color:var(--g);font-weight:bold}
-.muted{color:var(--m);font-size:13px;line-height:1.45}
-button{cursor:pointer;border:0;border-radius:8px;padding:11px 13px;font-size:15px;font-weight:bold}
-button:disabled{opacity:.5;cursor:not-allowed}
-.primary{background:var(--g);color:white}
-.primary:hover{background:var(--d)}
-.secondary{background:#e7f2eb;color:var(--d)}
-.card button{width:100%;margin-top:auto}
-.panel{margin-top:24px;padding:18px;background:white;border:1px solid var(--b);border-radius:14px}
-.rowcart{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px 0;border-bottom:1px solid var(--b)}
-.qty{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.qty button{padding:7px 11px}
-.total{display:flex;justify-content:space-between;gap:10px;font-size:19px;font-weight:bold;margin:18px 0}
-form{display:grid;gap:13px}
-label{font-size:14px;font-weight:bold}
-input,textarea,select{display:block;width:100%;padding:12px;margin-top:6px;border:1px solid #cbd8cf;border-radius:8px;font:inherit;background:white}
-textarea{min-height:85px;resize:vertical}
-.status{margin:12px 0;line-height:1.5;overflow-wrap:anywhere}
-.error{color:#b42318}
-.success{color:var(--d)}
-.notice{padding:12px;border-radius:9px;background:#fff7df;color:#694d00;font-size:13px;line-height:1.5}
-footer{padding:22px 14px;color:var(--m);font-size:13px;line-height:1.6}
-[hidden]{display:none!important}
-@media(max-width:480px){
-h1{font-size:22px}
-.hero h2{font-size:21px}
-.rowcart{grid-template-columns:1fr}
-}
+:root{--g:#087f5b;--d:#07523e;--l:#f3faf6;--b:#dce8e0;--t:#20312a;--m:#64746b}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7faf8;color:var(--t)}header{background:var(--g);color:white;padding:18px 16px}.wrap,main,footer{max-width:1100px;margin:auto}.wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{margin:0;font-size:25px}.tag{margin:6px 0 0;font-size:14px}.badge{background:white;color:var(--d);border-radius:25px;padding:10px 14px;font-weight:bold}main{padding:20px 14px 35px}.hero{background:#e3f5e9;border-radius:16px;padding:22px;margin-bottom:22px}.hero h2{margin:0 0 8px;font-size:24px}.hero p{margin:0;line-height:1.5}h2.st{font-size:21px;margin:22px 0 14px}#products{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:15px}.card{background:white;border:1px solid var(--b);border-radius:14px;padding:16px;display:flex;flex-direction:column;min-width:0;box-shadow:0 3px 12px #163c2010}.pic{height:76px;display:grid;place-items:center;background:var(--l);border-radius:10px;font-size:38px;margin-bottom:12px}.card h3{margin:0 0 8px;font-size:17px}.price{font-size:20px;color:var(--g);font-weight:bold}.muted{color:var(--m);font-size:13px;line-height:1.45}button{cursor:pointer;border:0;border-radius:8px;padding:11px 13px;font-size:15px;font-weight:bold}button:disabled{opacity:.5;cursor:not-allowed}.primary{background:var(--g);color:white}.primary:hover{background:var(--d)}.secondary{background:#e7f2eb;color:var(--d)}.card button{width:100%;margin-top:auto}.panel{margin-top:24px;padding:18px;background:white;border:1px solid var(--b);border-radius:14px}.rowcart{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px 0;border-bottom:1px solid var(--b)}.qty{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.qty button{padding:7px 11px}.total{display:flex;justify-content:space-between;gap:10px;font-size:19px;font-weight:bold;margin:18px 0}form{display:grid;gap:13px}label{font-size:14px;font-weight:bold}input,textarea,select{display:block;width:100%;padding:12px;margin-top:6px;border:1px solid #cbd8cf;border-radius:8px;font:inherit;background:white}textarea{min-height:85px;resize:vertical}.status{margin:12px 0;line-height:1.5;overflow-wrap:anywhere}.error{color:#b42318}.success{color:var(--d)}.notice{padding:12px;border-radius:9px;background:#fff7df;color:#694d00;font-size:13px;line-height:1.5}footer{padding:22px 14px;color:var(--m);font-size:13px;line-height:1.6}[hidden]{display:none!important}@media(max-width:480px){h1{font-size:22px}.hero h2{font-size:21px}.rowcart{grid-template-columns:1fr}}
 </style>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-</head>
-<body>
-
-<header>
-<div class="wrap">
-<div>
-<h1>💚 Kapil Medical</h1>
-<p class="tag">Your health, our priority · Home delivery</p>
-</div>
-<div class="badge" id="cartCount">Cart (0)</div>
-</div>
-</header>
-
-<main>
-<section class="hero">
-<h2>Welcome to Kapil Medical</h2>
-<p>Shop medicines and healthcare essentials online. Prescription medicines are supplied only after appropriate pharmacy verification.</p>
-</section>
-
-<h2 class="st">Our Products</h2>
-<p id="loading" class="muted" role="status">Loading products…</p>
-<div id="products" aria-live="polite"></div>
-<button id="retry" class="secondary" type="button" hidden>Try loading again</button>
-
-<section class="panel">
-<h2 class="st" style="margin-top:0">Your Cart</h2>
-<div id="cartItems">
-<p class="muted">Your cart is empty.</p>
-</div>
-
-<div class="total">
-<span>Total</span>
-<span>₹<span id="total">0.00</span></span>
-</div>
-
-<h2 class="st">Delivery Details</h2>
-<form id="checkoutForm">
-<label>Full name
-<input id="name" name="name" autocomplete="name" required maxlength="100">
-</label>
-
-<label>Mobile number
-<input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit mobile number" required>
-</label>
-
-<label>Delivery address
-<textarea id="address" name="address" autocomplete="street-address" maxlength="500" required></textarea>
-</label>
-
-<label>Pincode
-<input id="pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit pincode" required>
-</label>
-
-<label>Payment method
-<select id="payment" name="payment" required>
-<option value="COD">Cash on Delivery</option>
-<option value="Razorpay">Pay Online via Razorpay (Test Mode)</option>
-</select>
-</label>
-
-<p class="notice">Razorpay is currently in test mode. Online orders are saved only after payment verification. Prescription-required products need pharmacy verification and cannot be checked out here.</p>
-
-<button id="placeOrder" class="primary" type="submit">Place COD Order</button>
-</form>
-<p id="msg" class="status" role="status" aria-live="polite"></p>
-</section>
-</main>
-
-<footer>
-<strong>Kapil Medical</strong><br>
-Alamgirpur, Rewari, Haryana 122414<br>
-Prescription-required medicines are dispensed only after appropriate verification.
-</footer>
-
+</head><body>
+<header><div class="wrap"><div><h1>💚 Kapil Medical</h1><p class="tag">Your health, our priority · Home delivery</p></div><div class="badge" id="cartCount">Cart (0)</div></div></header>
+<main><section class="hero"><h2>Welcome to Kapil Medical</h2><p>Shop healthcare essentials online. Prescription-required products need pharmacy verification before dispensing.</p></section>
+<h2 class="st">Our Products</h2><p id="loading" class="muted" role="status">Loading products…</p><div id="products" aria-live="polite"></div><button id="retry" class="secondary" type="button" hidden>Try loading again</button>
+<section class="panel"><h2 class="st" style="margin-top:0">Your Cart</h2><div id="cartItems"><p class="muted">Your cart is empty.</p></div><div class="total"><span>Total</span><span>₹<span id="total">0.00</span></span></div>
+<h2 class="st">Delivery Details</h2><form id="checkoutForm"><label>Full name<input id="name" name="name" autocomplete="name" required maxlength="100"></label><label>Mobile number<input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit mobile number" required></label><label>Delivery address<textarea id="address" name="address" autocomplete="street-address" maxlength="500" required></textarea></label><label>Pincode<input id="pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit pincode" required></label><label>Payment method<select id="payment" name="payment" required><option value="COD">Cash on Delivery</option><option value="Razorpay">Pay Online via Razorpay (Test Mode)</option></select></label><p class="notice">Online checkout uses Razorpay. Your tracking link is private—do not share it publicly. Prescription-required medicines are not available through this automatic checkout.</p><button id="placeOrder" class="primary" type="submit">Place COD Order</button></form><p id="msg" class="status" role="status" aria-live="polite"></p><p id="trackingLink" hidden><a id="trackAnchor" target="_blank" rel="noopener noreferrer">Track your order securely</a></p></section></main>
+<footer><strong>Kapil Medical</strong><br>Alamgirpur, Rewari, Haryana 122414<br>Prescription-required medicines are dispensed only after appropriate verification.</footer>
 <script>
 "use strict";
-
-const API = "";
-let productsList = [], cart = [];
-const $ = id => document.getElementById(id);
-
-const money = v => (Number(v) || 0).toLocaleString("en-IN", {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2
-});
-
-function esc(v) {
-  return String(v ?? "").replace(/[&<>"']/g, c => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[c]));
+const API="";
+let productsList=[],cart=[];
+const $=id=>document.getElementById(id);
+const money=v=>(Number(v)||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function message(s,bad=false){$("msg").textContent=s;$("msg").className="status "+(bad?"error":"success");}
+function price(p){return Number(p.price)||0;}
+async function loadProducts(){
+ $("loading").hidden=false;$("loading").textContent="Loading products…";$("products").innerHTML="";$("retry").hidden=true;
+ try{
+  const r=await fetch(API+"/api/products",{headers:{Accept:"application/json"}});
+  if(!r.ok)throw Error("Product server returned HTTP "+r.status);
+  const d=await r.json();if(!Array.isArray(d))throw Error("Product API did not return a list");
+  productsList=d;renderProducts();renderCart();
+ }catch(e){console.error(e);$("loading").textContent="Products could not be loaded: "+e.message;$("loading").className="status error";$("retry").hidden=false;}
 }
-
-function message(s, bad = false) {
-  $("msg").textContent = s;
-  $("msg").className = "status " + (bad ? "error" : "success");
+function renderProducts(){
+ $("loading").hidden=true;$("retry").hidden=true;
+ if(!productsList.length){$("products").innerHTML="<p>No products are currently available.</p>";return;}
+ $("products").innerHTML=productsList.map(p=>{
+  const stock=Number(p.stock)||0;
+  const rx=Number(p.prescription_required)?'<p class="muted">Prescription verification required</p>':"";
+  return `<article class="card"><div class="pic" aria-hidden="true">${String(p.category||"").toLowerCase().includes("medicine")?"💊":"🧴"}</div><h3>${esc(p.name)}</h3><p class="price">₹${money(price(p))}</p><p class="muted">${stock>0?"In stock: "+stock:"Out of stock"}</p>${rx}<button class="primary" type="button" data-add="${Number(p.id)}" ${stock<=0?"disabled":""}>${stock>0?"Add to Cart":"Out of Stock"}</button></article>`;
+ }).join("");
 }
-
-function price(p) {
-  return Number(p.price) || 0;
+function add(id){
+ const p=productsList.find(x=>Number(x.id)===Number(id));if(!p)return;
+ if(Number(p.prescription_required)){message("This product requires prescription verification. Please contact the pharmacy.",true);return;}
+ const qty=cart.filter(x=>Number(x.id)===Number(id)).length;
+ if(qty>=Number(p.stock)){message("You cannot add more than the available stock.",true);return;}
+ cart.push(p);renderCart();message(p.name+" added to your cart.");
 }
-
-async function loadProducts() {
-  $("loading").hidden = false;
-  $("loading").className = "muted";
-  $("loading").textContent = "Loading products…";
-  $("products").innerHTML = "";
-  $("retry").hidden = true;
-
-  try {
-    const r = await fetch(API + "/api/products", {
-      headers: { Accept: "application/json" }
-    });
-
-    if (!r.ok) throw Error("Product server returned HTTP " + r.status);
-
-    const d = await r.json();
-    if (!Array.isArray(d)) throw Error("Product API did not return a list.");
-
-    productsList = d;
-    renderProducts();
-    renderCart();
-  } catch (e) {
-    console.error(e);
-    $("loading").hidden = false;
-    $("loading").className = "status error";
-    $("loading").textContent = "Products could not be loaded: " + e.message;
-    $("retry").hidden = false;
-  }
+function changeQty(id,delta){if(delta>0){add(id);return;}const i=cart.findIndex(x=>Number(x.id)===Number(id));if(i!==-1)cart.splice(i,1);renderCart();}
+function removeItem(id){cart=cart.filter(x=>Number(x.id)!==Number(id));renderCart();}
+function renderCart(){
+ const groups=new Map();
+ for(const p of cart){const id=Number(p.id);if(!groups.has(id))groups.set(id,{p,qty:0});groups.get(id).qty++;}
+ $("cartCount").textContent="Cart ("+cart.length+")";
+ $("total").textContent=money(cart.reduce((s,p)=>s+price(p),0));
+ if(!cart.length){$("cartItems").innerHTML='<p class="muted">Your cart is empty.</p>';return;}
+ $("cartItems").innerHTML=Array.from(groups.values()).map(({p,qty})=>`<div class="rowcart"><div><strong>${esc(p.name)}</strong><div class="muted">₹${money(price(p))} each</div></div><div class="qty"><button class="secondary" type="button" data-change="${Number(p.id)}" data-delta="-1">−</button><span>${qty}</span><button class="secondary" type="button" data-change="${Number(p.id)}" data-delta="1">+</button><button class="secondary" type="button" data-remove="${Number(p.id)}">Remove</button></div></div>`).join("");
 }
-
-function renderProducts() {
-  $("loading").hidden = true;
-  $("retry").hidden = true;
-
-  if (!productsList.length) {
-    $("products").innerHTML = "<p>No products are currently available.</p>";
-    return;
-  }
-
-  $("products").innerHTML = productsList.map(p => {
-    const stock = Number(p.stock) || 0;
-    const icon = String(p.category || "").toLowerCase().includes("medicine")
-      ? "💊" : "🧴";
-
-    const rx = Number(p.prescription_required)
-      ? '<p class="muted">Prescription verification required</p>' : "";
-
-    return `
-      <article class="card">
-        <div class="pic" aria-hidden="true">${icon}</div>
-        <h3>${esc(p.name)}</h3>
-        <p class="price">₹${money(price(p))}</p>
-        <p class="muted">${stock > 0 ? "In stock: " + stock : "Out of stock"}</p>
-        ${rx}
-        <button class="primary" type="button" data-add="${Number(p.id)}"
-          ${stock <= 0 ? "disabled" : ""}>
-          ${stock > 0 ? "Add to Cart" : "Out of Stock"}
-        </button>
-      </article>`;
-  }).join("");
-}
-
-function add(id) {
-  const p = productsList.find(x => Number(x.id) === Number(id));
-  if (!p) return;
-
-  if (Number(p.prescription_required)) {
-    message("This product requires prescription verification. Please contact the pharmacy.", true);
-    return;
-  }
-
-  const qty = cart.filter(x => Number(x.id) === Number(id)).length;
-
-  if (qty >= Number(p.stock)) {
-    message("You cannot add more than the available stock.", true);
-    return;
-  }
-
-  cart.push(p);
-  renderCart();
-  message(p.name + " added to your cart.");
-}
-
-function changeQty(id, delta) {
-  if (delta > 0) {
-    add(id);
-    return;
-  }
-
-  const i = cart.findIndex(x => Number(x.id) === Number(id));
-  if (i !== -1) cart.splice(i, 1);
-  renderCart();
-}
-
-function removeItem(id) {
-  cart = cart.filter(x => Number(x.id) !== Number(id));
-  renderCart();
-}
-
-function renderCart() {
-  const groups = new Map();
-
-  for (const p of cart) {
-    const id = Number(p.id);
-    if (!groups.has(id)) groups.set(id, { p, qty: 0 });
-    groups.get(id).qty++;
-  }
-
-  $("cartCount").textContent = "Cart (" + cart.length + ")";
-  $("total").textContent = money(cart.reduce((s, p) => s + price(p), 0));
-
-  if (!cart.length) {
-    $("cartItems").innerHTML = '<p class="muted">Your cart is empty.</p>';
-    return;
-  }
-
-  $("cartItems").innerHTML = Array.from(groups.values()).map(({ p, qty }) => `
-    <div class="rowcart">
-      <div>
-        <strong>${esc(p.name)}</strong>
-        <div class="muted">₹${money(price(p))} each</div>
-      </div>
-      <div class="qty">
-        <button class="secondary" type="button" data-change="${Number(p.id)}"
-          data-delta="-1" aria-label="Decrease quantity">−</button>
-        <span>${qty}</span>
-        <button class="secondary" type="button" data-change="${Number(p.id)}"
-          data-delta="1" aria-label="Increase quantity">+</button>
-        <button class="secondary" type="button" data-remove="${Number(p.id)}">Remove</button>
-      </div>
-    </div>
-  `).join("");
-}
-
-$("products").addEventListener("click", e => {
-  const b = e.target.closest("[data-add]");
-  if (b) add(Number(b.dataset.add));
-});
-
-$("cartItems").addEventListener("click", e => {
-  const c = e.target.closest("[data-change]");
-  const r = e.target.closest("[data-remove]");
-
-  if (c) changeQty(Number(c.dataset.change), Number(c.dataset.delta));
-  if (r) removeItem(Number(r.dataset.remove));
-});
-
-$("retry").addEventListener("click", loadProducts);
-
-function orderItemsPayload() {
-  const grouped = new Map();
-
-  for (const product of cart) {
-    const id = Number(product.id);
-    const row = grouped.get(id) || { productId: id, quantity: 0 };
-    row.quantity++;
-    grouped.set(id, row);
-  }
-
-  return Array.from(grouped.values());
-}
-
-async function startRazorpayPayment(details, items) {
-  if (typeof window.Razorpay !== "function") {
-    throw new Error("Razorpay checkout did not load. Please try again or choose COD.");
-  }
-
-  const totalRupees = cart.reduce((sum, product) => sum + price(product), 0);
-
-  if (!Number.isSafeInteger(totalRupees) || totalRupees <= 0) {
-    throw new Error("Invalid cart total.");
-  }
-
-  const createResponse = await fetch(API + "/api/razorpay/order", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify({ amount: totalRupees })
+$("products").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(b)add(Number(b.dataset.add));});
+$("cartItems").addEventListener("click",e=>{const c=e.target.closest("[data-change]"),r=e.target.closest("[data-remove]");if(c)changeQty(Number(c.dataset.change),Number(c.dataset.delta));if(r)removeItem(Number(r.dataset.remove));});
+$("retry").addEventListener("click",loadProducts);
+function orderItemsPayload(){const grouped=new Map();for(const p of cart){const id=Number(p.id),row=grouped.get(id)||{productId:id,quantity:0};row.quantity++;grouped.set(id,row);}return Array.from(grouped.values());}
+async function startRazorpayPayment(details,items){
+ if(typeof window.Razorpay!=="function")throw Error("Razorpay checkout did not load. Try again or choose COD.");
+ const totalRupees=cart.reduce((s,p)=>s+price(p),0);
+ if(!Number.isSafeInteger(totalRupees)||totalRupees<=0)throw Error("Invalid cart total");
+ const cr=await fetch(API+"/api/razorpay/order",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({amount:totalRupees})});
+ const od=await cr.json().catch(()=>({}));
+ if(!cr.ok||!od.id||!od.key_id)throw Error(od.error||"Could not create Razorpay order");
+ return new Promise((resolve,reject)=>{
+  let finished=false;
+  const checkout=new Razorpay({key:od.key_id,amount:od.amount,currency:od.currency||"INR",name:"Kapil Medical",description:"Kapil Medical order",order_id:od.id,prefill:{name:details.name,contact:details.phone},notes:{pincode:details.pincode},theme:{color:"#087f5b"},
+   handler:async payment=>{
+    try{
+     const vr=await fetch(API+"/api/razorpay/verify",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({razorpay_order_id:payment.razorpay_order_id,razorpay_payment_id:payment.razorpay_payment_id,razorpay_signature:payment.razorpay_signature,customer:details,items})});
+     const v=await vr.json().catch(()=>({}));
+     if(!vr.ok||!v.ok||!v.orderId)throw Error(v.error||"Payment/order verification failed. Contact the store before retrying.");
+     finished=true;resolve(v);
+    }catch(err){finished=true;reject(err);}
+   },
+   modal:{ondismiss:()=>{if(!finished){finished=true;reject(Error("Payment window closed. No order was confirmed."));}}}
   });
-
-  const orderData = await createResponse.json().catch(() => ({}));
-
-  if (!createResponse.ok || !orderData.id || !orderData.key_id) {
-    throw new Error(orderData.error || "Could not create Razorpay payment order.");
-  }
-
-  return new Promise((resolve, reject) => {
-    let finished = false;
-
-    const checkout = new Razorpay({
-      key: orderData.key_id,
-      amount: orderData.amount,
-      currency: orderData.currency || "INR",
-      name: "Kapil Medical",
-      description: "Kapil Medical order",
-      order_id: orderData.id,
-      prefill: {
-        name: details.name,
-        contact: details.phone
-      },
-      notes: {
-        delivery_address: details.address,
-        pincode: details.pincode
-      },
-      theme: { color: "#087f5b" },
-
-      handler: async function (payment) {
-        try {
-          const verifyResponse = await fetch(API + "/api/razorpay/verify", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json"
-            },
-            body: JSON.stringify({
-              razorpay_order_id: payment.razorpay_order_id,
-              razorpay_payment_id: payment.razorpay_payment_id,
-              razorpay_signature: payment.razorpay_signature,
-              customer: details,
-              items
-            })
-          });
-
-          const verification = await verifyResponse.json().catch(() => ({}));
-
-          if (!verifyResponse.ok || !verification.ok || !verification.orderId) {
-            throw new Error(
-              verification.error ||
-              "Payment verification/order saving failed. Contact the store before retrying."
-            );
-          }
-
-          finished = true;
-          resolve(verification);
-        } catch (error) {
-          finished = true;
-          reject(error);
-        }
-      },
-
-      modal: {
-        ondismiss: function () {
-          if (!finished) {
-            finished = true;
-            reject(new Error("Payment window closed. No order was confirmed."));
-          }
-        }
-      }
-    });
-
-    checkout.on("payment.failed", function (event) {
-      if (!finished) {
-        finished = true;
-        reject(new Error(event.error?.description || "Razorpay payment failed."));
-      }
-    });
-
-    checkout.open();
-  });
+  checkout.on("payment.failed",ev=>{if(!finished){finished=true;reject(Error(ev.error?.description||"Razorpay payment failed"));}});
+  checkout.open();
+ });
 }
-
-$("checkoutForm").addEventListener("submit", async e => {
-  e.preventDefault();
-
-  if (!cart.length) {
-    message("Please add at least one product to your cart.", true);
-    return;
-  }
-
-  const details = {
-    name: $("name").value.trim(),
-    phone: $("phone").value.trim(),
-    address: $("address").value.trim(),
-    pincode: $("pincode").value.trim()
-  };
-
-  if (
-    !details.name ||
-    !/^[6-9][0-9]{9}$/.test(details.phone) ||
-    !details.address ||
-    !/^\d{6}$/.test(details.pincode)
-  ) {
-    message("Enter a valid name, 10-digit mobile number, address and 6-digit pincode.", true);
-    return;
-  }
-
-  const items = orderItemsPayload();
-  const button = $("placeOrder");
-
-  button.disabled = true;
-  button.textContent = $("payment").value === "COD"
-    ? "Placing COD order…" : "Opening Razorpay…";
-
-  message("");
-
-  try {
-    let result;
-    const paymentMethod = $("payment").value;
-
-    if (paymentMethod === "COD") {
-      const response = await fetch(API + "/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          name: details.name,
-          phone: details.phone,
-          address: details.address,
-          pincode: details.pincode,
-          payment_method: "COD",
-          items
-        })
-      });
-
-      result = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(result.error || result.message || "COD order failed.");
-      }
-    } else {
-      result = await startRazorpayPayment(details, items);
-    }
-
-    cart = [];
-    renderCart();
-    $("checkoutForm").reset();
-    $("payment").value = "COD";
-
-    message(
-      (paymentMethod === "COD"
-        ? "COD order placed. "
-        : "Razorpay payment verified; order saved. ") +
-      "Order ID: " + (result.orderId || result.id) +
-      (result.total != null ? ". Total: ₹" + money(result.total) : "") +
-      ". Please wait for confirmation."
-    );
-
-  } catch (err) {
-    console.error("Checkout error:", err);
-    message(err.message || "Could not complete your order.", true);
-  } finally {
-    button.disabled = false;
-    button.textContent = $("payment").value === "COD"
-      ? "Place COD Order" : "Pay Securely with Razorpay";
-  }
+function showTracking(result){
+ if(result.trackingToken&&result.orderId){
+  const url=new URL("/track",location.origin);
+  url.searchParams.set("order",result.orderId);url.searchParams.set("token",result.trackingToken);
+  $("trackAnchor").href=url.toString();$("trackingLink").hidden=false;
+ }else{$("trackingLink").hidden=true;}
+}
+$("checkoutForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ if(!cart.length){message("Please add at least one product to your cart.",true);return;}
+ const details={name:$("name").value.trim(),phone:$("phone").value.trim(),address:$("address").value.trim(),pincode:$("pincode").value.trim()};
+ if(!details.name||!/^[6-9][0-9]{9}$/.test(details.phone)||!details.address||!/^\d{6}$/.test(details.pincode)){message("Enter a valid name, 10-digit mobile number, address and 6-digit pincode.",true);return;}
+ const items=orderItemsPayload(),button=$("placeOrder"),paymentMethod=$("payment").value;
+ button.disabled=true;button.textContent=paymentMethod==="COD"?"Placing COD order…":"Opening Razorpay…";message("");$("trackingLink").hidden=true;
+ try{
+  let result;
+  if(paymentMethod==="COD"){
+   const r=await fetch(API+"/api/orders",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({...details,payment_method:"COD",items})});
+   result=await r.json().catch(()=>({}));if(!r.ok)throw Error(result.error||"COD order failed");
+  }else{result=await startRazorpayPayment(details,items);}
+  cart=[];renderCart();$("checkoutForm").reset();$("payment").value="COD";showTracking(result);
+  message((paymentMethod==="COD"?"COD order placed. ":"Razorpay payment verified; order saved. ")+"Order ID: "+result.orderId+". Total: ₹"+money(result.total)+". Please keep your tracking link private.");
+ }catch(err){console.error("Checkout error",err);message(err.message||"Could not complete your order",true);}
+ finally{button.disabled=false;button.textContent=$("payment").value==="COD"?"Place COD Order":"Pay Securely with Razorpay";}
 });
-
-$("payment").addEventListener("change", () => {
-  $("placeOrder").textContent = $("payment").value === "COD"
-    ? "Place COD Order" : "Pay Securely with Razorpay";
-});
-
+$("payment").addEventListener("change",()=>{$("placeOrder").textContent=$("payment").value==="COD"?"Place COD Order":"Pay Securely with Razorpay";});
 loadProducts();
-</script>
-</body>
-</html>
+</script></body></html>
