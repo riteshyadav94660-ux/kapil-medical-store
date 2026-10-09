@@ -16,7 +16,7 @@ box.innerHTML=data.map(p=>`
 <h3>${p.name}</h3>
 <p>₹${p.price} • Stock ${p.stock}</p>
 <p class="muted">${p.prescription_required?"Prescription verification required":""}</p>
-<button type="button" onclick="add(${p.id})">Add to cart</button>
+<button type="button" onclick="window.add(${p.id})">Add to cart</button>
 </div>
 `).join("");
 }catch(e){
