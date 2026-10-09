@@ -207,7 +207,7 @@
           Payment method
           <select id="payment" name="payment" required>
             <option value="COD">Cash on Delivery</option>
-            <option value="Razorpay">Online payment (test mode)</option>
+            <option value="Razorpay">Pay Online via Razorpay (Test Mode)</option>
           </select>
         </label>
         <p class="muted">Online payment is for testing only until your payment flow is fully verified.</p>
@@ -470,8 +470,11 @@
       const orderResponse = await fetch(API + "/api/razorpay/order", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({ amount: totalPaise })
-      });
+    body: JSON.stringify({
+  amount: Math.round(
+    cart.reduce((sum, item) => sum + Number(item.price), 0)
+  )
+})
 
       const orderData = await orderResponse.json().catch(() => ({}));
 
