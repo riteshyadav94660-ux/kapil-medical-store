@@ -470,11 +470,7 @@
       const orderResponse = await fetch(API + "/api/razorpay/order", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify({
-  amount: Math.round(
-    cart.reduce((sum, item) => sum + Number(item.price), 0)
-  )
-})
+    body: JSON.stringify({ amount: totalPaise })
 
       const orderData = await orderResponse.json().catch(() => ({}));
 
