@@ -2,277 +2,232 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#087f5b">
-<title>Kapil Medical | Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapil Medical — Admin</title>
 <style>
-:root{--g:#087f5b;--dark:#07523e;--bg:#f4f7f5;--text:#203128;--muted:#718077;--border:#e0e9e3;--red:#b42318}
+:root{--g:#087f5b;--d:#07523e;--bg:#f4f8f5;--border:#dce8e0;--text:#20312a;--muted:#66776d;--red:#b42318}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif}
 button,input,select{font:inherit}
-button{cursor:pointer}
+button{border:0;border-radius:8px;padding:10px 13px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--g);color:white}
+.secondary{background:#e6f3ea;color:var(--d)}
+.danger{background:#fff0ef;color:var(--red)}
+input,select{width:100%;padding:11px;border:1px solid #cbd9cf;border-radius:8px;background:white}
+label{display:block;font-weight:bold;margin:12px 0 6px}
 .hidden{display:none!important}
-.login{min-height:100vh;display:grid;place-items:center;padding:20px}
-.login-card,.panel,.stat{background:#fff;border:1px solid var(--border);border-radius:14px}
-.login-card{width:100%;max-width:410px;padding:28px}
-.logo{background:#e1f4e9;color:var(--g);padding:12px;border-radius:12px;display:inline-block;font-size:24px}
-.field{display:grid;gap:7px;margin:14px 0}
-label{font-weight:700;font-size:13px}
-input,select{width:100%;padding:11px;border:1px solid #d5e0d8;border-radius:8px;background:#fff;color:var(--text)}
-.btn{border:0;border-radius:8px;padding:10px 13px;font-weight:700}
-.green{background:var(--g);color:white}
-.light{background:#e9f4ed;color:var(--dark)}
-.red{background:#fff0ef;color:var(--red)}
-.outline{background:#fff;border:1px solid var(--border)}
-.full{width:100%}
-.error{color:var(--red);font-size:13px}
-.muted{color:var(--muted)}
-.topbar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--border);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{font-size:18px;font-weight:800}
-.layout{display:grid;grid-template-columns:210px minmax(0,1fr);min-height:calc(100vh - 60px)}
-.sidebar{background:#fff;border-right:1px solid var(--border);padding:15px}
-.nav{display:block;width:100%;text-align:left;border:0;background:transparent;border-radius:8px;padding:12px;margin:3px 0;font-weight:700;color:#526259}
-.nav.active,.nav:hover{background:#e4f5eb;color:var(--dark)}
-main{padding:24px;min-width:0;max-width:1600px;width:100%;margin:auto}
-.page-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-h1{font-size:25px;margin:0 0 6px}
-h2{font-size:17px;margin:0}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
-.stat{padding:17px;min-width:0}
-.stat strong{display:block;font-size:26px;margin-top:12px;overflow-wrap:anywhere}
-.panel{margin-bottom:20px;overflow:hidden}
-.panel-head{padding:17px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.panel-body{padding:17px}
-.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:13px}
-.filters input{max-width:300px}
+.muted{color:var(--muted);line-height:1.5}
+.error{color:var(--red);line-height:1.5}
+.wrap{max-width:1250px;margin:auto;padding:20px}
+header{background:white;border-bottom:1px solid var(--border)}
+.head{max-width:1250px;margin:auto;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:21px;font-weight:bold;color:var(--g)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.nav button.active{background:var(--g);color:white}
+.card{background:white;border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px;min-width:0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{background:white;border:1px solid var(--border);border-radius:12px;padding:18px;overflow-wrap:anywhere}
+.stat small{color:var(--muted)}
+.stat strong{display:block;font-size:25px;margin-top:10px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;white-space:nowrap}
-th,td{text-align:left;padding:12px;border-bottom:1px solid #edf1ee}
-th{background:#f8faf8;color:var(--muted);font-size:11px;text-transform:uppercase}
-td{font-size:13px}
-.pill{display:inline-block;padding:5px 8px;border-radius:20px;background:#edf1ee;font-weight:700;font-size:11px}
-.low{color:var(--red);font-weight:800}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
-.checkrow{display:flex;align-items:center;gap:8px;margin:10px 0}
-.checkrow input{width:auto}
-.preview{width:95px;height:95px;object-fit:contain;border:1px solid var(--border);border-radius:9px;background:#fff}
-.product-image{width:42px;height:42px;object-fit:contain;border:1px solid var(--border);border-radius:7px}
-.actions{display:flex;gap:6px;flex-wrap:wrap}
-.notice{font-size:12px;color:var(--muted);line-height:1.5}
-.empty{text-align:center;padding:30px;color:var(--muted)}
-#toast{position:fixed;right:16px;bottom:16px;background:#163e2d;color:#fff;padding:13px 17px;border-radius:9px;display:none;z-index:10;max-width:90vw}
-#toast.bad{background:#9f2424}
-@media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}.sidebar{display:flex;overflow-x:auto;gap:5px;padding:8px;position:sticky;top:56px;z-index:4}.nav{white-space:nowrap;width:auto;flex:0 0 auto}.side-label{display:none}main{padding:15px}}
-@media(max-width:550px){.topbar{padding:12px}.brand{font-size:15px}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:21px}.form-grid{grid-template-columns:1fr}.panel-body,.panel-head{padding:13px}.filters input,.filters select{max-width:none;width:100%}}
+table{border-collapse:collapse;width:100%;min-width:680px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #e9efeb;vertical-align:middle}
+th{background:#f6faf7;color:var(--muted);font-size:12px}
+td{line-height:1.5}
+.product-img{width:58px;height:58px;object-fit:contain;border:1px solid var(--border);border-radius:8px}
+.message{min-height:20px;margin:10px 0}
+#loginScreen{max-width:420px;margin:8vh auto;padding:22px}
+#productEditor{scroll-margin-top:15px}
+#preview{width:120px;height:120px;object-fit:contain;border:1px solid var(--border);border-radius:8px;padding:5px;margin-top:10px}
+@media(max-width:750px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.wrap{padding:12px}.head{padding:13px}.card{padding:14px}}
 </style>
 </head>
 <body>
 
-<section id="loginScreen" class="login">
-  <div class="login-card">
-    <div class="logo">✚</div>
-    <h1 style="margin-top:16px">Kapil Medical</h1>
-    <p class="muted">Admin dashboard · Store management</p>
-    <form id="loginForm">
-      <div class="field">
-        <label for="username">Admin username</label>
-        <input id="username" autocomplete="username" required>
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" type="password" autocomplete="current-password" required>
-      </div>
-      <button id="loginButton" class="btn green full">Sign in</button>
-      <p id="loginError" class="error" role="alert"></p>
-    </form>
-    <p class="notice">For authorized store personnel only. Never share your password.</p>
-  </div>
+<section id="loginScreen" class="card" style="max-width:420px;margin:8vh auto;padding:25px">
+  <div class="brand">✚ Kapil Medical</div>
+  <h2>Admin Login</h2>
+  <p class="muted">Sign in to manage products, stock and orders.</p>
+  <form id="loginForm">
+    <label for="username">Username</label>
+    <input id="username" autocomplete="username" required>
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" required>
+    <p id="loginError" class="error message" role="alert"></p>
+    <button id="loginButton" class="primary" type="submit">Sign in</button>
+  </form>
 </section>
 
-<div id="app" class="hidden">
-  <header class="topbar">
-    <div class="brand">✚ Kapil Medical <span class="muted">/ Admin</span></div>
-    <div class="actions">
-      <button id="refreshBtn" class="btn light">↻ Refresh</button>
-      <button id="logoutBtn" class="btn outline">Logout</button>
+<div id="adminApp" class="hidden">
+  <header>
+    <div class="head">
+      <div class="brand">✚ Kapil Medical <span class="muted">/ Admin</span></div>
+      <div class="actions">
+        <button id="refreshButton" class="secondary" type="button">Refresh</button>
+        <button id="logoutButton" type="button">Logout</button>
+      </div>
     </div>
   </header>
 
-  <div class="layout">
-    <aside class="sidebar">
-      <button class="nav active" data-page="dashboard">▦ Overview</button>
-      <button class="nav" data-page="orders">▤ Orders</button>
-      <button class="nav" data-page="products">▧ Products & Stock</button>
-      <button class="nav" data-page="customers">♙ Customers</button>
-    </aside>
-    <main>
+  <main class="wrap">
+    <nav class="nav">
+      <button class="active" data-page="dashboard" type="button">Overview</button>
+      <button data-page="orders" type="button">Orders</button>
+      <button data-page="products" type="button">Products & Stock</button>
+    </nav>
 
-      <section id="page-dashboard" class="page">
-        <div class="page-head">
-          <div><h1>Overview</h1><p class="muted">Your store at a glance.</p></div>
-          <button class="btn green" data-go="products">＋ Manage products</button>
+    <section id="page-dashboard">
+      <h1>Store Overview</h1>
+      <div class="stats">
+        <div class="stat"><small>Total orders</small><strong id="totalOrders">0</strong></div>
+        <div class="stat"><small>Pending orders</small><strong id="pendingOrders">0</strong></div>
+        <div class="stat"><small>Delivered sales</small><strong id="deliveredSales">₹0</strong></div>
+        <div class="stat"><small>Products</small><strong id="totalProducts">0</strong></div>
+      </div>
+      <section class="card" style="margin-top:18px">
+        <h2>Recent Orders</h2>
+        <div id="recentOrders" class="table-wrap"></div>
+      </section>
+      <section class="card">
+        <h2>Low Stock</h2>
+        <div id="lowStock" class="table-wrap"></div>
+      </section>
+    </section>
+
+    <section id="page-orders" class="hidden">
+      <h1>Customer Orders</h1>
+      <div class="card">
+        <div class="grid">
+          <div><label for="orderSearch">Search orders</label><input id="orderSearch" placeholder="Order ID, customer, phone"></div>
+          <div>
+            <label for="orderFilter">Filter by status</label>
+            <select id="orderFilter">
+              <option value="">All statuses</option>
+              <option>Placed</option>
+              <option>Confirmed</option>
+              <option>Processing</option>
+              <option>Packed</option>
+              <option>Out for delivery</option>
+              <option>Delivered</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
         </div>
-        <div class="stats">
-          <div class="stat">Total orders<strong id="statOrders">—</strong></div>
-          <div class="stat">Pending orders<strong id="statPending">—</strong></div>
-          <div class="stat">Delivered sales<strong id="statSales">—</strong></div>
-          <div class="stat">Products<strong id="statProducts">—</strong></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><h2>Recent orders</h2><button class="btn light" data-go="orders">View all</button></div>
-          <div class="table-wrap" id="recentOrders"></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><h2>Low stock alerts</h2></div>
-          <div class="table-wrap" id="stockAlerts"></div>
-        </div>
+      </div>
+      <section class="card"><div id="ordersTable" class="table-wrap"></div></section>
+    </section>
+
+    <section id="page-products" class="hidden">
+      <div class="actions" style="justify-content:space-between;align-items:center">
+        <h1>Products & Stock</h1>
+        <button id="newProductButton" class="primary" type="button">+ Add product</button>
+      </div>
+
+      <section id="productEditor" class="card hidden">
+        <h2 id="editorTitle">Add product</h2>
+        <form id="productForm">
+          <input id="productId" type="hidden">
+          <div class="grid">
+            <div>
+              <label for="productName">Product name</label>
+              <input id="productName" maxlength="150" required>
+            </div>
+            <div>
+              <label for="productCategory">Category</label>
+              <input id="productCategory" maxlength="100" placeholder="Medicine, First Aid, Personal Care" required>
+            </div>
+            <div>
+              <label for="productPrice">Price (₹)</label>
+              <input id="productPrice" type="number" min="0" step="0.01" required>
+            </div>
+            <div>
+              <label for="productStock">Stock quantity</label>
+              <input id="productStock" type="number" min="0" step="1" required>
+            </div>
+          </div>
+
+          <label for="productImage">Product photo</label>
+          <input id="productImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+          <p class="muted">Choose JPG, PNG, WebP or GIF, up to 1 MB. Existing photo is retained unless you choose a new one.</p>
+          <img id="preview" class="hidden" alt="Product photo preview">
+
+          <label style="display:flex;align-items:center;gap:8px">
+            <input id="productRx" type="checkbox" style="width:auto">
+            Prescription required
+          </label>
+
+          <p id="productFormError" class="error message" role="alert"></p>
+          <div class="actions">
+            <button id="saveProductButton" class="primary" type="submit">Save product</button>
+            <button id="cancelEditorButton" class="secondary" type="button">Cancel</button>
+          </div>
+        </form>
       </section>
 
-      <section id="page-orders" class="page hidden">
-        <div class="page-head"><div><h1>Orders</h1><p class="muted">Review orders and update their status.</p></div></div>
-        <div class="panel">
-          <div class="panel-head"><h2>Order list</h2><button id="ordersRefresh" class="btn light">Refresh</button></div>
-          <div class="panel-body">
-            <div class="filters">
-              <input id="orderSearch" placeholder="Search name, phone or order…">
-              <select id="orderFilter">
-                <option value="">All statuses</option>
-                <option>Pending</option><option>Confirmed</option>
-                <option>Shipped</option><option>Delivered</option><option>Cancelled</option>
-              </select>
-            </div>
-            <div class="table-wrap" id="ordersTable"></div>
+      <section class="card">
+        <div class="grid">
+          <div>
+            <label for="productSearch">Search products</label>
+            <input id="productSearch" placeholder="Product name or category">
+          </div>
+          <div>
+            <label for="stockFilter">Stock filter</label>
+            <select id="stockFilter">
+              <option value="">All products</option>
+              <option value="low">Low stock (5 or fewer)</option>
+              <option value="available">In stock</option>
+              <option value="zero">Out of stock</option>
+            </select>
           </div>
         </div>
-      </section> 
-     <section id="page-products" class="page hidden">
-        <div class="page-head">
-          <div><h1>Products & Stock</h1><p class="muted">Manage prices, stock and product photos.</p></div>
-          <button id="newProductBtn" class="btn green">＋ Add product</button>
-        </div>
-
-        <div id="productFormPanel" class="panel hidden">
-          <div class="panel-head">
-            <h2 id="productFormTitle">Add product</h2>
-            <button id="closeProductForm" class="btn outline">Close</button>
-          </div>
-          <div class="panel-body">
-            <form id="productForm">
-              <input id="productId" type="hidden">
-              <div class="form-grid">
-                <div class="field">
-                  <label for="productName">Product name</label>
-                  <input id="productName" maxlength="150" required>
-                </div>
-                <div class="field">
-                  <label for="productCategory">Category</label>
-                  <input id="productCategory" maxlength="100" required>
-                </div>
-                <div class="field">
-                  <label for="productPrice">Price (₹)</label>
-                  <input id="productPrice" type="number" min="0" step="1" required>
-                </div>
-                <div class="field">
-                  <label for="productStock">Stock quantity</label>
-                  <input id="productStock" type="number" min="0" step="1" required>
-                </div>
-                <div class="field" style="grid-column:1/-1">
-                  <label for="productImage">Product image URL (HTTPS)</label>
-                  <input id="productImage" type="url" placeholder="https://example.com/product.jpg">
-                  <p class="notice">Use a direct image URL from a trusted source. This field does not upload files.</p>
-                </div>
-              </div>
-              <div style="display:flex;align-items:center;gap:14px;margin-bottom:15px">
-                <img id="imagePreview" class="preview hidden" alt="Product preview">
-                <span id="imagePreviewText" class="notice">Image preview will appear here.</span>
-              </div>
-              <label class="checkrow"><input id="productRx" type="checkbox"> Prescription required</label>
-              <p id="productFormError" class="error" role="alert"></p>
-              <div class="actions">
-                <button id="saveProductBtn" class="btn green">Save product</button>
-                <button id="cancelProductBtn" type="button" class="btn outline">Cancel</button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-head">
-            <h2>Product catalogue</h2>
-            <span id="productCount" class="muted"></span>
-          </div>
-          <div class="panel-body">
-            <div class="filters">
-              <input id="productSearch" placeholder="Search products…">
-              <select id="stockFilter">
-                <option value="">All stock</option>
-                <option value="low">Low stock (5 or less)</option>
-                <option value="available">In stock</option>
-                <option value="zero">Out of stock</option>
-              </select>
-            </div>
-            <div class="table-wrap" id="productsTable"></div>
-          </div>
-        </div>
+        <p id="productCount" class="muted"></p>
+        <div id="productsTable" class="table-wrap"></div>
       </section>
+    </section>
 
-      <section id="page-customers" class="page hidden">
-        <div class="page-head">
-          <div><h1>Customers</h1><p class="muted">Registered customer accounts.</p></div>
-          <button id="customersRefresh" class="btn light">Refresh customers</button>
-        </div>
-        <div class="panel">
-          <div class="panel-body">
-            <div class="filters">
-              <input id="customerSearch" placeholder="Search customer name or phone…">
-            </div>
-            <div class="table-wrap" id="customersTable">
-              <div class="empty">Open this page to load registered customers.</div>
-            </div>
-          </div>
-        </div>
-        <p class="notice">Customer information is private. Use it only for legitimate store operations and order fulfilment.</p>
-      </section>
-
-    </main>
-  </div>
+    <p id="globalMessage" class="message" role="status"></p>
+  </main>
 </div>
-
-<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
 
 const $ = id => document.getElementById(id);
-const state = {orders:[], products:[], customers:[]};
-let toastTimer;
+const state = { products: [], orders: [] };
+let selectedProductImage = "";
 
 function esc(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;",
-    '"':"&quot;", "'":"&#39;"
-  })[c]);
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
 }
 
 function money(value) {
-  return "₹" + (Number(value) || 0).toLocaleString("en-IN");
+  return "₹" + (Number(value) || 0).toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 }
 
-function toast(message, bad=false) {
-  const el = $("toast");
-  el.textContent = message;
-  el.className = bad ? "bad" : "";
-  el.style.display = "block";
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.style.display="none", 3500);
+function toast(text, bad = false) {
+  $("globalMessage").textContent = text;
+  $("globalMessage").className = "message " + (bad ? "error" : "muted");
 }
 
-async function api(url, options={}) {
+async function api(url, options = {}) {
   const response = await fetch(url, {
-    credentials:"same-origin",
+    credentials: "same-origin",
     ...options,
-    headers:{
-      ...(options.body ? {"Content-Type":"application/json"} : {}),
+    headers: {
+      Accept: "application/json",
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
       ...(options.headers || {})
     }
   });
@@ -280,25 +235,28 @@ async function api(url, options={}) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    if (response.status === 401 || response.status === 403) {
-      $("app").classList.add("hidden");
-      $("loginScreen").classList.remove("hidden");
-    }
-    throw new Error(data.error || data.message || "Request failed ("+response.status+")");
+    throw Error(data.error || "Request failed (" + response.status + ").");
   }
 
   return data;
 }
 
+function showApp(signedIn) {
+  $("loginScreen").classList.toggle("hidden", signedIn);
+  $("adminApp").classList.toggle("hidden", !signedIn);
+}
+
 async function checkSession() {
   try {
-    await api("/api/admin/orders");
-    $("loginScreen").classList.add("hidden");
-    $("app").classList.remove("hidden");
-    await refreshAll();
+    const data = await api("/api/me");
+    if (data.admin) {
+      showApp(true);
+      await refreshAll();
+    } else {
+      showApp(false);
+    }
   } catch {
-    $("app").classList.add("hidden");
-    $("loginScreen").classList.remove("hidden");
+    showApp(false);
   }
 }
 
@@ -306,157 +264,205 @@ $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
   const button = $("loginButton");
   button.disabled = true;
-  button.textContent = "Signing in…";
   $("loginError").textContent = "";
 
   try {
     await api("/api/login", {
-      method:"POST",
-      body:JSON.stringify({
-        username:$("username").value.trim(),
-        password:$("password").value
+      method: "POST",
+      body: JSON.stringify({
+        username: $("username").value.trim(),
+        password: $("password").value
       })
     });
+
     $("password").value = "";
-    $("loginScreen").classList.add("hidden");
-    $("app").classList.remove("hidden");
+    showApp(true);
     await refreshAll();
   } catch (error) {
     $("loginError").textContent = error.message;
   } finally {
     button.disabled = false;
-    button.textContent = "Sign in";
   }
 });
 
-$("logoutBtn").addEventListener("click", async () => {
+$("logoutButton").addEventListener("click", async () => {
   try {
-    await api("/api/logout", {method:"POST"});
+    await api("/api/logout", { method: "POST" });
   } catch {}
-  $("app").classList.add("hidden");
-  $("loginScreen").classList.remove("hidden");
-  $("password").value = "";
+  showApp(false);
 });
 
-function go(page) {
-  document.querySelectorAll(".page").forEach(el => el.classList.add("hidden"));
-  $("page-"+page).classList.remove("hidden");
-
-  document.querySelectorAll(".nav").forEach(el => {
-    el.classList.toggle("active", el.dataset.page === page);
-  });
-
-  if (page === "customers") loadCustomers();
-}
-
-document.querySelectorAll("[data-page]").forEach(button => {
-  button.addEventListener("click", () => go(button.dataset.page));
-});
-
-document.querySelectorAll("[data-go]").forEach(button => {
-  button.addEventListener("click", () => go(button.dataset.go));
-});
-
-$("refreshBtn").addEventListener("click", refreshAll);
-$("ordersRefresh").addEventListener("click", refreshAll);
-$("customersRefresh").addEventListener("click", loadCustomers);
-
-async function refreshAll() {
+$("refreshButton").addEventListener("click", async () => {
   try {
-    const [orders, products] = await Promise.all([
-      api("/api/admin/orders"),
-      api("/api/admin/products")
-    ]);
-
-    state.orders = Array.isArray(orders) ? orders : [];
-    state.products = Array.isArray(products) ? products : [];
-
-    renderDashboard();
-    renderOrders();
-    renderProducts();
+    await refreshAll();
+    toast("Dashboard refreshed.");
   } catch (error) {
     toast(error.message, true);
   }
+});
+
+async function refreshAll() {
+  const [products, orders] = await Promise.all([
+    api("/api/admin/products"),
+    api("/api/admin/orders")
+  ]);
+
+  state.products = Array.isArray(products) ? products : [];
+  state.orders = Array.isArray(orders) ? orders : [];
+
+  renderDashboard();
+  renderOrders();
+  renderProducts();
 }
 
-function statusPill(status) {
-  const allowed = ["Pending","Confirmed","Shipped","Delivered","Cancelled"];
-  const safe = allowed.includes(status) ? status : "Pending";
-  return `<span class="pill">${esc(safe)}</span>`;
+function changePage(page) {
+  for (const name of ["dashboard", "orders", "products"]) {
+    $("page-" + name).classList.toggle("hidden", name !== page);
+  }
+
+  document.querySelectorAll("[data-page]").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
 }
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => changePage(button.dataset.page));
+});
 
 function orderItems(order) {
-  if (!Array.isArray(order.items) || !order.items.length) {
-    return '<span class="muted">No item details</span>';
-  }
-  return order.items.map(item =>
-    `${esc(item.product_name || "Product")} × ${Number(item.quantity)||1}`
-  ).join("<br>");
+  return (order.items || []).map(item =>
+    `${esc(item.product_name)} × ${Number(item.quantity)}`
+  ).join("<br>") || "—";
 }
 
-function orderTable(orders, compact=false) {
-  if (!orders.length) return '<div class="empty">No orders found.</div>';
+function statusOptions(current) {
+  const statuses = [
+    "Placed",
+    "Confirmed",
+    "Processing",
+    "Packed",
+    "Out for delivery",
+    "Delivered",
+    "Cancelled"
+  ];
 
-  return `<table>
-    <thead><tr>
-      <th>Order</th><th>Customer</th><th>Items</th>
-      <th>Total</th><th>Payment</th><th>Status</th>
-      ${compact ? "" : "<th>Update</th><th>Invoice</th>"}
-    </tr></thead><tbody>
-    ${orders.map(order => `<tr>
-      <td><strong>#${Number(order.id)}</strong><div class="muted">${esc(order.created_at||"")}</div></td>
-      <td><strong>${esc(order.customer_name)}</strong><div>${esc(order.phone)}</div><div class="muted">${esc(order.pincode||"")}</div></td>
-      <td>${orderItems(order)}</td>
-      <td><strong>${money(order.total)}</strong></td>
-      <td>${esc(order.payment_method||"—")}</td>
-      <td>${statusPill(order.status)}</td>
-      ${compact ? "" : `<td><select class="statusSelect" data-id="${Number(order.id)}">
-        ${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(s =>
-          `<option ${order.status===s?"selected":""}>${s}</option>`
-        ).join("")}
-      </select></td>
-      <td><button class="btn light" data-invoice="${Number(order.id)}">Print</button></td>`}
-    </tr>`).join("")}
-    </tbody></table>`;
+  return statuses.map(status =>
+    `<option value="${status}" ${status === current ? "selected" : ""}>${status}</option>`
+  ).join("");
+}
+
+function renderOrderTable(orders, compact = false) {
+  if (!orders.length) {
+    return '<p class="muted">No orders found.</p>';
+  }
+
+  return `
+    <table>
+      <thead><tr>
+        <th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th>
+        ${compact ? "" : "<th>Update status</th>"}
+      </tr></thead>
+      <tbody>
+      ${orders.map(order => `
+        <tr>
+          <td><strong>#${Number(order.id)}</strong><br><small>${esc(order.created_at || "")}</small></td>
+          <td>
+            <strong>${esc(order.customer_name)}</strong><br>
+            ${esc(order.phone)}<br>
+            <small>${esc(order.address || "")}, ${esc(order.pincode || "")}</small>
+          </td>
+          <td>${orderItems(order)}</td>
+          <td><strong>${money(order.total)}</strong></td>
+          <td>${esc(order.payment_method || "—")}</td>
+          <td>${esc(order.status || "Placed")}</td>
+          ${compact ? "" : `
+            <td>
+              <select data-order-status="${Number(order.id)}">
+                ${statusOptions(order.status || "Placed")}
+              </select>
+            </td>
+          `}
+        </tr>
+      `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderDashboard() {
+  const orders = state.orders;
+  const pending = orders.filter(order =>
+    !["Delivered", "Cancelled"].includes(order.status)
+  ).length;
+
+  const sales = orders
+    .filter(order => order.status === "Delivered")
+    .reduce((sum, order) => sum + (Number(order.total) || 0), 0);
+
+  $("totalOrders").textContent = orders.length;
+  $("pendingOrders").textContent = pending;
+  $("deliveredSales").textContent = money(sales);
+  $("totalProducts").textContent = state.products.length;
+  $("recentOrders").innerHTML = renderOrderTable(orders.slice(0, 5), true);
+
+  const lowStock = state.products.filter(product => Number(product.stock) <= 5);
+
+  $("lowStock").innerHTML = lowStock.length
+    ? `<table>
+        <thead><tr><th>Product</th><th>Stock</th><th>Price</th><th></th></tr></thead>
+        <tbody>${lowStock.map(product => `
+          <tr>
+            <td>${esc(product.name)}</td>
+            <td>${Number(product.stock) || 0}</td>
+            <td>${money(product.price)}</td>
+            <td><button class="secondary" type="button" data-edit="${Number(product.id)}">Edit</button></td>
+          </tr>
+        `).join("")}</tbody>
+      </table>`
+    : '<p class="muted">No low-stock products.</p>';
 }
 
 function renderOrders() {
   const query = $("orderSearch").value.trim().toLowerCase();
   const filter = $("orderFilter").value;
 
-  const rows = state.orders.filter(order =>
-    (!filter || order.status===filter) &&
-    (!query || [
-      order.id, order.customer_name, order.phone,
-      order.address, order.pincode
-    ].some(value => String(value??"").toLowerCase().includes(query)))
-  );
+  const rows = state.orders.filter(order => {
+    const searchable = [
+      order.id,
+      order.customer_name,
+      order.phone,
+      order.address,
+      order.pincode
+    ].some(value => String(value ?? "").toLowerCase().includes(query));
 
-  $("ordersTable").innerHTML = orderTable(rows);
+    return (!query || searchable) && (!filter || order.status === filter);
+  });
+
+  $("ordersTable").innerHTML = renderOrderTable(rows);
 }
 
 $("orderSearch").addEventListener("input", renderOrders);
 $("orderFilter").addEventListener("change", renderOrders);
 
 $("ordersTable").addEventListener("change", async event => {
-  const select = event.target.closest(".statusSelect");
+  const select = event.target.closest("[data-order-status]");
   if (!select) return;
 
-  const id = Number(select.dataset.id);
-  const order = state.orders.find(item => Number(item.id)===id);
+  const id = Number(select.dataset.orderStatus);
+  const order = state.orders.find(item => Number(item.id) === id);
   if (!order) return;
 
   const previous = order.status;
-  const status = select.value;
   select.disabled = true;
 
   try {
-    await api("/api/admin/orders/"+id, {
-      method:"PATCH",
-      body:JSON.stringify({status})
+    await api("/api/admin/orders/" + id, {
+      method: "PATCH",
+      body: JSON.stringify({ status: select.value })
     });
-    order.status = status;
-    toast("Order #"+id+" updated.");
+
+    order.status = select.value;
+    toast("Order #" + id + " status updated.");
     renderDashboard();
     renderOrders();
   } catch (error) {
@@ -467,289 +473,209 @@ $("ordersTable").addEventListener("change", async event => {
   }
 });
 
-function renderDashboard() {
-  const orders = state.orders;
-  const pending = orders.filter(o => o.status==="Pending").length;
-  const sales = orders.filter(o => o.status==="Delivered")
-    .reduce((sum,o) => sum+(Number(o.total)||0), 0);
-  const low = state.products.filter(p => (Number(p.stock)||0)<=5);
-
-  $("statOrders").textContent = orders.length;
-  $("statPending").textContent = pending;
-  $("statSales").textContent = money(sales);
-  $("statProducts").textContent = state.products.length;
-  $("recentOrders").innerHTML = orderTable(orders.slice(0,5), true);
-
-  $("stockAlerts").innerHTML = low.length
-    ? `<table><thead><tr><th>Product</th><th>Stock</th><th>Action</th></tr></thead><tbody>
-       ${low.map(p => `<tr><td>${esc(p.name)}</td><td class="low">${Number(p.stock)||0}</td>
-       <td><button class="btn light" data-edit="${Number(p.id)}">Update</button></td></tr>`).join("")}
-       </tbody></table>`
-    : '<div class="empty">No low-stock products.</div>';
-}
-
-function validImageUrl(value) {
-  if (!value) return true;
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
-
 function renderProducts() {
   const query = $("productSearch").value.trim().toLowerCase();
   const filter = $("stockFilter").value;
 
-  const rows = state.products.filter(p => {
-    const stock = Number(p.stock)||0;
-    return (!query || [p.name,p.category,p.id].some(v =>
-      String(v??"").toLowerCase().includes(query))) &&
-      (!filter || (filter==="low" && stock<=5) ||
-       (filter==="available" && stock>0) ||
-       (filter==="zero" && stock===0));
+  const rows = state.products.filter(product => {
+    const stock = Number(product.stock) || 0;
+    const matchesQuery = [product.name, product.category, product.id]
+      .some(value => String(value ?? "").toLowerCase().includes(query));
+
+    const matchesFilter =
+      !filter ||
+      (filter === "low" && stock <= 5) ||
+      (filter === "available" && stock > 0) ||
+      (filter === "zero" && stock === 0);
+
+    return matchesQuery && matchesFilter;
   });
 
-  $("productCount").textContent = state.products.length+" products";
+  $("productCount").textContent = state.products.length + " products in catalogue";
 
   if (!rows.length) {
-    $("productsTable").innerHTML = '<div class="empty">No matching products.</div>';
+    $("productsTable").innerHTML = '<p class="muted">No products match your search.</p>';
     return;
   }
 
-  $("productsTable").innerHTML = `<table><thead><tr>
-    <th>Image</th><th>Product</th><th>Price</th><th>Stock</th>
-    <th>Prescription</th><th>Actions</th>
-    </tr></thead><tbody>
-    ${rows.map(p => `<tr>
-      <td>${p.image_url && validImageUrl(p.image_url)
-        ? `<img class="product-image" src="${esc(p.image_url)}" alt="" loading="lazy" onerror="this.style.display='none'">`
-        : "—"}</td>
-      <td><strong>${esc(p.name)}</strong><div class="muted">${esc(p.category)}</div></td>
-      <td>${money(p.price)}</td>
-      <td class="${Number(p.stock)<=5?"low":""}">${Number(p.stock)||0}</td>
-      <td>${Number(p.prescription_required) ? "Required" : "No"}</td>
-      <td><div class="actions">
-        <button class="btn light" data-edit="${Number(p.id)}">Edit</button>
-        <button class="btn red" data-delete="${Number(p.id)}">Delete</button>
-      </div></td>
-    </tr>`).join("")}
-    </tbody></table>`;
+  $("productsTable").innerHTML = `
+    <table>
+      <thead><tr><th>Product</th><th>Photo</th><th>Price</th><th>Stock</th><th>Prescription</th><th>Actions</th></tr></thead>
+      <tbody>${rows.map(product => `
+        <tr>
+          <td><strong>${esc(product.name)}</strong><br><small>${esc(product.category)} · ID ${Number(product.id)}</small></td>
+          <td>${product.image_url
+            ? `<img class="product-img" src="${esc(product.image_url)}" alt="${esc(product.name)}">`
+            : "—"
+          }</td>
+          <td>${money(product.price)}</td>
+          <td>${Number(product.stock) || 0}</td>
+          <td>${Number(product.prescription_required) ? "Required" : "No"}</td>
+          <td><div class="actions">
+            <button class="secondary" type="button" data-edit="${Number(product.id)}">Edit</button>
+            <button class="danger" type="button" data-delete="${Number(product.id)}">Delete</button>
+          </div></td>
+        </tr>
+      `).join("")}</tbody>
+    </table>
+  `;
 }
 
 $("productSearch").addEventListener("input", renderProducts);
 $("stockFilter").addEventListener("change", renderProducts);
 
-function showImagePreview() {
-  const url = $("productImage").value.trim();
-  const img = $("imagePreview");
-  const text = $("imagePreviewText");
-
-  img.onerror = () => {
-    img.classList.add("hidden");
-    text.textContent = "Image could not be loaded. Check the URL.";
-  };
-
-  if (!url || !validImageUrl(url)) {
-    img.classList.add("hidden");
-    text.textContent = url ? "Please use a valid HTTPS image URL." : "Image preview will appear here.";
-    return;
-  }
-
-  img.src = url;
-  img.classList.remove("hidden");
-  text.textContent = "Preview";
+function resetEditor() {
+  $("productForm").reset();
+  $("productId").value = "";
+  selectedProductImage = "";
+  $("preview").removeAttribute("src");
+  $("preview").classList.add("hidden");
+  $("productFormError").textContent = "";
 }
 
-$("productImage").addEventListener("input", showImagePreview);
+function openEditor(product = null) {
+  resetEditor();
 
-function openProductForm(product=null) {
-  $("productForm").reset();
-  $("productId").value = product ? product.id : "";
+  $("productEditor").classList.remove("hidden");
+  $("editorTitle").textContent = product ? "Edit product" : "Add product";
+  $("productId").value = product ? String(product.id) : "";
   $("productName").value = product?.name || "";
   $("productCategory").value = product?.category || "";
   $("productPrice").value = product?.price ?? "";
   $("productStock").value = product?.stock ?? "";
-  $("productImage").value = product?.image_url || "";
   $("productRx").checked = !!Number(product?.prescription_required);
-  $("productFormTitle").textContent = product ? "Edit product" : "Add product";
-  $("saveProductBtn").textContent = product ? "Save changes" : "Save product";
-  $("productFormError").textContent = "";
-  $("imagePreview").classList.add("hidden");
-  $("imagePreviewText").textContent = "Image preview will appear here.";
-  $("productFormPanel").classList.remove("hidden");
-  showImagePreview();
-  $("productFormPanel").scrollIntoView({behavior:"smooth",block:"start"});
+
+  selectedProductImage = product?.image_url || "";
+
+  if (selectedProductImage) {
+    $("preview").src = selectedProductImage;
+    $("preview").classList.remove("hidden");
+  }
+
+  $("productEditor").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function closeProductForm() {
-  $("productFormPanel").classList.add("hidden");
+function closeEditor() {
+  $("productEditor").classList.add("hidden");
+  resetEditor();
 }
 
-$("newProductBtn").addEventListener("click", () => openProductForm());
-$("closeProductForm").addEventListener("click", closeProductForm);
-$("cancelProductBtn").addEventListener("click", closeProductForm);
+$("newProductButton").addEventListener("click", () => openEditor());
+$("cancelEditorButton").addEventListener("click", closeEditor);
 
-document.addEventListener("click", async event => {
-  const edit = event.target.closest("[data-edit]");
-  const del = event.target.closest("[data-delete]");
-  const invoice = event.target.closest("[data-invoice]");
+$("productImage").addEventListener("change", () => {
+  const file = $("productImage").files?.[0];
+  if (!file) return;
 
-  if (edit) {
-    const product = state.products.find(p => Number(p.id)===Number(edit.dataset.edit));
-    if (product) {
-      go("products");
-      openProductForm(product);
-    }
+  const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+
+  if (!allowed.includes(file.type)) {
+    $("productFormError").textContent = "Choose a JPG, PNG, WebP or GIF image.";
+    $("productImage").value = "";
+    return;
   }
 
-  if (del) {
-    const id = Number(del.dataset.delete);
-    const product = state.products.find(p => Number(p.id)===id);
-    if (!product || !confirm(`Delete "${product.name}"?`)) return;
-
-    del.disabled = true;
-    try {
-      await api("/api/admin/products/"+id, {method:"DELETE"});
-      state.products = state.products.filter(p => Number(p.id)!==id);
-      renderProducts();
-      renderDashboard();
-      toast("Product deleted.");
-    } catch (error) {
-      toast(error.message, true);
-    } finally {
-      del.disabled = false;
-    }
+  if (file.size > 1024 * 1024) {
+    $("productFormError").textContent = "Image must be 1 MB or smaller.";
+    $("productImage").value = "";
+    return;
   }
 
-  if (invoice) {
-    const order = state.orders.find(o => Number(o.id)===Number(invoice.dataset.invoice));
-    if (order) printInvoice(order);
-  }
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    selectedProductImage = String(reader.result || "");
+    $("preview").src = selectedProductImage;
+    $("preview").classList.remove("hidden");
+    $("productFormError").textContent = "";
+  };
+
+  reader.onerror = () => {
+    $("productFormError").textContent = "Could not read the image.";
+  };
+
+  reader.readAsDataURL(file);
 });
 
 $("productForm").addEventListener("submit", async event => {
   event.preventDefault();
 
   const id = $("productId").value;
+
   const product = {
-    name:$("productName").value.trim(),
-    category:$("productCategory").value.trim(),
-    price:Number($("productPrice").value),
-    stock:Number($("productStock").value),
-    image_url:$("productImage").value.trim(),
-    prescription_required:$("productRx").checked
+    name: $("productName").value.trim(),
+    category: $("productCategory").value.trim(),
+    price: Number($("productPrice").value),
+    stock: Number($("productStock").value),
+    prescription_required: $("productRx").checked,
+    image_url: selectedProductImage
   };
 
   if (!product.name || !product.category ||
-      !Number.isSafeInteger(product.price) || product.price<0 ||
-      !Number.isSafeInteger(product.stock) || product.stock<0) {
-    $("productFormError").textContent = "Enter a name, category, whole-rupee price and valid stock.";
+      !Number.isFinite(product.price) || product.price < 0 ||
+      !Number.isInteger(product.stock) || product.stock < 0) {
+    $("productFormError").textContent = "Enter valid product details and stock.";
     return;
   }
 
-  if (!validImageUrl(product.image_url)) {
-    $("productFormError").textContent = "The image URL must use HTTPS.";
-    return;
-  }
-
-  const button = $("saveProductBtn");
+  const button = $("saveProductButton");
   button.disabled = true;
   $("productFormError").textContent = "";
 
   try {
-    await api(id ? "/api/admin/products/"+Number(id) : "/api/admin/products", {
-      method:id ? "PATCH" : "POST",
-      body:JSON.stringify(product)
-    });
+    await api(
+      id ? "/api/admin/products/" + Number(id) : "/api/admin/products",
+      {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(product)
+      }
+    );
 
-    closeProductForm();
+    closeEditor();
     await refreshAll();
-    go("products");
-    toast(id ? "Product updated." : "Product added.");
+    changePage("products");
+    toast(id ? "Product updated successfully." : "Product added successfully.");
   } catch (error) {
     $("productFormError").textContent = error.message;
   } finally {
     button.disabled = false;
-    button.textContent = id ? "Save changes" : "Save product";
   }
 });
 
-async function loadCustomers() {
-  $("customersTable").innerHTML = '<div class="empty">Loading customers…</div>';
+document.addEventListener("click", async event => {
+  const edit = event.target.closest("[data-edit]");
+  const remove = event.target.closest("[data-delete]");
 
-  try {
-    const data = await api("/api/admin/customers");
-    state.customers = Array.isArray(data) ? data : [];
-    renderCustomers();
-  } catch (error) {
-    $("customersTable").innerHTML =
-      `<div class="empty">${esc(error.message)}<br><br>
-      Check that your server has the admin customers API.</div>`;
-  }
-}
-
-function renderCustomers() {
-  const query = $("customerSearch").value.trim().toLowerCase();
-  const rows = state.customers.filter(customer =>
-    [customer.name,customer.phone].some(value =>
-      String(value??"").toLowerCase().includes(query))
-  );
-
-  if (!rows.length) {
-    $("customersTable").innerHTML = '<div class="empty">No registered customers found.</div>';
-    return;
+  if (edit) {
+    const product = state.products.find(item =>
+      Number(item.id) === Number(edit.dataset.edit)
+    );
+    if (product) {
+      changePage("products");
+      openEditor(product);
+    }
   }
 
-  $("customersTable").innerHTML = `<table>
-    <thead><tr><th>Name</th><th>Phone</th><th>Registered</th></tr></thead>
-    <tbody>${rows.map(customer => `<tr>
-      <td>${esc(customer.name||"—")}</td>
-      <td>${esc(customer.phone||"—")}</td>
-      <td>${esc(customer.created_at||"—")}</td>
-    </tr>`).join("")}</tbody>
-  </table>`;
-}
+  if (remove) {
+    const id = Number(remove.dataset.delete);
+    const product = state.products.find(item => Number(item.id) === id);
+    if (!product) return;
 
-$("customerSearch").addEventListener("input", renderCustomers);
+    if (!confirm(`Delete "${product.name}" from the catalogue?`)) return;
 
-function printInvoice(order) {
-  const win = window.open("", "_blank");
-  if (!win) {
-    toast("Allow pop-ups to print invoices.", true);
-    return;
+    remove.disabled = true;
+
+    try {
+      await api("/api/admin/products/" + id, { method: "DELETE" });
+      await refreshAll();
+      toast("Product deleted.");
+    } catch (error) {
+      toast(error.message, true);
+    } finally {
+      remove.disabled = false;
+    }
   }
-
-  const items = (order.items||[]).map(item => `<tr>
-    <td>${esc(item.product_name||"Product")}</td>
-    <td>${Number(item.quantity)||0}</td>
-    <td>${money(item.unit_price)}</td>
-    <td>${money((Number(item.quantity)||0)*(Number(item.unit_price)||0))}</td>
-  </tr>`).join("");
-
-  win.document.write(`<!DOCTYPE html><html lang="en"><head>
-    <meta charset="UTF-8"><title>Kapil Medical Invoice</title>
-    <style>body{font:14px Arial;padding:25px;color:#203128}
-    h1{color:#087f5b}table{width:100%;border-collapse:collapse;margin-top:20px}
-    th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}
-    .total{text-align:right;font-size:20px;font-weight:bold}
-    @media print{button{display:none}}</style></head><body>
-    <h1>Kapil Medical</h1><h2>Invoice · Order #${Number(order.id)}</h2>
-    <p><b>Customer:</b> ${esc(order.customer_name)}<br>
-    <b>Phone:</b> ${esc(order.phone)}<br>
-    <b>Address:</b> ${esc(order.address)}<br>
-    <b>Pincode:</b> ${esc(order.pincode||"")}<br>
-    <b>Date:</b> ${esc(order.created_at||"")}<br>
-    <b>Payment:</b> ${esc(order.payment_method||"")}<br>
-    <b>Status:</b> ${esc(order.status||"")}</p>
-    <table><thead><tr><th>Item</th><th>Qty</th><th>Unit price</th><th>Amount</th></tr></thead>
-    <tbody>${items}</tbody></table>
-    <p class="total">Total: ${money(order.total)}</p>
-    <button onclick="window.print()">Print / Save as PDF</button>
-    </body></html>`);
-  win.document.close();
-}
+});
 
 checkSession();
 </script>
