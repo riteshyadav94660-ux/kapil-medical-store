@@ -631,7 +631,18 @@ app.post("/api/customer/otp-login", async (req, res) => {
     );
 
     const result = await response.json().catch(() => ({}));
-
+// Temporary diagnostic: log response structure only, not tokens or phone numbers.
+console.log("MSG91 verification response:", {
+  httpStatus: response.status,
+  topLevelKeys: Object.keys(result || {}),
+  dataKeys:
+    result?.data && typeof result.data === "object"
+      ? Object.keys(result.data)
+      : [],
+  dataType: typeof result?.data,
+  responseType: result?.type,
+  responseCode: result?.code
+});
     if (!response.ok) {
       console.error("MSG91 verification rejected:", response.status);
       return res.status(401).json({
