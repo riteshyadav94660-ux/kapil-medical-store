@@ -1,3 +1,27 @@
+import os from "node:os";
+import fs from "node:fs/promises";
+app.get("/api/admin/export-database", requireAdmin, async (req, res) => {
+  const exportPath = path.join(
+    os.tmpdir(),
+    `kapil-medical-export-${crypto.randomBytes(12).toString("hex")}.db`
+  );
+
+  try {
+    await db.backup(exportPath);
+    res.set("Cache-Control", "no-store");
+
+    res.download(exportPath, "kapil-medical.db", async () => {
+      await fs.unlink(exportPath).catch(() => {});
+    });
+  } catch (error) {
+    console.error("Database export failed:", error);
+    await fs.unlink(exportPath).catch(() => {});
+
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Database export failed." });
+    }
+  }
+});
 import express from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
