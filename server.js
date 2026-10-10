@@ -650,27 +650,35 @@ console.log("MSG91 verification response:", {
       });
     }
 
-    const candidates = [
-      result?.data?.mobile,
-      result?.data?.phone,
-      result?.mobile,
-      result?.phone,
-      result?.data?.identifier,
-      result?.identifier
-    ];
+    
+function findVerifiedMobile(obj) {
+  if (!obj || typeof obj !== "object") return "";
 
-    let phone = "";
+  for (const [key, value] of Object.entries(obj)) {
+    const field = key.toLowerCase().replace(/[_-]/g, "");
 
-    for (const candidate of candidates) {
-      if (typeof candidate !== "string") continue;
-
-      const normalized = normalizePhone(candidate);
+    if (
+      typeof value === "string" &&
+      ["mobile", "phone", "identifier", "mobilenumber", "phonenumber"].includes(field)
+    ) {
+      const normalized = normalizePhone(value);
 
       if (/^[6-9]\d{9}$/.test(normalized)) {
-        phone = normalized;
-        break;
+        return normalized;
       }
     }
+
+    if (value && typeof value === "object") {
+      const found = findVerifiedMobile(value);
+      if (found) return found;
+    }
+  }
+
+  return "";
+}
+
+const phone = findVerifiedMobile(result);
+
 
     if (!phone) {
       console.error("MSG91 verification response has no recognized phone field.");
