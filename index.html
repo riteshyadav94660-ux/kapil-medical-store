@@ -465,14 +465,21 @@ async function ensureOtpScript() {
   }
 }
 
-$("customerOtpForm").addEventListener("submit", async event => {
+$("customerOtpForm").$("customerOtpForm").addEventListener("submit", async event => {
   event.preventDefault();
+
   const button = event.currentTarget.querySelector('button[type="submit"]');
   button.disabled = true;
+  button.textContent = "Connecting to OTP…";
+  accountMessage("loginMsg", "Connecting to MSG91…");
 
   try {
     const config = await getMsg91Config();
     await ensureOtpScript();
+
+    if (typeof window.initSendOTP !== "function") {
+      throw new Error("MSG91 script did not initialize.");
+    }
 
     window.initSendOTP({
       widgetId: config.widgetId,
@@ -481,21 +488,58 @@ $("customerOtpForm").addEventListener("submit", async event => {
 
       success: async data => {
         try {
-          const token = data?.message || data?.access_token ||
-            data?.accessToken || data?.token ||
-            data?.data?.access_token || data?.data?.accessToken;
+          const token =
+            data?.message ||
+            data?.access_token ||
+            data?.accessToken ||
+            data?.token ||
+            data?.data?.access_token ||
+            data?.data?.accessToken;
 
           if (!token) {
-            throw Error("OTP token was not returned. Check the MSG91 widget callback configuration.");
+            throw new Error("OTP token missing from MSG91 response.");
           }
 
-          const result = await api("/api/customer/otp-login", {
-            method:"POST",
-            body:JSON.stringify({
-              accessToken:token,
-              name:$("otpName").value.trim()
-            })
-          });
+          const result = await accountRequest(
+            "/api/customer/otp-login",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                accessToken: token,
+                name: $("otpName").value.trim()
+              })
+            }
+          );
+
+          customerAccount = result.customer;
+          customerOrders = [];
+          renderAccount();
+          await refreshCustomerOrders();
+          accountMessage("loginMsg", "OTP verified successfully.");
+        } catch (error) {
+          accountMessage("loginMsg", error.message, true);
+        } finally {
+          button.disabled = false;
+          button.textContent = "Continue with mobile OTP";
+        }
+      },
+
+      failure: error => {
+        accountMessage(
+          "loginMsg",
+          error?.message || "OTP verification failed. Please try again.",
+          true
+        );
+        button.disabled = false;
+        button.textContent = "Continue with mobile OTP";
+      }
+    });
+  } catch (error) {
+    accountMessage("loginMsg", error.message, true);
+    button.disabled = false;
+    button.textContent = "Continue with mobile OTP";
+  }
+});
 
           customerAccount = result.customer;
           customerOrders = [];
