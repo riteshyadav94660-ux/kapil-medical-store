@@ -6,818 +6,591 @@
 <meta name="theme-color" content="#087f5b">
 <title>Kapil Medical | Online Pharmacy</title>
 <style>
-:root{--g:#087f5b;--d:#07523e;--l:#f3faf6;--b:#dce8e0;--t:#20312a;--m:#64746b}
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7faf8;color:var(--t)}
-header{background:var(--g);color:white;padding:18px 16px}
-.wrap,main,footer{max-width:1100px;margin:auto}
-.wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-h1{margin:0;font-size:25px}
-.tag{margin:6px 0 0;font-size:14px}
-.badge{background:white;color:var(--d);border-radius:25px;padding:10px 14px;font-weight:bold}
-main{padding:20px 14px 35px}
-.hero{background:#e3f5e9;border-radius:16px;padding:22px;margin-bottom:22px}
-.hero h2{margin:0 0 8px;font-size:24px}
-.hero p{margin:0;line-height:1.5}
-h2.st{font-size:21px;margin:22px 0 14px}
-#products{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:15px}
-.card{background:white;border:1px solid var(--b);border-radius:14px;padding:16px;display:flex;flex-direction:column;min-width:0;box-shadow:0 3px 12px #163c2010}
-.pic{height:150px;display:grid;place-items:center;background:var(--l);border-radius:10px;font-size:38px;margin-bottom:12px;overflow:hidden}
-.pic img{width:100%;height:100%;object-fit:contain;background:white}
-.card h3{margin:0 0 8px;font-size:17px}
-.price{font-size:20px;color:var(--g);font-weight:bold}
-.muted{color:var(--m);font-size:13px;line-height:1.45}
-button{cursor:pointer;border:0;border-radius:8px;padding:11px 13px;font-size:15px;font-weight:bold}
-button:disabled{opacity:.5;cursor:not-allowed}
-.primary{background:var(--g);color:white}
-.primary:hover{background:var(--d)}
-.secondary{background:#e7f2eb;color:var(--d)}
-.card button{width:100%;margin-top:auto}
-.panel{margin-top:24px;padding:18px;background:white;border:1px solid var(--b);border-radius:14px}
-.rowcart{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px 0;border-bottom:1px solid var(--b)}
-.qty{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.qty button{padding:7px 11px}
-.total{display:flex;justify-content:space-between;gap:10px;font-size:19px;font-weight:bold;margin:18px 0}
-form{display:grid;gap:13px}
-label{font-size:14px;font-weight:bold}
-input,textarea,select{display:block;width:100%;padding:12px;margin-top:6px;border:1px solid #cbd8cf;border-radius:8px;font:inherit;background:white}
-textarea{min-height:85px;resize:vertical}
-.status{margin:12px 0;line-height:1.5;overflow-wrap:anywhere}
-.error{color:#b42318}
-.success{color:var(--d)}
-.notice{padding:12px;border-radius:9px;background:#fff7df;color:#694d00;font-size:13px;line-height:1.5}
-footer{padding:22px 14px;color:var(--m);font-size:13px;line-height:1.6}
-[hidden]{display:none!important}
-.account-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.account-box{border:1px solid var(--b);border-radius:12px;padding:16px;min-width:0}
-.account-box h3{margin:0 0 8px}
-.account-box form{margin-top:12px}
-.account-actions{display:flex;gap:8px;flex-wrap:wrap}
-.history-card{border:1px solid var(--b);border-radius:10px;padding:14px;margin:10px 0}
-.history-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.history-items{font-size:13px;color:var(--m);line-height:1.6;margin:10px 0}
-.account-msg{font-size:13px;line-height:1.5;margin:10px 0}
-.account-msg.error{color:#b42318}
-.account-msg.success{color:var(--d)}
-@media(max-width:600px){.account-grid{grid-template-columns:1fr}.account-box{padding:13px}.history-head{display:block}.history-head button{margin-top:8px}}
-@media(max-width:480px){h1{font-size:22px}.hero h2{font-size:21px}.rowcart{grid-template-columns:1fr}}
+:root {
+  --g: #087f5b;
+  --d: #07523e;
+  --l: #f3faf6;
+  --b: #dce8e0;
+  --t: #20312a;
+  --m: #64746b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f7faf8;
+  color: var(--t);
+}
+header {
+  background: var(--g);
+  color: white;
+  padding: 18px 16px;
+}
+.wrap, main, footer {
+  max-width: 1100px;
+  margin: auto;
+}
+.wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+h1 { margin: 0; font-size: 25px; }
+.tag { margin: 6px 0 0; font-size: 14px; }
+.badge {
+  background: white;
+  color: var(--d);
+  border-radius: 25px;
+  padding: 10px 14px;
+  font-weight: bold;
+}
+main { padding: 20px 14px 35px; }
+.hero {
+  background: #e3f5e9;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 22px;
+}
+.hero h2 { margin: 0 0 8px; font-size: 24px; }
+.hero p { margin: 0; line-height: 1.5; }
+h2.st { font-size: 21px; margin: 22px 0 14px; }
+#products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+  gap: 15px;
+}
+.card {
+  background: white;
+  border: 1px solid var(--b);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  box-shadow: 0 3px 12px #163c2010;
+}
+.pic {
+  height: 150px;
+  display: grid;
+  place-items: center;
+  background: var(--l);
+  border-radius: 10px;
+  font-size: 38px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: white;
+}
+.card h3 { margin: 0 0 8px; font-size: 17px; }
+.price {
+  font-size: 20px;
+  color: var(--g);
+  font-weight: bold;
+}
+.muted { color: var(--m); font-size: 13px; line-height: 1.45; }
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 13px;
+  font-size: 15px;
+  font-weight: bold;
+}
+button:disabled { opacity: .5; cursor: not-allowed; }
+.primary { background: var(--g); color: white; }
+.primary:hover { background: var(--d); }
+.secondary { background: #e7f2eb; color: var(--d); }
+.card button { width: 100%; margin-top: auto; }
+.panel {
+  margin-top: 24px;
+  padding: 18px;
+  background: white;
+  border: 1px solid var(--b);
+  border-radius: 14px;
+}
+.rowcart {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--b);
+}
+.qty { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.qty button { padding: 7px 11px; }
+.total {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: bold;
+  margin: 18px 0;
+}
+.notice {
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff8e6;
+  color: #765600;
+  line-height: 1.5;
+}
+input, textarea, select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ccd8d0;
+  border-radius: 8px;
+  font: inherit;
+  margin: 5px 0 12px;
+}
+label { display: block; font-weight: bold; }
+a { color: var(--g); overflow-wrap: anywhere; }
+[hidden] { display: none !important; }
+footer {
+  padding: 20px 14px;
+  color: var(--m);
+  font-size: 13px;
+}
+@media(max-width:520px) {
+  .hero h2 { font-size: 21px; }
+  .rowcart { grid-template-columns: 1fr; }
+}
 </style>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 <header>
   <div class="wrap">
     <div>
-      <h1>💚 Kapil Medical</h1>
-      <p class="tag">Your health, our priority · Home delivery</p>
+      <h1>Kapil Medical</h1>
+      <p class="tag">Medicines, healthcare and personal care</p>
     </div>
-    <div class="badge" id="cartCount">Cart (0)</div>
+    <div class="badge">Online Orders</div>
   </div>
 </header>
-
 <main>
   <section class="hero">
-    <h2>Welcome to Kapil Medical</h2>
-    <p>Shop healthcare essentials online. Prescription-required products need pharmacy verification before dispensing.</p>
+    <h2>Your healthcare essentials, delivered</h2>
+    <p>Browse available products, place an order and follow its delivery status.</p>
   </section>
 
-  <section class="panel" id="accountPanel">
-    <h2 class="st" style="margin-top:0">Your Account</h2>
-    <p class="muted">Sign in to see your orders and reorder eligible products.</p>
+  <section id="account" class="panel">
+    <h2 class="st">Customer account</h2>
+    <p class="muted">Verify your mobile number using the MSG91 OTP widget.</p>
+    <label for="otpName">Your name</label>
+    <input id="otpName" maxlength="100" autocomplete="name"
+           placeholder="Your name">
+    <div id="msg91-widget-container"></div>
+    <p id="accountMessage" role="status"></p>
+  </section>
 
-    <div id="accountSignedOut" class="account-grid">
-      <div class="account-box">
-        <h3>Sign in with OTP</h3>
-        <p class="muted">Verify your mobile number using the MSG91 OTP widget.</p>
-        <form id="customerOtpForm">
-          <label>Your name (for new accounts)
-            <input id="otpName" maxlength="100" autocomplete="name" placeholder="Your name">
-          </label>
-          <button class="primary" type="submit">Continue with mobile OTP</button>
-          <p id="loginMsg" class="account-msg" role="status"></p>
-        </form>
-        <p class="muted">If you already have an account, use the same verified mobile number.</p>
-      </div>
-      <div class="account-box">
-        <h3>Account help</h3>
-        <p class="muted">Orders placed while signed in appear in your account. Guest orders are not automatically linked.</p>
-      </div>
-    </div>
-
-    <div id="accountSignedIn" hidden>
-      <div class="account-box">
-        <div class="history-head">
-          <div>
-            <h3 id="accountWelcome">Welcome</h3>
-            <p id="accountPhone" class="muted"></p>
-          </div>
-          <button id="customerLogout" class="secondary" type="button">Sign out</button>
-        </div>
-        <div id="orderHistory"><p class="muted">Loading your orders…</p></div>
-        <p id="historyMsg" class="account-msg" role="status"></p>
-      </div>
+  <section>
+    <h2 class="st">Available products</h2>
+    <div id="products">
+      <p>Loading products…</p>
     </div>
   </section>
 
-  <h2 class="st">Our Products</h2>
-  <p id="loading" class="muted" role="status">Loading products…</p>
-  <div id="products" aria-live="polite"></div>
-  <button id="retry" class="secondary" type="button" hidden>Try loading again</button>
-
-  <section class="panel">
-    <h2 class="st" style="margin-top:0">Your Cart</h2>
-    <div id="cartItems"><p class="muted">Your cart is empty.</p></div>
+  <section id="cartPanel" class="panel">
+    <h2 class="st">Your cart</h2>
+    <div id="cartItems"></div>
     <div class="total">
       <span>Total</span>
-      <span>₹<span id="total">0.00</span></span>
+      <span id="cartTotal">₹0.00</span>
     </div>
 
-    <h2 class="st">Delivery Details</h2>
-    <form id="checkoutForm">
-      <label>Full name
-        <input id="name" name="name" autocomplete="name" required maxlength="100">
-      </label>
-      <label>Mobile number
-        <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit mobile number" required>
-      </label>
-      <label>Delivery address
-        <textarea id="address" name="address" autocomplete="street-address" maxlength="500" required></textarea>
-      </label>
-      <label>Pincode
-        <input id="pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit pincode" required>
-      </label>
-      <label>Payment method
-        <select id="payment" name="payment" required>
-          <option value="COD">Cash on Delivery</option>
-          <option value="Razorpay">Pay Online via Razorpay</option>
-        </select>
-      </label>
-      <p class="notice">Online payments are processed through Razorpay. Keep your private order tracking link secure. Prescription-required medicines cannot be ordered through automatic checkout.</p>
-      <button id="placeOrder" class="primary" type="submit">Place COD Order</button>
-    </form>
-    <p id="msg" class="status" role="status" aria-live="polite"></p>
-    <p id="trackingLink" hidden><a id="trackAnchor" target="_blank" rel="noopener noreferrer">Track your order securely</a></p>
+    <label for="customerName">Full name</label>
+    <input id="customerName" autocomplete="name" maxlength="100">
+
+    <label for="customerPhone">Mobile number</label>
+    <input id="customerPhone" autocomplete="tel" inputmode="numeric"
+           maxlength="10">
+
+    <label for="customerAddress">Delivery address</label>
+    <textarea id="customerAddress" maxlength="500" rows="3"></textarea>
+
+    <label for="customerPincode">PIN code</label>
+    <input id="customerPincode" inputmode="numeric" maxlength="6">
+
+    <label for="paymentMethod">Payment method</label>
+    <select id="paymentMethod">
+      <option value="COD">Cash on delivery</option>
+      <option value="Razorpay">Online payment</option>
+    </select>
+
+    <button id="placeOrder" class="primary" type="button">
+      Place order
+    </button>
+
+    <p id="orderMessage" role="status"></p>
+    <p id="trackingLink" hidden>
+      <a id="trackAnchor" target="_blank" rel="noopener noreferrer">
+        Track your order securely
+      </a>
+    </p>
+  </section>
+
+  <section id="myOrders" class="panel">
+    <h2 class="st">My Orders</h2>
+    <div id="customerOrders">
+      Sign in to view your orders.
+    </div>
   </section>
 </main>
-
 <footer>
-  <strong>Kapil Medical</strong><br>
-  Alamgirpur, Rewari, Haryana 122414<br>
-  Prescription-required medicines are dispensed only after appropriate verification.
+  Kapil Medical · Contact the store for prescription verification and order assistance.
 </footer>
-
 <script>
-"use strict";
+'use strict';
 
-const API = "";
-let productsList = [];
+const API = '';
+let products = [];
 let cart = [];
-let customerAccount = null;
-let customerOrders = [];
-let msg91Config = null;
 
 const $ = id => document.getElementById(id);
-const money = value => (Number(value) || 0).toLocaleString("en-IN", {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2
-});
-const price = product => Number(product.price) || 0;
 
-function esc(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-}
-
-function message(text, bad = false) {
-  $("msg").textContent = text;
-  $("msg").className = "status " + (bad ? "error" : "success");
-}
-
-function accountMessage(id, text, bad = false) {
-  const element = $(id);
-  if (!element) return;
-  element.textContent = text;
-  element.className = "account-msg " + (bad ? "error" : "success");
-}
-
-async function accountRequest(url, options = {}) {
+async function api(url, options = {}) {
   const response = await fetch(url, {
-    credentials: "same-origin",
+    credentials: 'same-origin',
     ...options,
     headers: {
-      Accept: "application/json",
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      'Content-Type': 'application/json',
       ...(options.headers || {})
     }
   });
 
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw Error(data.error || "Account request failed.");
-  return data;
-}
-
-function renderAccount() {
-  const signedIn = !!customerAccount;
-  $("accountSignedOut").hidden = signedIn;
-  $("accountSignedIn").hidden = !signedIn;
-
-  if (!signedIn) return;
-
-  $("accountWelcome").textContent = "Hello, " + customerAccount.name;
-  $("accountPhone").textContent = customerAccount.phone;
-  $("name").value = customerAccount.name;
-  $("phone").value = customerAccount.phone;
-  renderOrderHistory();
-}
-
-async function loadAccount() {
-  try {
-    const data = await accountRequest("/api/customer/me");
-    customerAccount = data.customer || null;
-    renderAccount();
-    if (customerAccount) await refreshCustomerOrders();
-  } catch (error) {
-    customerAccount = null;
-    renderAccount();
-    console.warn("Customer account check:", error.message);
-  }
-}
-
-async function refreshCustomerOrders() {
-  if (!customerAccount) return;
-
-  $("orderHistory").innerHTML = '<p class="muted">Loading your orders…</p>';
-
-  try {
-    customerOrders = await accountRequest("/api/customer/orders");
-    if (!Array.isArray(customerOrders)) customerOrders = [];
-    renderOrderHistory();
-  } catch (error) {
-    $("orderHistory").innerHTML = '<p class="muted">Could not load order history.</p>';
-    accountMessage("historyMsg", error.message, true);
-  }
-}
-
-function renderOrderHistory() {
-  if (!customerAccount) return;
-
-  if (!customerOrders.length) {
-    $("orderHistory").innerHTML =
-      '<div class="history-card"><p class="muted">No account orders yet. Orders placed while signed in will appear here.</p></div>';
-    return;
-  }
-
-  $("orderHistory").innerHTML = customerOrders.map(order => {
-    const items = (order.items || []).map(item =>
-      `${esc(item.product_name)} × ${Number(item.quantity)}`
-    ).join("<br>");
-
-    return `
-      <article class="history-card">
-        <div class="history-head">
-          <strong>Order #${Number(order.id)}</strong>
-          <strong>${esc(order.status)}</strong>
-        </div>
-        <p class="muted">${esc(order.created_at || "")}</p>
-        <div class="history-items">${items || "Order items unavailable"}</div>
-        <strong>Total: ₹${money(order.total)}</strong>
-        <button class="secondary" type="button" data-reorder="${Number(order.id)}">Reorder available items</button>
-      </article>
-    `;
-  }).join("");
-}
-
-async function loadMsg91Widget() {
-  if (msg91Config) return msg91Config;
-
-  const response = await fetch("/api/msg91/config", {
-    credentials: "same-origin",
-    cache: "no-store"
-  });
-
-  const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw Error(data.error || "OTP widget is not configured.");
+    throw new Error(data.error || 'Request failed.');
   }
 
-  msg91Config = data;
   return data;
 }
 
-async function ensureMsg91Script() {
-  if (window.initSendOTP) return;
-
-  await new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.src = "https://verify.msg91.com/otp-provider.js";
-    script.onload = resolve;
-    script.onerror = () => reject(
-      Error("Could not load MSG91 OTP widget. Check your internet connection.")
-    );
-    document.head.appendChild(script);
+function rupees(value) {
+  return Number(value || 0).toLocaleString('en-IN', {
+    style: 'currency',
+    currency: 'INR'
   });
-
-  if (!window.initSendOTP) {
-    throw Error("MSG91 OTP widget did not initialize.");
-  }
 }
 
-$("customerOtpForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const button = event.currentTarget.querySelector('button[type="submit"]');
-  button.disabled = true;
-  accountMessage("loginMsg", "Opening secure OTP verification…");
-
-  try {
-    const config = await loadMsg91Widget();
-    await ensureMsg91Script();
-
-    window.initSendOTP({
-      widgetId: config.widgetId,
-      tokenAuth: config.tokenAuth,
-      identifier: "",
-    
-
-      success: async data => {
-        try {
-          const token =
-            data?.message ||
-            data?.access_token ||
-            data?.accessToken ||
-            data?.token ||
-            data?.data?.access_token ||
-            data?.data?.accessToken;
-
-          if (!token) {
-            throw Error("MSG91 did not return an access token. Check the widget callback format.");
-          }
-
-          const result = await accountRequest("/api/customer/otp-login", {
-            method: "POST",
-            body: JSON.stringify({
-              accessToken: token,
-              name: $("otpName").value.trim()
-            })
-          });
-
-          customerAccount = result.customer;
-          customerOrders = [];
-          renderAccount();
-          await refreshCustomerOrders();
-          accountMessage("loginMsg", "OTP verified. You are signed in.");
-        } catch (error) {
-          accountMessage("loginMsg", error.message, true);
-        } finally {
-          button.disabled = false;
-        }
-      },
-
-      failure: error => {
-        accountMessage(
-          "loginMsg",
-          error?.message || "OTP verification failed. Please try again.",
-          true
-        );
-        button.disabled = false;
-      }
-    });
-  } catch (error) {
-    accountMessage("loginMsg", error.message, true);
-    button.disabled = false;
-  }
-});
-
-$("customerLogout").addEventListener("click", async () => {
-  try {
-    await accountRequest("/api/customer/logout", { method: "POST" });
-    customerAccount = null;
-    customerOrders = [];
-    renderAccount();
-    accountMessage("loginMsg", "You have signed out.");
-  } catch (error) {
-    accountMessage("historyMsg", error.message, true);
-  }
-});
-
-$("orderHistory").addEventListener("click", event => {
-  const button = event.target.closest("[data-reorder]");
-  if (!button) return;
-
-  const order = customerOrders.find(item =>
-    Number(item.id) === Number(button.dataset.reorder)
-  );
-  if (!order) return;
-
-  let added = 0;
-  const skipped = [];
-
-  for (const item of order.items || []) {
-    const product = productsList.find(p =>
-      Number(p.id) === Number(item.product_id)
-    );
-
-    if (!product || Number(product.prescription_required)) {
-      skipped.push(item.product_name);
-      continue;
-    }
-
-    for (let i = 0; i < Number(item.quantity || 0); i++) {
-      const quantityInCart = cart.filter(p =>
-        Number(p.id) === Number(product.id)
-      ).length;
-
-      if (quantityInCart >= Number(product.stock)) {
-        skipped.push(product.name);
-        break;
-      }
-
-      cart.push(product);
-      added++;
-    }
-  }
-
-  renderCart();
-
-  let resultMessage = added
-    ? `Added ${added} item(s) to your cart.`
-    : "No items from this order are currently available to reorder.";
-
-  if (skipped.length) {
-    resultMessage += " Skipped unavailable or prescription-required items: " +
-      [...new Set(skipped)].join(", ") + ".";
-  }
-
-  accountMessage("historyMsg", resultMessage, added === 0);
-  $("cartItems").scrollIntoView({ behavior: "smooth", block: "start" });
-});
-
-async function loadProducts() {
-  $("loading").hidden = false;
-  $("loading").textContent = "Loading products…";
-  $("products").innerHTML = "";
-  $("retry").hidden = true;
-
-  try {
-    const response = await fetch(API + "/api/products", {
-      headers: { Accept: "application/json" },
-      cache: "no-store"
-    });
-
-    if (!response.ok) {
-      throw Error("Product server returned HTTP " + response.status);
-    }
-
-    const data = await response.json();
-    if (!Array.isArray(data)) throw Error("Product API did not return a list.");
-
-    productsList = data;
-    renderProducts();
-    renderCart();
-  } catch (error) {
-    console.error("Product loading error:", error);
-    $("loading").textContent = "Products could not be loaded: " + error.message;
-    $("loading").className = "status error";
-    $("retry").hidden = false;
-  }
+function safeText(value) {
+  return String(value ?? '');
 }
 
 function renderProducts() {
-  $("loading").hidden = true;
-  $("retry").hidden = true;
+  const container = $('products');
+  container.replaceChildren();
 
-  if (!productsList.length) {
-    $("products").innerHTML = "<p>No products are currently available.</p>";
+  if (!products.length) {
+    container.textContent = 'No products are currently available.';
     return;
   }
 
-  $("products").innerHTML = productsList.map(product => {
-    const stock = Number(product.stock) || 0;
-    const prescription = Number(product.prescription_required)
-      ? '<p class="muted">Prescription verification required</p>'
-      : "";
+  products.forEach(product => {
+    const card = document.createElement('article');
+    card.className = 'card';
 
-    const photo = product.image_url
-      ? `<img src="${esc(product.image_url)}" alt="${esc(product.name)}" loading="lazy" onerror="this.style.display='none'">`
-      : (String(product.category || "").toLowerCase().includes("medicine") ? "💊" : "🧴");
+    const picture = document.createElement('div');
+    picture.className = 'pic';
 
-    return `
-      <article class="card">
-        <div class="pic">${photo}</div>
-        <h3>${esc(product.name)}</h3>
-        <p class="price">₹${money(price(product))}</p>
-        <p class="muted">${stock > 0 ? "In stock: " + stock : "Out of stock"}</p>
-        ${prescription}
-        <button class="primary" type="button" data-add="${Number(product.id)}" ${stock <= 0 ? "disabled" : ""}>
-          ${stock > 0 ? "Add to Cart" : "Out of Stock"}
-        </button>
-      </article>
-    `;
-  }).join("");
+    if (product.image_url) {
+      const image = document.createElement('img');
+      image.src = product.image_url;
+      image.alt = safeText(product.name);
+      image.loading = 'lazy';
+      image.onerror = () => {
+        picture.textContent = '🩺';
+      };
+      picture.appendChild(image);
+    } else {
+      picture.textContent = '🩺';
+    }
+
+    const title = document.createElement('h3');
+    title.textContent = safeText(product.name);
+
+    const category = document.createElement('p');
+    category.className = 'muted';
+    category.textContent = safeText(product.category || 'Healthcare');
+
+    const price = document.createElement('p');
+    price.className = 'price';
+    price.textContent = rupees(product.price);
+
+    const stock = document.createElement('p');
+    stock.className = 'muted';
+    stock.textContent = Number(product.stock) > 0
+      ? 'In stock'
+      : 'Out of stock';
+
+    const button = document.createElement('button');
+    button.className = 'primary';
+    button.textContent = 'Add to cart';
+    button.disabled = Number(product.stock) < 1;
+
+    button.addEventListener('click', () => addToCart(product.id));
+
+    card.append(picture, title, category, price, stock, button);
+    container.appendChild(card);
+  });
 }
 
-function add(productId) {
-  const product = productsList.find(item => Number(item.id) === Number(productId));
+async function loadProducts() {
+  try {
+    const data = await api('/api/products');
+    products = Array.isArray(data) ? data : data.products || [];
+    renderProducts();
+  } catch (error) {
+    $('products').textContent = error.message;
+  }
+}
+
+function addToCart(productId) {
+  const product = products.find(p => String(p.id) === String(productId));
   if (!product) return;
 
-  if (Number(product.prescription_required)) {
-    message("This product requires prescription verification. Please contact the pharmacy.", true);
+  const existing = cart.find(i => String(i.productId) === String(productId));
+  const currentQuantity = existing ? existing.quantity : 0;
+
+  if (currentQuantity + 1 > Number(product.stock)) {
+    alert('There is not enough stock available.');
     return;
   }
 
-  const quantity = cart.filter(item => Number(item.id) === Number(productId)).length;
-
-  if (quantity >= Number(product.stock)) {
-    message("You cannot add more than the available stock.", true);
-    return;
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      productId: product.id,
+      name: product.name,
+      price: Number(product.price),
+      quantity: 1
+    });
   }
 
-  cart.push(product);
-  renderCart();
-  message(product.name + " added to your cart.");
-}
-
-function changeQty(productId, delta) {
-  if (delta > 0) {
-    add(productId);
-    return;
-  }
-
-  const index = cart.findIndex(item => Number(item.id) === Number(productId));
-  if (index !== -1) cart.splice(index, 1);
   renderCart();
 }
 
-function removeItem(productId) {
-  cart = cart.filter(item => Number(item.id) !== Number(productId));
+function changeQuantity(productId, delta) {
+  const item = cart.find(i => String(i.productId) === String(productId));
+  const product = products.find(p => String(p.id) === String(productId));
+
+  if (!item || !product) return;
+
+  const next = item.quantity + delta;
+
+  if (next <= 0) {
+    cart = cart.filter(i => String(i.productId) !== String(productId));
+  } else if (next <= Number(product.stock)) {
+    item.quantity = next;
+  } else {
+    alert('Maximum available stock reached.');
+  }
+
   renderCart();
 }
 
 function renderCart() {
-  const groups = new Map();
-
-  for (const product of cart) {
-    const id = Number(product.id);
-    if (!groups.has(id)) groups.set(id, { product, quantity: 0 });
-    groups.get(id).quantity++;
-  }
-
-  $("cartCount").textContent = "Cart (" + cart.length + ")";
-  $("total").textContent = money(cart.reduce((sum, item) => sum + price(item), 0));
+  const container = $('cartItems');
+  container.replaceChildren();
 
   if (!cart.length) {
-    $("cartItems").innerHTML = '<p class="muted">Your cart is empty.</p>';
-    return;
+    container.textContent = 'Your cart is empty.';
   }
 
-  $("cartItems").innerHTML = Array.from(groups.values()).map(({ product, quantity }) => `
-    <div class="rowcart">
-      <div>
-        <strong>${esc(product.name)}</strong>
-        <div class="muted">₹${money(price(product))} each</div>
-      </div>
-      <div class="qty">
-        <button class="secondary" type="button" data-change="${Number(product.id)}" data-delta="-1">−</button>
-        <span>${quantity}</span>
-        <button class="secondary" type="button" data-change="${Number(product.id)}" data-delta="1">+</button>
-        <button class="secondary" type="button" data-remove="${Number(product.id)}">Remove</button>
-      </div>
-    </div>
-  `).join("");
-}
+  cart.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'rowcart';
 
-$("products").addEventListener("click", event => {
-  const button = event.target.closest("[data-add]");
-  if (button) add(Number(button.dataset.add));
-});
+    const info = document.createElement('div');
+    const name = document.createElement('strong');
+    name.textContent = item.name;
 
-$("cartItems").addEventListener("click", event => {
-  const change = event.target.closest("[data-change]");
-  const remove = event.target.closest("[data-remove]");
+    const price = document.createElement('div');
+    price.textContent = `${rupees(item.price)} each`;
 
-  if (change) {
-    changeQty(Number(change.dataset.change), Number(change.dataset.delta));
-  }
-  if (remove) removeItem(Number(remove.dataset.remove));
-});
+    info.append(name, price);
 
-$("retry").addEventListener("click", loadProducts);
+    const controls = document.createElement('div');
+    controls.className = 'qty';
 
-function orderItemsPayload() {
-  const grouped = new Map();
-
-  for (const product of cart) {
-    const id = Number(product.id);
-    const row = grouped.get(id) || { productId: id, quantity: 0 };
-    row.quantity++;
-    grouped.set(id, row);
-  }
-
-  return Array.from(grouped.values());
-}
-
-async function startRazorpayPayment(details, items) {
-  if (typeof window.Razorpay !== "function") {
-    throw Error("Razorpay checkout did not load. Choose COD or try again.");
-  }
-
-  const response = await fetch(API + "/api/razorpay/order", {
-    method: "POST",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
-    body: JSON.stringify({
-      ...details,
-      items
-    })
-  });
-
-  const orderData = await response.json().catch(() => ({}));
-
-  if (!response.ok || !orderData.orderId || !orderData.keyId) {
-    throw Error(orderData.error || "Could not create Razorpay order.");
-  }
-
-  return new Promise((resolve, reject) => {
-    let finished = false;
-
-    const checkout = new Razorpay({
-      key: orderData.keyId,
-      amount: orderData.amount,
-      currency: orderData.currency || "INR",
-      name: "Kapil Medical",
-      description: "Kapil Medical order",
-      order_id: orderData.orderId,
-      prefill: {
-        name: details.customerName,
-        contact: details.phone
-      },
-      theme: { color: "#087f5b" },
-
-      handler: async payment => {
-        try {
-          const verifyResponse = await fetch(API + "/api/razorpay/verify", {
-            method: "POST",
-            credentials: "same-origin",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json"
-            },
-            body: JSON.stringify({
-              razorpay_order_id: payment.razorpay_order_id,
-              razorpay_payment_id: payment.razorpay_payment_id,
-              razorpay_signature: payment.razorpay_signature
-            })
-          });
-
-          const result = await verifyResponse.json().catch(() => ({}));
-
-          if (!verifyResponse.ok || !result.ok || !result.orderId) {
-            throw Error(result.error || "Payment verification failed.");
-          }
-
-          finished = true;
-          resolve(result);
-        } catch (error) {
-          finished = true;
-          reject(error);
-        }
-      },
-
-      modal: {
-        ondismiss: () => {
-          if (!finished) {
-            finished = true;
-            reject(Error("Payment window closed. No order was confirmed."));
-          }
-        }
-      }
+    const minus = document.createElement('button');
+    minus.className = 'secondary';
+    minus.textContent = '−';
+    minus.setAttribute('aria-label', `Remove one ${item.name}`);
+    minus.addEventListener('click', () => {
+      changeQuantity(item.productId, -1);
     });
 
-    checkout.on("payment.failed", event => {
-      if (!finished) {
-        finished = true;
-        reject(Error(event.error?.description || "Razorpay payment failed."));
-      }
+    const count = document.createElement('span');
+    count.textContent = String(item.quantity);
+
+    const plus = document.createElement('button');
+    plus.className = 'secondary';
+    plus.textContent = '+';
+    plus.setAttribute('aria-label', `Add one ${item.name}`);
+    plus.addEventListener('click', () => {
+      changeQuantity(item.productId, 1);
     });
 
-    checkout.open();
+    controls.append(minus, count, plus);
+    row.append(info, controls);
+    container.appendChild(row);
   });
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  $('cartTotal').textContent = rupees(total);
 }
 
-function showTracking(result) {
-  if (result.trackingToken && result.orderId) {
-    const url = new URL("/track", location.origin);
-    url.searchParams.set("order", result.orderId);
-    url.searchParams.set("token", result.trackingToken);
-    $("trackAnchor").href = url.toString();
-    $("trackingLink").hidden = false;
-  } else {
-    $("trackingLink").hidden = true;
-  }
-}
-
-$("checkoutForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
+async function placeOrder() {
   if (!cart.length) {
-    message("Please add at least one product to your cart.", true);
+    $('orderMessage').textContent = 'Add a product to your cart first.';
     return;
   }
 
-  const details = {
-    customerName: $("name").value.trim(),
-    phone: $("phone").value.trim(),
-    address: $("address").value.trim(),
-    pincode: $("pincode").value.trim()
-  };
+  const customerName = $('customerName').value.trim();
+  const phone = $('customerPhone').value.replace(/\D/g, '');
+  const address = $('customerAddress').value.trim();
+  const pincode = $('customerPincode').value.trim();
+  const paymentMethod = $('paymentMethod').value;
 
-  if (
-    !details.customerName ||
-    !/^[6-9][0-9]{9}$/.test(details.phone) ||
-    !details.address ||
-    !/^\d{6}$/.test(details.pincode)
-  ) {
-    message("Enter a valid name, 10-digit mobile number, address and 6-digit pincode.", true);
+  if (!customerName || !/^[6-9]\d{9}$/.test(phone) || !address) {
+    $('orderMessage').textContent =
+      'Enter your name, valid mobile number and delivery address.';
     return;
   }
 
-  const items = orderItemsPayload();
-  const button = $("placeOrder");
-  const paymentMethod = $("payment").value;
+  if (pincode && !/^\d{6}$/.test(pincode)) {
+    $('orderMessage').textContent = 'Enter a valid 6-digit PIN code.';
+    return;
+  }
 
+  if (paymentMethod !== 'COD') {
+    $('orderMessage').textContent =
+      'Online payment requires the verified Razorpay checkout integration. Please use your existing working checkout.';
+    return;
+  }
+
+  const button = $('placeOrder');
   button.disabled = true;
-  button.textContent = paymentMethod === "COD" ? "Placing COD order…" : "Opening Razorpay…";
-  message("");
-  $("trackingLink").hidden = true;
+  $('orderMessage').textContent = 'Placing your order…';
+  $('trackingLink').hidden = true;
 
   try {
-    let result;
-
-    if (paymentMethod === "COD") {
-      const response = await fetch(API + "/api/orders", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify({
-          ...details,
-          items
-        })
-      });
-
-      result = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw Error(result.error || "COD order failed.");
-      }
-    } else {
-      result = await startRazorpayPayment(details, items);
-    }
+    const result = await api('/api/orders', {
+      method: 'POST',
+      body: JSON.stringify({
+        customerName,
+        phone,
+        address,
+        pincode,
+        paymentMethod: 'COD',
+        items: cart.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity
+        }))
+      })
+    });
 
     cart = [];
     renderCart();
-    $("checkoutForm").reset();
-    $("payment").value = "COD";
-    showTracking(result);
 
-    message(
-      (paymentMethod === "COD" ? "COD order placed. " : "Payment verified; order saved. ") +
-      "Order ID: " + result.orderId +
-      ". Total: ₹" + money(result.total) +
-      ". Keep your tracking link private."
-    );
+    $('orderMessage').textContent =
+      `Order #${result.order.id} placed successfully.`;
 
-    if (customerAccount) await refreshCustomerOrders();
+    if (result.trackingUrl) {
+      $('trackAnchor').href = result.trackingUrl;
+      $('trackingLink').hidden = false;
+    }
+
+    await loadProducts();
+    await loadMyOrders();
   } catch (error) {
-    console.error("Checkout error:", error);
-    message(error.message || "Could not complete your order.", true);
+    $('orderMessage').textContent = error.message;
   } finally {
     button.disabled = false;
-    button.textContent = $("payment").value === "COD"
-      ? "Place COD Order"
-      : "Pay Securely with Razorpay";
   }
-});
+}
 
-$("payment").addEventListener("change", () => {
-  $("placeOrder").textContent = $("payment").value === "COD"
-    ? "Place COD Order"
-    : "Pay Securely with Razorpay";
-});
+async function loadMyOrders() {
+  const container = $('customerOrders');
+
+  try {
+    const result = await api('/api/customer/orders');
+    const orders = result.orders || [];
+
+    container.replaceChildren();
+
+    if (!orders.length) {
+      container.textContent = 'No orders found for this account.';
+      return;
+    }
+
+    orders.forEach(order => {
+      const section = document.createElement('div');
+      section.className = 'panel';
+
+      const heading = document.createElement('h3');
+      heading.textContent = `Order #${order.id}`;
+
+      const status = document.createElement('p');
+      status.textContent = `Status: ${order.status}`;
+
+      const amount = document.createElement('p');
+      amount.textContent = `Total: ${rupees(order.total)}`;
+
+      section.append(heading, status, amount);
+
+      if (order.delhivery_status) {
+        const courier = document.createElement('p');
+        courier.textContent = `Courier: ${order.delhivery_status}`;
+        section.appendChild(courier);
+      }
+
+      if (order.delhivery_tracking_url) {
+        const link = document.createElement('a');
+        link.href = order.delhivery_tracking_url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = 'Track with Delhivery';
+        section.appendChild(link);
+
+        const whatsapp = document.createElement('p');
+        const waLink = document.createElement('a');
+        waLink.href = 'https://wa.me/?text=' +
+          encodeURIComponent(
+            `Kapil Medical order #${order.id} tracking: ` +
+            order.delhivery_tracking_url
+          );
+        waLink.target = '_blank';
+        waLink.rel = 'noopener noreferrer';
+        waLink.textContent = 'Share tracking on WhatsApp';
+
+        whatsapp.appendChild(waLink);
+        section.appendChild(whatsapp);
+      }
+
+      container.appendChild(section);
+    });
+  } catch (error) {
+    container.textContent =
+      'Sign in to view your order history. ' + error.message;
+  }
+}
+
+$('placeOrder').addEventListener('click', placeOrder);
 
 loadProducts();
-loadAccount();
+renderCart();
+loadMyOrders();
 </script>
 </body>
 </html>
